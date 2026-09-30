@@ -7,7 +7,9 @@
 <title>Matt + Angelo Shower Schedule</title>
 
 <style>
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
 body {
     margin: 0;
@@ -137,7 +139,7 @@ button {
 /* CALENDAR */
 .calendar {
     display: grid;
-    grid-template-columns: repeat(3, minmax(300px, 1fr));
+    grid-template-columns: repeat(3, minmax(310px, 1fr));
     gap: 15px;
 }
 
@@ -167,10 +169,10 @@ button {
 
 .day {
     min-height: 75px;
+    min-width: 43px;
     border: 1px solid #aaa;
     padding: 4px;
     font-size: 11px;
-    min-width: 42px;
 }
 
 .day.invalid {
@@ -181,10 +183,10 @@ button {
 .dayNumber {
     font-weight: bold;
     display: block;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
 }
 
-/* CALENDAR DROPDOWN */
+/* CALENDAR DROPDOWNS */
 .day select {
     width: 82px;
     max-width: 100%;
@@ -192,7 +194,7 @@ button {
     font-size: 10px;
 }
 
-/* SIGNING TRACKER */
+/* TRACKER */
 .tracker {
     width: 100%;
     border-collapse: collapse;
@@ -226,12 +228,6 @@ button {
     min-height: 120px;
     padding: 10px;
     resize: vertical;
-}
-
-.paperLine {
-    border-bottom: 1px solid black;
-    min-height: 35px;
-    margin: 10px 0;
 }
 
 .actionButtons {
@@ -320,8 +316,11 @@ button {
 
 <!-- LOGIN SCREEN -->
 <div id="loginScreen">
+
     <div class="loginBox">
+
         <h1>MATT + ANGELO</h1>
+
         <h2>SHOWER SCHEDULE</h2>
 
         <p>Enter password</p>
@@ -335,7 +334,9 @@ button {
         <button onclick="login()">ENTER</button>
 
         <div id="loginMessage"></div>
+
     </div>
+
 </div>
 
 
@@ -343,15 +344,22 @@ button {
 <div id="app">
 
 <header>
+
     <h1>MATT + ANGELO SHOWER SCHEDULE</h1>
+
     <div id="modeDisplay"></div>
+
 </header>
 
-<button id="logoutButton" onclick="logout()">LOG OUT</button>
+
+<button id="logoutButton" onclick="logout()">
+    LOG OUT
+</button>
 
 
 <!-- NAVIGATION -->
 <nav>
+
     <button onclick="showSection('calendarSection')">
         CALENDAR
     </button>
@@ -371,6 +379,7 @@ button {
     <button onclick="showSection('dailySection')">
         DAILY PAPER
     </button>
+
 </nav>
 
 
@@ -380,20 +389,22 @@ button {
     <h2>CALENDAR</h2>
 
     <div class="controls">
+
         <label>
             Year:
 
-            <select
-                id="yearSelect"
-                onchange="buildCalendar()"
-            >
+            <select id="yearSelect" onchange="buildCalendar()">
+
                 <option value="2026">2026</option>
                 <option value="2027">2027</option>
                 <option value="2028">2028</option>
                 <option value="2029">2029</option>
                 <option value="2030">2030</option>
+
             </select>
+
         </label>
+
     </div>
 
     <div id="calendar" class="calendar"></div>
@@ -409,11 +420,13 @@ button {
     <table class="tracker">
 
         <thead>
+
             <tr>
                 <th>DAY</th>
                 <th>WHO</th>
                 <th>SIGNING STATUS</th>
             </tr>
+
         </thead>
 
         <tbody id="trackerBody"></tbody>
@@ -434,18 +447,14 @@ button {
 
         <p><strong>Date:</strong></p>
 
-        <input
-            type="date"
-            id="paperDate"
-        >
+        <input type="date" id="paperDate">
+
 
         <p><strong>Who showered:</strong></p>
 
         <select id="paperPerson">
 
-            <option value="">
-                Choose
-            </option>
+            <option value="">Choose</option>
 
             <option value="Angelo">
                 Angelo
@@ -462,9 +471,7 @@ button {
 
         <select id="paperFirst">
 
-            <option value="">
-                Choose
-            </option>
+            <option value="">Choose</option>
 
             <option value="Angelo">
                 Angelo
@@ -516,9 +523,7 @@ button {
 
     <div class="contract">
 
-        <h3>
-            SHOWER SCHEDULE AGREEMENT
-        </h3>
+        <h3>SHOWER SCHEDULE AGREEMENT</h3>
 
         <p>
             <strong>
@@ -527,18 +532,14 @@ button {
         </p>
 
 
-        <h3>
-            PURPOSE
-        </h3>
+        <h3>PURPOSE</h3>
 
         <p>
             This agreement is made to keep the shower schedule clear, fair, and consistent.
         </p>
 
 
-        <h3>
-            AGREED RULE
-        </h3>
+        <h3>AGREED RULE</h3>
 
         <p class="agreedRule">
 
@@ -548,9 +549,7 @@ button {
         </p>
 
 
-        <h3>
-            RULES
-        </h3>
+        <h3>RULES</h3>
 
         <p>
             I. Showering earlier or later does NOT change the schedule.
@@ -669,7 +668,7 @@ function logout() {
 }
 
 
-/* SECTION SWITCHING */
+/* SHOW SECTION */
 
 function showSection(sectionId) {
 
@@ -684,7 +683,7 @@ function showSection(sectionId) {
 }
 
 
-/* EDITING */
+/* ENABLE / DISABLE EDITING */
 
 function enableEditing(canEdit) {
 
@@ -697,11 +696,34 @@ function enableEditing(canEdit) {
     });
 
 
-    document.querySelectorAll("#dailySection button").forEach(button => {
+    document.querySelectorAll(
+        "#dailySection button"
+    ).forEach(button => {
 
         button.disabled = !canEdit;
 
     });
+
+}
+
+
+/* CALENDAR DATA */
+
+function getCalendarData() {
+
+    return JSON.parse(
+        localStorage.getItem("calendarData") || "{}"
+    );
+
+}
+
+
+function saveCalendarData(data) {
+
+    localStorage.setItem(
+        "calendarData",
+        JSON.stringify(data)
+    );
 
 }
 
@@ -735,25 +757,6 @@ const weekdayNames = [
 ];
 
 
-function getCalendarData() {
-
-    return JSON.parse(
-        localStorage.getItem("calendarData") || "{}"
-    );
-
-}
-
-
-function saveCalendarData(data) {
-
-    localStorage.setItem(
-        "calendarData",
-        JSON.stringify(data)
-    );
-
-}
-
-
 function buildCalendar() {
 
     const year =
@@ -766,10 +769,15 @@ function buildCalendar() {
 
     calendar.innerHTML = "";
 
-    const data = getCalendarData();
+    const data =
+        getCalendarData();
 
 
-    for (let month = 0; month < 12; month++) {
+    for (
+        let month = 0;
+        month < 12;
+        month++
+    ) {
 
         const monthBox =
             document.createElement("div");
@@ -789,7 +797,8 @@ function buildCalendar() {
         const weekdays =
             document.createElement("div");
 
-        weekdays.className = "weekdays";
+        weekdays.className =
+            "weekdays";
 
 
         weekdayNames.forEach(day => {
@@ -816,11 +825,22 @@ function buildCalendar() {
         const firstDay =
             new Date(year, month, 1).getDay();
 
+
         const numberOfDays =
-            new Date(year, month + 1, 0).getDate();
+            new Date(
+                year,
+                month + 1,
+                0
+            ).getDate();
 
 
-        for (let blank = 0; blank < firstDay; blank++) {
+        /* EMPTY DAYS BEFORE MONTH */
+
+        for (
+            let blank = 0;
+            blank < firstDay;
+            blank++
+        ) {
 
             const empty =
                 document.createElement("div");
@@ -833,7 +853,13 @@ function buildCalendar() {
         }
 
 
-        for (let day = 1; day <= numberOfDays; day++) {
+        /* ACTUAL DAYS */
+
+        for (
+            let day = 1;
+            day <= numberOfDays;
+            day++
+        ) {
 
             const dateKey =
                 `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
@@ -848,7 +874,8 @@ function buildCalendar() {
             const number =
                 document.createElement("span");
 
-            number.className = "dayNumber";
+            number.className =
+                "dayNumber";
 
             number.textContent = day;
 
@@ -896,13 +923,24 @@ function buildCalendar() {
                 "change",
                 function() {
 
-                    if (currentMode !== "edit") return;
+                    if (currentMode !== "edit") {
+                        return;
+                    }
 
                     const updated =
                         getCalendarData();
 
-                    updated[dateKey] =
-                        select.value;
+                    if (select.value === "") {
+
+                        delete updated[dateKey];
+
+                    }
+                    else {
+
+                        updated[dateKey] =
+                            select.value;
+
+                    }
 
                     saveCalendarData(updated);
 
@@ -933,7 +971,7 @@ function buildCalendar() {
 }
 
 
-/* SIGNING TRACKER */
+/* TRACKER DATA */
 
 function getTrackerData() {
 
@@ -954,6 +992,8 @@ function saveTrackerData(data) {
 }
 
 
+/* SIGNING TRACKER */
+
 function buildTracker() {
 
     const body =
@@ -961,15 +1001,22 @@ function buildTracker() {
 
     body.innerHTML = "";
 
+
     const data =
         getTrackerData();
 
 
-    for (let day = 1; day <= 31; day++) {
+    for (
+        let day = 1;
+        day <= 31;
+        day++
+    ) {
 
         const row =
             document.createElement("tr");
 
+
+        /* DAY */
 
         const dayCell =
             document.createElement("td");
@@ -980,8 +1027,11 @@ function buildTracker() {
         row.appendChild(dayCell);
 
 
+        /* WHO */
+
         const personCell =
             document.createElement("td");
+
 
         const personSelect =
             document.createElement("select");
@@ -994,7 +1044,10 @@ function buildTracker() {
         `;
 
 
-        if (data[day] && data[day].person) {
+        if (
+            data[day] &&
+            data[day].person
+        ) {
 
             personSelect.value =
                 data[day].person;
@@ -1006,10 +1059,13 @@ function buildTracker() {
             "change",
             function() {
 
-                if (currentMode !== "edit") return;
+                if (currentMode !== "edit") {
+                    return;
+                }
 
                 const updated =
                     getTrackerData();
+
 
                 if (!updated[day]) {
 
@@ -1017,8 +1073,21 @@ function buildTracker() {
 
                 }
 
-                updated[day].person =
-                    personSelect.value;
+
+                if (
+                    personSelect.value === ""
+                ) {
+
+                    delete updated[day].person;
+
+                }
+                else {
+
+                    updated[day].person =
+                        personSelect.value;
+
+                }
+
 
                 saveTrackerData(updated);
 
@@ -1038,8 +1107,11 @@ function buildTracker() {
         row.appendChild(personCell);
 
 
+        /* STATUS */
+
         const statusCell =
             document.createElement("td");
+
 
         const statusSelect =
             document.createElement("select");
@@ -1052,7 +1124,10 @@ function buildTracker() {
         `;
 
 
-        if (data[day] && data[day].status) {
+        if (
+            data[day] &&
+            data[day].status
+        ) {
 
             statusSelect.value =
                 data[day].status;
@@ -1064,10 +1139,13 @@ function buildTracker() {
             "change",
             function() {
 
-                if (currentMode !== "edit") return;
+                if (currentMode !== "edit") {
+                    return;
+                }
 
                 const updated =
                     getTrackerData();
+
 
                 if (!updated[day]) {
 
@@ -1075,8 +1153,21 @@ function buildTracker() {
 
                 }
 
-                updated[day].status =
-                    statusSelect.value;
+
+                if (
+                    statusSelect.value === ""
+                ) {
+
+                    delete updated[day].status;
+
+                }
+                else {
+
+                    updated[day].status =
+                        statusSelect.value;
+
+                }
+
 
                 saveTrackerData(updated);
 
@@ -1107,17 +1198,22 @@ function buildTracker() {
 
 function saveDailyPaper() {
 
-    if (currentMode !== "edit") return;
+    if (currentMode !== "edit") {
+        return;
+    }
 
 
     const date =
         document.getElementById("paperDate").value;
 
+
     const person =
         document.getElementById("paperPerson").value;
 
+
     const first =
         document.getElementById("paperFirst").value;
+
 
     const notes =
         document.getElementById("paperNotes").value;
@@ -1150,5 +1246,167 @@ function saveDailyPaper() {
 
         savedAt: new Date().toLocaleString()
 
+    });
+
+
+    localStorage.setItem(
+        "savedPapers",
+        JSON.stringify(saved)
+    );
+
+
+    displaySavedData();
+
+
+    alert("Daily paper saved.");
+
+}
+
+
+/* NEW COPY */
+
+function newDailyPaper() {
+
+    if (currentMode !== "edit") {
+        return;
     }
+
+
+    document.getElementById("paperDate").value = "";
+
+    document.getElementById("paperPerson").value = "";
+
+    document.getElementById("paperFirst").value = "";
+
+    document.getElementById("paperNotes").value = "";
+
+}
+
+
+/* SAVED DATA */
+
+function displaySavedData() {
+
+    const container =
+        document.getElementById("savedData");
+
+
+    const saved =
+        JSON.parse(
+            localStorage.getItem("savedPapers") || "[]"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if (saved.length === 0) {
+
+        container.innerHTML =
+            "<p>No saved papers yet.</p>";
+
+        return;
+
+    }
+
+
+    saved.forEach(
+        (paper, index) => {
+
+            const item =
+                document.createElement("div");
+
+            item.className =
+                "savedItem";
+
+
+            item.innerHTML = `
+                <strong>Date:</strong>
+                ${paper.date}<br>
+
+                <strong>Who showered:</strong>
+                ${paper.person || "Not entered"}<br>
+
+                <strong>Who showered first:</strong>
+                ${paper.first || "Not entered"}<br>
+
+                <strong>Notes:</strong>
+                ${paper.notes || "None"}<br>
+
+                <strong>Saved:</strong>
+                ${paper.savedAt}
+            `;
+
+
+            if (currentMode === "edit") {
+
+                const deleteButton =
+                    document.createElement("button");
+
+                deleteButton.textContent =
+                    "DELETE";
+
+
+                deleteButton.onclick =
+                    function() {
+
+                        if (
+                            confirm(
+                                "Delete this saved paper?"
+                            )
+                        ) {
+
+                            saved.splice(
+                                index,
+                                1
+                            );
+
+
+                            localStorage.setItem(
+                                "savedPapers",
+                                JSON.stringify(saved)
+                            );
+
+
+                            displaySavedData();
+
+                        }
+
+                    };
+
+
+                item.appendChild(deleteButton);
+
+            }
+
+
+            container.appendChild(item);
+
+        }
+    );
+
+}
+
+
+/* ENTER KEY */
+
+document
+    .getElementById("passwordInput")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Enter") {
+
+                login();
+
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
 ```
