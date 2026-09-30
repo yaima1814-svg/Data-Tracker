@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matt and Angelo Shower Tracker</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: white;
+        color: black;
+    }
+
+    header {
+        background: white;
+        border-bottom: 2px solid black;
+        padding: 20px;
+        text-align: center;
+    }
+
+    header h1 {
+        margin: 0 0 18px 0;
+        font-size: 28px;
+    }
+
+    nav {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    nav button {
+        background: white;
+        border: 2px solid #0057b8;
+        color: #0057b8;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 12px 18px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    nav button:hover,
+    nav button.active {
+        background: #0057b8;
+        color: white;
+    }
+
+    main {
+        max-width: 1200px;
+        margin: 25px auto;
+        padding: 0 18px 50px;
+    }
+
+    .section {
+        display: none;
+    }
+
+    .section.active {
+        display: block;
+    }
+
+    .section-title {
+        color: #0057b8;
+        font-size: 27px;
+        font-weight: bold;
+        border-bottom: 2px solid #0057b8;
+        padding-bottom: 8px;
+        margin-bottom: 22px;
+    }
+
+    .box {
+        border: 2px solid black;
+        padding: 20px;
+        margin-bottom: 20px;
+        background: white;
+    }
+
+    label {
+        font-weight: bold;
+        margin-right: 8px;
+    }
+
+    select,
+    input,
+    textarea {
+        border: 2px solid black;
+        background: white;
+        color: black;
+        padding: 9px;
+        font-size: 15px;
+        border-radius: 4px;
+    }
+
+    button.action {
+        border: 2px solid black;
+        background: black;
+        color: white;
+        padding: 10px 18px;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 4px;
+        margin: 4px;
+    }
+
+    button.action:hover {
+        background: #333;
+    }
+
+    button.blue-action {
+        border: 2px solid #0057b8;
+        background: #0057b8;
+        color: white;
+        padding: 10px 18px;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 4px;
+        margin: 4px;
+    }
+
+    .tracker-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+    .tracker-table th,
+    .tracker-table td {
+        border: 1px solid black;
+        padding: 9px;
+        text-align: center;
+    }
+
+    .tracker-table th {
+        font-weight: bold;
+        background: #f1f1f1;
+    }
+
+    .tracker-table select {
+        width: 100%;
+    }
+
+    .calendar-controls {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .calendar-controls select {
+        min-width: 140px;
+    }
+
+    .month-title {
+        font-size: 23px;
+        font-weight: bold;
+        margin: 25px 0 10px;
+        color: black;
+    }
+
+    .calendar-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
+
+    .calendar-table th,
+    .calendar-table td {
+        border: 1px solid black;
+        padding: 7px;
+        text-align: center;
+    }
+
+    .calendar-table th {
+        background: #f1f1f1;
+        font-weight: bold;
+    }
+
+    .calendar-table td {
+        height: 58px;
+        vertical-align: middle;
+    }
+
+    .day-number {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .calendar-table select {
+        width: 100%;
+        font-size: 13px;
+        padding: 5px;
+    }
+
+    .invalid-day {
+        background: #eeeeee;
+        color: #777;
+    }
+
+    .paper {
+        border: 2px solid black;
+        padding: 30px;
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+    }
+
+    .paper h2 {
+        text-align: center;
+        font-size: 25px;
+        margin-top: 0;
+    }
+
+    .paper h3 {
+        font-size: 18px;
+        margin-top: 25px;
+        border-bottom: 1px solid black;
+        padding-bottom: 5px;
+    }
+
+    .paper p {
+        line-height: 1.6;
+    }
+
+    .paper ol {
+        line-height: 1.8;
+    }
+
+    .paper-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .paper-info div {
+        border: 1px solid black;
+        padding: 10px;
+    }
+
+    .saved-item {
+        border: 2px solid black;
+        padding: 18px;
+        margin-bottom: 15px;
+    }
+
+    .saved-item h3 {
+        margin-top: 0;
+    }
+
+    .saved-item button {
+        margin-top: 8px;
+    }
+
+    .empty {
+        border: 1px dashed black;
+        padding: 25px;
+        text-align: center;
+    }
+
+    .signature-area {
+        margin-top: 30px;
+        border-top: 1px solid black;
+        padding-top: 15px;
+    }
+
+    .small-note {
+        font-size: 13px;
+        color: #444;
+    }
+
+    @media (max-width: 700px) {
+        .paper-info {
+            grid-template-columns: 1fr;
+        }
+
+        .calendar-table {
+            font-size: 11px;
+        }
+
+        .calendar-table td {
+            height: 70px;
+            padding: 3px;
+        }
+
+        .calendar-table select {
+            font-size: 10px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Matt and Angelo Private Tracker</h1>
+
+    <nav>
+        <button class="nav-button active" onclick="showSection('signingTracker', this)">
+            SIGNING TRACKER
+        </button>
+
+        <button class="nav-button" onclick="showSection('contract', this)">
+            RULES AND REGULATION (CONTRACT)
+        </button>
+
+        <button class="nav-button" onclick="showSection('calendar', this)">
+            CALENDAR
+        </button>
+
+        <button class="nav-button" onclick="showSection('savedData', this)">
+            SAVED DATA
+        </button>
+    </nav>
+</header>
+
+<main>
+
+<!-- SIGNING TRACKER -->
+<section id="signingTracker" class="section active">
+
+    <div class="section-title">SIGNING TRACKER</div>
+
+    <div class="box">
+        <h2>Daily Signing Tracker</h2>
+
+        <p>
+            Select the person and signing status for each day.
+        </p>
+
+        <table class="tracker-table">
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Person</th>
+                    <th>Signing Status</th>
+                </tr>
+            </thead>
+
+            <tbody id="trackerBody"></tbody>
+        </table>
+    </div>
+
+    <div class="box">
+        <h2>Daily Paper</h2>
+
+        <div class="paper-info">
+            <div>
+                <label>Date:</label>
+                <input type="date" id="paperDate">
+            </div>
+
+            <div>
+                <label>Who Showered First:</label>
+                <select id="paperPerson">
+                    <option value="">Select</option>
+                    <option value="Angelo">Angelo</option>
+                    <option value="Matthew">Matthew</option>
+                </select>
+            </div>
+
+            <div>
+                <label>Signing Status:</label>
+                <select id="paperStatus">
+                    <option value="">Select</option>
+                    <option value="SIGNED">SIGNED</option>
+                    <option value="MISSING">MISSING</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="paper">
+            <h2>SHOWER SCHEDULE AGREEMENT</h2>
+
+            <p><strong>Between: Matt and Angelo</strong></p>
+
+            <h3>PURPOSE</h3>
+
+            <p>
+                This agreement is made to keep the shower schedule clear, fair, and consistent.
+            </p>
+
+            <h3>AGREED RULE</h3>
+
+            <p>
+                <strong>
+                    NO MATTER WHAT DAY IT IS, WHAT TIME SOMEONE SHOWERS, OR WHO SHOWERS FIRST,
+                    THE SHOWER SCHEDULE WILL STILL BE FOLLOWED.
+                </strong>
+            </p>
+
+            <h3>RULES</h3>
+
+            <ol type="I">
+                <li>Showering earlier or later does NOT change the schedule.</li>
+
+                <li>
+                    If someone showers before their scheduled day, it does NOT automatically
+                    give them the next shower day.
+                </li>
+
+                <li>
+                    The next person follows the schedule exactly as written.
+                </li>
+
+                <li>
+                    The schedule can only be changed if BOTH Matt and Angelo agree to the change.
+                </li>
+
+                <li>
+                    Who ever showers first any day has to sign the paper witch is given at the
+                    end of each shower.
+                </li>
+            </ol>
+
+            <div class="signature-area">
+                <p>
+                    <strong>Person who showered first:</strong>
+                    <span id="paperPersonDisplay">Not selected</span>
+                </p>
+
+                <p>
+                    <strong>Signing status:</strong>
+                    <span id="paperStatusDisplay">Not selected</span>
+                </p>
+
+                <p>
+                    <strong>Date:</strong>
+                    <span id="paperDateDisplay">Not selected</span>
+                </p>
+            </div>
+        </div>
+
+        <br>
+
+        <button class="blue-action" onclick="saveDailyPaper()">
+            SAVE
+        </button>
+
+        <button class="action" onclick="newDailyCopy()">
+            NEW COPY
+        </button>
+
+        <p class="small-note">
+            SAVE stores a completed copy in SAVED DATA. NEW COPY creates a fresh blank paper.
+        </p>
+    </div>
+
+</section>
+
+
+<!-- CONTRACT -->
+<section id="contract" class="section">
+
+    <div class="section-title">RULES AND REGULATION (CONTRACT)</div>
+
+    <div class="paper">
+
+        <h2>SHOWER SCHEDULE AGREEMENT</h2>
+
+        <p><strong>Between: Matt and Angelo</strong></p>
+
+        <h3>PURPOSE</h3>
+
+        <p>
+            This agreement is made to keep the shower schedule clear, fair, and consistent.
+        </p>
+
+        <h3>AGREED RULE</h3>
+
+        <p>
+            <strong>
+                NO MATTER WHAT DAY IT IS, WHAT TIME SOMEONE SHOWERS, OR WHO SHOWERS FIRST,
+                THE SHOWER SCHEDULE WILL STILL BE FOLLOWED.
+            </strong>
+        </p>
+
+        <h3>RULES</h3>
+
+        <ol type="I">
+            <li>Showering earlier or later does NOT change the schedule.</li>
+
+            <li>
+                If someone showers before their scheduled day, it does NOT automatically
+                give them the next shower day.
+            </li>
+
+            <li>
+                The next person follows the schedule exactly as written.
+            </li>
+
+            <li>
+                The schedule can only be changed if BOTH Matt and Angelo agree to the change.
+            </li>
+
+            <li>
+                Who ever showers first any day has to sign the paper witch is given at the
+                end of each shower.
+            </li>
+        </ol>
+
+    </div>
+
+</section>
+
+
+<!-- CALENDAR -->
+<section id="calendar" class="section">
+
+    <div class="section-title">CALENDAR</div>
+
+    <div class="box">
+
+        <div class="calendar-controls">
+
+            <div>
+                <label for="yearSelect">Year:</label>
+
+                <select id="yearSelect" onchange="buildCalendar()">
+                    <option value="2026">2026</option>
+                    <option value="2027">2027</option>
+                    <option value="2028">2028</option>
+                    <option value="2029">2029</option>
+                    <option value="2030">2030</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="monthSelect">Month:</label>
+
+                <select id="monthSelect" onchange="buildCalendar()">
+                    <option value="0">January</option>
+                    <option value="1">February</option>
+                    <option value="2">March</option>
+                    <option value="3">April</option>
+                    <option value="4">May</option>
+                    <option value="5">June</option>
+                    <option value="6">July</option>
+                    <option value="7">August</option>
+                    <option value="8">September</option>
+                    <option value="9">October</option>
+                    <option value="10">November</option>
+                    <option value="11">December</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div id="calendarContainer"></div>
+
+    </div>
+
+</section>
+
+
+<!-- SAVED DATA -->
+<section id="savedData" class="section">
+
+    <div class="section-title">SAVED DATA</div>
+
+    <div class="box">
+
+        <button class="action" onclick="clearSavedData()">
+            CLEAR ALL SAVED DATA
+        </button>
+
+        <div id="savedContainer" style="margin-top:20px;"></div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<script>
+
+/* ------------------------------
+   SECTION NAVIGATION
+------------------------------ */
+
+function showSection(sectionId, button) {
+
+    document.querySelectorAll(".section").forEach(section => {
+        section.classList.remove("active");
+    });
+
+    document.getElementById(sectionId).classList.add("active");
+
+    document.querySelectorAll(".nav-button").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    if (sectionId === "savedData") {
+        displaySavedData();
+    }
+
+    if (sectionId === "calendar") {
+        buildCalendar();
+    }
+}
+
+
+/* ------------------------------
+   SIGNING TRACKER
+------------------------------ */
+
+function createTracker() {
+
+    const tbody = document.getElementById("trackerBody");
+
+    tbody.innerHTML = "";
+
+    for (let day = 1; day <= 31; day++) {
+
+        const row = document.createElement("tr");
+
+        const dayCell = document.createElement("td");
+        dayCell.textContent = "Day " + day;
+
+        const personCell = document.createElement("td");
+
+        const personSelect = document.createElement("select");
+
+        personSelect.innerHTML = `
+            <option value="">Select</option>
+            <option value="Angelo">Angelo</option>
+            <option value="Matthew">Matthew</option>
+        `;
+
+        const statusCell = document.createElement("td");
+
+        const statusSelect = document.createElement("select");
+
+        statusSelect.innerHTML = `
+            <option value="">Select</option>
+            <option value="SIGNED">SIGNED</option>
+            <option value="MISSING">MISSING</option>
+        `;
+
+        personCell.appendChild(personSelect);
+        statusCell.appendChild(statusSelect);
+
+        row.appendChild(dayCell);
+        row.appendChild(personCell);
+        row.appendChild(statusCell);
+
+        tbody.appendChild(row);
+    }
+}
+
+
+/* ------------------------------
+   DAILY PAPER
+------------------------------ */
+
+function updatePaperDisplay() {
+
+    const person =
+        document.getElementById("paperPerson").value || "Not selected";
+
+    const status =
+        document.getElementById("paperStatus").value || "Not selected";
+
+    const dateValue =
+        document.getElementById("paperDate").value;
+
+    document.getElementById("paperPersonDisplay").textContent = person;
+    document.getElementById("paperStatusDisplay").textContent = status;
+
+    if (dateValue) {
+
+        const date = new Date(dateValue + "T00:00:00");
+
+        document.getElementById("paperDateDisplay").textContent =
+            date.toLocaleDateString();
+    } else {
+
+        document.getElementById("paperDateDisplay").textContent =
+            "Not selected";
+    }
+}
+
+document.getElementById("paperPerson").addEventListener(
+    "change",
+    updatePaperDisplay
+);
+
+document.getElementById("paperStatus").addEventListener(
+    "change",
+    updatePaperDisplay
+);
+
+document.getElementById("paperDate").addEventListener(
+    "change",
+    updatePaperDisplay
+);
+
+
+function newDailyCopy() {
+
+    document.getElementById("paperDate").value = "";
+    document.getElementById("paperPerson").value = "";
+    document.getElementById("paperStatus").value = "";
+
+    updatePaperDisplay();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/* ------------------------------
+   SAVE DAILY PAPER
+------------------------------ */
+
+function saveDailyPaper() {
+
+    const date =
+        document.getElementById("paperDate").value;
+
+    const person =
+        document.getElementById("paperPerson").value;
+
+    const status =
+        document.getElementById("paperStatus").value;
+
+    if (!date || !person || !status) {
+
+        alert(
+            "Please select the date, person, and signing status before saving."
+        );
+
+        return;
+    }
+
+    const savedData =
+        JSON.parse(localStorage.getItem("showerSavedData") || "[]");
+
+    savedData.push({
+        id: Date.now(),
+        date: date,
+        person: person,
+        status: status,
+        savedAt: new Date().toLocaleString()
+    });
+
+    localStorage.setItem(
+        "showerSavedData",
+        JSON.stringify(savedData)
+    );
+
+    alert("The daily paper has been saved.");
+
+    displaySavedData();
+}
+
+
+/* ------------------------------
+   SAVED DATA
+------------------------------ */
+
+function displaySavedData() {
+
+    const container =
+        document.getElementById("savedContainer");
+
+    const savedData =
+        JSON.parse(localStorage.getItem("showerSavedData") || "[]");
+
+    if (savedData.length === 0) {
+
+        container.innerHTML = `
+            <div class="empty">
+                No saved papers yet.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = "";
+
+    savedData.slice().reverse().forEach(item => {
+
+        const div = document.createElement("div");
+
+        div.className = "saved-item";
+
+        div.innerHTML = `
+            <h3>Saved Daily Paper</h3>
+
+            <p>
+                <strong>Date:</strong>
+                ${formatDate(item.date)}
+            </p>
+
+            <p>
+                <strong>Who Showered First:</strong>
+                ${escapeHTML(item.person)}
+            </p>
+
+            <p>
+                <strong>Signing Status:</strong>
+                ${escapeHTML(item.status)}
+            </p>
+
+            <p class="small-note">
+                Saved: ${escapeHTML(item.savedAt)}
+            </p>
+
+            <button class="action"
+                onclick="deleteSavedPaper(${item.id})">
+                DELETE THIS COPY
+            </button>
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+
+function deleteSavedPaper(id) {
+
+    let savedData =
+        JSON.parse(localStorage.getItem("showerSavedData") || "[]");
+
+    savedData =
+        savedData.filter(item => item.id !== id);
+
+    localStorage.setItem(
+        "showerSavedData",
+        JSON.stringify(savedData)
+    );
+
+    displaySavedData();
+}
+
+
+function clearSavedData() {
+
+    if (
+        confirm(
+            "Are you sure you want to delete all saved data?"
+        )
+    ) {
+
+        localStorage.removeItem("showerSavedData");
+
+        displaySavedData();
+    }
+}
+
+
+/* ------------------------------
+   CALENDAR
+------------------------------ */
+
+const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+];
+
+
+function buildCalendar() {
+
+    const year =
+        Number(document.getElementById("yearSelect").value);
+
+    const month =
+        Number(document.getElementById("monthSelect").value);
+
+    const container =
+        document.getElementById("calendarContainer");
+
+    const daysInMonth =
+        new Date(year, month + 1, 0).getDate();
+
+    const firstDay =
+        new Date(year, month, 1).getDay();
+
+    let html = `
+        <div class="month-title">
+            ${monthNames[month]} ${year}
+        </div>
+
+        <table class="calendar-table">
+
+            <thead>
+                <tr>
+                    <th>Sunday</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                    <th>Saturday</th>
+                </tr>
+            </thead>
+
+            <tbody>
+    `;
+
+    let day = 1;
+
+    for (let week = 0; week < 6; week++) {
+
+        html += "<tr>";
+
+        for (let weekday = 0; weekday < 7; weekday++) {
+
+            if (
+                (week === 0 && weekday < firstDay) ||
+                day > daysInMonth
+            ) {
+
+                /*
+                    Empty calendar spaces.
+                */
+
+                html += `
+                    <td class="invalid-day">
+                    </td>
+                `;
+
+            } else {
+
+                html += `
+                    <td>
+                        <span class="day-number">
+                            ${day}
+                        </span>
+
+                        <select
+                            onchange="saveCalendarAssignment(
+                                ${year},
+                                ${month},
+                                ${day},
+                                this.value
+                            )"
+                        >
+                            <option value="">Select</option>
+                            <option value="Angelo">Angelo</option>
+                            <option value="Matthew">Matthew</option>
+                        </select>
+                    </td>
+                `;
+
+                day++;
+            }
+        }
+
+        html += "</tr>";
+
+        if (day > daysInMonth) {
+            break;
+        }
+    }
+
+    html += `
+            </tbody>
+        </table>
+
+        <p class="small-note">
+            Each real date has its own Angelo or Matthew dropdown.
+            The calendar automatically handles months with fewer than 31 days.
+        </p>
+    `;
+
+    container.innerHTML = html;
+
+    loadCalendarAssignments();
+}
+
+
+function saveCalendarAssignment(year, month, day, person) {
+
+    const key =
+        `calendar_${year}_${month}_${day}`;
+
+    if (person === "") {
+
+        localStorage.removeItem(key);
+
+    } else {
+
+        localStorage.setItem(key, person);
+    }
+}
+
+
+function loadCalendarAssignments() {
+
+    const year =
+        Number(document.getElementById("yearSelect").value);
+
+    const month =
+        Number(document.getElementById("monthSelect").value);
+
+    const selects =
+        document.querySelectorAll(".calendar-table select");
+
+    selects.forEach(select => {
+
+        const day =
+            select.parentElement
+                .querySelector(".day-number")
+                .textContent.trim();
+
+        const key =
+            `calendar_${year}_${month}_${day}`;
+
+        const saved =
+            localStorage.getItem(key);
+
+        if (saved) {
+            select.value = saved;
+        }
+    });
+}
+
+
+/* ------------------------------
+   HELPER FUNCTIONS
+------------------------------ */
+
+function formatDate(dateString) {
+
+    const date =
+        new Date(dateString + "T00:00:00");
+
+    return date.toLocaleDateString();
+}
+
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* ------------------------------
+   STARTUP
+------------------------------ */
+
+createTracker();
+
+document.getElementById("paperDate").value = "";
+
+updatePaperDisplay();
+
+buildCalendar();
+
+</script>
+
+</body>
+</html>
