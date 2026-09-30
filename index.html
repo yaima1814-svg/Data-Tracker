@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,9 +7,7 @@
 <title>Matt + Angelo Shower Schedule</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
     margin: 0;
@@ -17,6 +16,7 @@ body {
     color: black;
 }
 
+/* LOGIN */
 #loginScreen {
     min-height: 100vh;
     display: flex;
@@ -60,6 +60,7 @@ body {
     font-weight: bold;
 }
 
+/* APP */
 #app {
     display: none;
 }
@@ -79,6 +80,7 @@ header h1 {
     font-weight: bold;
 }
 
+/* NAVIGATION */
 nav {
     display: flex;
     flex-wrap: wrap;
@@ -102,6 +104,7 @@ nav button:hover {
     text-decoration: underline;
 }
 
+/* SECTIONS */
 section {
     display: none;
     padding: 25px;
@@ -131,9 +134,10 @@ button {
     font-size: 14px;
 }
 
+/* CALENDAR */
 .calendar {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(300px, 1fr));
     gap: 15px;
 }
 
@@ -164,8 +168,9 @@ button {
 .day {
     min-height: 75px;
     border: 1px solid #aaa;
-    padding: 3px;
+    padding: 4px;
     font-size: 11px;
+    min-width: 42px;
 }
 
 .day.invalid {
@@ -179,12 +184,15 @@ button {
     margin-bottom: 3px;
 }
 
+/* CALENDAR DROPDOWN */
 .day select {
-    width: 100%;
-    padding: 3px;
+    width: 82px;
+    max-width: 100%;
+    padding: 4px 2px;
     font-size: 10px;
 }
 
+/* SIGNING TRACKER */
 .tracker {
     width: 100%;
     border-collapse: collapse;
@@ -205,6 +213,7 @@ button {
     width: 100%;
 }
 
+/* DAILY PAPER */
 .dailyPaper {
     border: 2px solid black;
     padding: 25px;
@@ -239,6 +248,7 @@ button {
     cursor: pointer;
 }
 
+/* SAVED DATA */
 .savedItem {
     border: 1px solid black;
     padding: 15px;
@@ -249,6 +259,7 @@ button {
     margin-top: 8px;
 }
 
+/* CONTRACT */
 .contract {
     border: 2px solid black;
     padding: 25px;
@@ -265,6 +276,7 @@ button {
     padding: 15px;
 }
 
+/* LOGOUT */
 #logoutButton {
     position: fixed;
     right: 15px;
@@ -274,12 +286,14 @@ button {
     cursor: pointer;
 }
 
-@media (max-width: 1000px) {
+/* TABLET */
+@media (max-width: 1100px) {
     .calendar {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(300px, 1fr));
     }
 }
 
+/* PHONE */
 @media (max-width: 650px) {
     .calendar {
         grid-template-columns: 1fr;
@@ -294,12 +308,17 @@ button {
         display: block;
         margin: 10px auto;
     }
+
+    .day select {
+        width: 82px;
+    }
 }
 </style>
 </head>
 
 <body>
 
+<!-- LOGIN SCREEN -->
 <div id="loginScreen">
     <div class="loginBox">
         <h1>MATT + ANGELO</h1>
@@ -319,6 +338,8 @@ button {
     </div>
 </div>
 
+
+<!-- MAIN APP -->
 <div id="app">
 
 <header>
@@ -328,21 +349,44 @@ button {
 
 <button id="logoutButton" onclick="logout()">LOG OUT</button>
 
+
+<!-- NAVIGATION -->
 <nav>
-    <button onclick="showSection('calendarSection')">CALENDAR</button>
-    <button onclick="showSection('trackerSection')">SIGNING TRACKER</button>
-    <button onclick="showSection('savedSection')">SAVED DATA</button>
-    <button onclick="showSection('contractSection')">RULES AND REGULATION (CONTRACT)</button>
-    <button onclick="showSection('dailySection')">DAILY PAPER</button>
+    <button onclick="showSection('calendarSection')">
+        CALENDAR
+    </button>
+
+    <button onclick="showSection('trackerSection')">
+        SIGNING TRACKER
+    </button>
+
+    <button onclick="showSection('savedSection')">
+        SAVED DATA
+    </button>
+
+    <button onclick="showSection('contractSection')">
+        RULES AND REGULATION (CONTRACT)
+    </button>
+
+    <button onclick="showSection('dailySection')">
+        DAILY PAPER
+    </button>
 </nav>
 
+
+<!-- CALENDAR -->
 <section id="calendarSection" class="active">
+
     <h2>CALENDAR</h2>
 
     <div class="controls">
         <label>
             Year:
-            <select id="yearSelect" onchange="buildCalendar()">
+
+            <select
+                id="yearSelect"
+                onchange="buildCalendar()"
+            >
                 <option value="2026">2026</option>
                 <option value="2027">2027</option>
                 <option value="2028">2028</option>
@@ -353,12 +397,17 @@ button {
     </div>
 
     <div id="calendar" class="calendar"></div>
+
 </section>
 
+
+<!-- SIGNING TRACKER -->
 <section id="trackerSection">
+
     <h2>SIGNING TRACKER</h2>
 
     <table class="tracker">
+
         <thead>
             <tr>
                 <th>DAY</th>
@@ -368,10 +417,15 @@ button {
         </thead>
 
         <tbody id="trackerBody"></tbody>
+
     </table>
+
 </section>
 
+
+<!-- DAILY PAPER -->
 <section id="dailySection">
+
     <h2>DAILY PAPER</h2>
 
     <div class="dailyPaper">
@@ -379,93 +433,155 @@ button {
         <h3>DAILY SHOWER SCHEDULE PAPER</h3>
 
         <p><strong>Date:</strong></p>
-        <input type="date" id="paperDate">
+
+        <input
+            type="date"
+            id="paperDate"
+        >
 
         <p><strong>Who showered:</strong></p>
+
         <select id="paperPerson">
-            <option value="">Choose</option>
-            <option value="Angelo">Angelo</option>
-            <option value="Matthew">Matthew</option>
+
+            <option value="">
+                Choose
+            </option>
+
+            <option value="Angelo">
+                Angelo
+            </option>
+
+            <option value="Matthew">
+                Matthew
+            </option>
+
         </select>
+
 
         <p><strong>Who showered first:</strong></p>
+
         <select id="paperFirst">
-            <option value="">Choose</option>
-            <option value="Angelo">Angelo</option>
-            <option value="Matthew">Matthew</option>
+
+            <option value="">
+                Choose
+            </option>
+
+            <option value="Angelo">
+                Angelo
+            </option>
+
+            <option value="Matthew">
+                Matthew
+            </option>
+
         </select>
 
+
         <p><strong>Notes:</strong></p>
+
         <textarea id="paperNotes"></textarea>
 
+
         <div class="actionButtons">
-            <button onclick="saveDailyPaper()">SAVE</button>
-            <button onclick="newDailyPaper()">NEW COPY</button>
+
+            <button onclick="saveDailyPaper()">
+                SAVE
+            </button>
+
+            <button onclick="newDailyPaper()">
+                NEW COPY
+            </button>
+
         </div>
 
     </div>
+
 </section>
 
+
+<!-- SAVED DATA -->
 <section id="savedSection">
+
     <h2>SAVED DATA</h2>
 
     <div id="savedData"></div>
+
 </section>
 
+
+<!-- CONTRACT -->
 <section id="contractSection">
+
     <h2>RULES AND REGULATION (CONTRACT)</h2>
 
     <div class="contract">
 
-        <h3>SHOWER SCHEDULE AGREEMENT</h3>
-
-        <p><strong>Between: Matt and Angelo</strong></p>
-
-        <h3>PURPOSE</h3>
+        <h3>
+            SHOWER SCHEDULE AGREEMENT
+        </h3>
 
         <p>
-        This agreement is made to keep the shower schedule clear, fair, and consistent.
+            <strong>
+                Between: Matt and Angelo
+            </strong>
         </p>
 
-        <h3>AGREED RULE</h3>
+
+        <h3>
+            PURPOSE
+        </h3>
+
+        <p>
+            This agreement is made to keep the shower schedule clear, fair, and consistent.
+        </p>
+
+
+        <h3>
+            AGREED RULE
+        </h3>
 
         <p class="agreedRule">
-        NO MATTER WHAT DAY IT IS, WHAT TIME SOMEONE SHOWERS, OR WHO SHOWERS FIRST,
-        THE SHOWER SCHEDULE WILL STILL BE FOLLOWED.
+
+            NO MATTER WHAT DAY IT IS, WHAT TIME SOMEONE SHOWERS,
+            OR WHO SHOWERS FIRST, THE SHOWER SCHEDULE WILL STILL BE FOLLOWED.
+
         </p>
 
-        <h3>RULES</h3>
+
+        <h3>
+            RULES
+        </h3>
 
         <p>
-        I. Showering earlier or later does NOT change the schedule.
-        </p>
-
-        <p>
-        II. If someone showers before their scheduled day, it does NOT automatically give them the next shower day.
-        </p>
-
-        <p>
-        III. The next person follows the schedule exactly as written.
+            I. Showering earlier or later does NOT change the schedule.
         </p>
 
         <p>
-        IV. The schedule can only be changed if BOTH Matt and Angelo agree to the change.
+            II. If someone showers before their scheduled day, it does NOT automatically give them the next shower day.
         </p>
 
         <p>
-        V. Who ever showers first any day has to sign the paper witch is given at the end of each shower.
+            III. The next person follows the schedule exactly as written.
+        </p>
+
+        <p>
+            IV. The schedule can only be changed if BOTH Matt and Angelo agree to the change.
+        </p>
+
+        <p>
+            V. Who ever showers first any day has to sign the paper witch is given at the end of each shower.
         </p>
 
     </div>
+
 </section>
 
 </div>
 
+
 <script>
 
-/* ================================
-   PASSWORDS
-================================ */
+/* PASSWORDS */
 
 const MINE_PASSWORD = "1014131814";
 const VIEW_PASSWORD = "1814";
@@ -473,9 +589,7 @@ const VIEW_PASSWORD = "1814";
 let currentMode = "";
 
 
-/* ================================
-   LOGIN
-================================ */
+/* LOGIN */
 
 function login() {
 
@@ -485,11 +599,13 @@ function login() {
     const message =
         document.getElementById("loginMessage");
 
+
     if (password === MINE_PASSWORD) {
 
         currentMode = "edit";
 
         document.getElementById("loginScreen").style.display = "none";
+
         document.getElementById("app").style.display = "block";
 
         document.getElementById("modeDisplay").textContent =
@@ -498,7 +614,9 @@ function login() {
         enableEditing(true);
 
         buildCalendar();
+
         buildTracker();
+
         displaySavedData();
 
     }
@@ -508,6 +626,7 @@ function login() {
         currentMode = "view";
 
         document.getElementById("loginScreen").style.display = "none";
+
         document.getElementById("app").style.display = "block";
 
         document.getElementById("modeDisplay").textContent =
@@ -516,44 +635,48 @@ function login() {
         enableEditing(false);
 
         buildCalendar();
+
         buildTracker();
+
         displaySavedData();
 
     }
 
     else {
 
-        message.textContent = "Incorrect password.";
+        message.textContent =
+            "Incorrect password.";
 
     }
+
 }
 
 
-/* ================================
-   LOG OUT
-================================ */
+/* LOGOUT */
 
 function logout() {
 
     currentMode = "";
 
     document.getElementById("app").style.display = "none";
+
     document.getElementById("loginScreen").style.display = "flex";
 
     document.getElementById("passwordInput").value = "";
+
     document.getElementById("loginMessage").textContent = "";
 
 }
 
 
-/* ================================
-   SECTION NAVIGATION
-================================ */
+/* SECTION SWITCHING */
 
 function showSection(sectionId) {
 
     document.querySelectorAll("section").forEach(section => {
+
         section.classList.remove("active");
+
     });
 
     document.getElementById(sectionId).classList.add("active");
@@ -561,9 +684,7 @@ function showSection(sectionId) {
 }
 
 
-/* ================================
-   EDITING CONTROL
-================================ */
+/* EDITING */
 
 function enableEditing(canEdit) {
 
@@ -575,9 +696,8 @@ function enableEditing(canEdit) {
 
     });
 
-    document.querySelectorAll(
-        "#dailySection button"
-    ).forEach(button => {
+
+    document.querySelectorAll("#dailySection button").forEach(button => {
 
         button.disabled = !canEdit;
 
@@ -586,9 +706,7 @@ function enableEditing(canEdit) {
 }
 
 
-/* ================================
-   CALENDAR
-================================ */
+/* CALENDAR */
 
 const monthNames = [
     "January",
@@ -604,6 +722,7 @@ const monthNames = [
     "November",
     "December"
 ];
+
 
 const weekdayNames = [
     "Sun",
@@ -638,7 +757,9 @@ function saveCalendarData(data) {
 function buildCalendar() {
 
     const year =
-        parseInt(document.getElementById("yearSelect").value);
+        parseInt(
+            document.getElementById("yearSelect").value
+        );
 
     const calendar =
         document.getElementById("calendar");
@@ -647,12 +768,14 @@ function buildCalendar() {
 
     const data = getCalendarData();
 
+
     for (let month = 0; month < 12; month++) {
 
         const monthBox =
             document.createElement("div");
 
         monthBox.className = "month";
+
 
         const title =
             document.createElement("h3");
@@ -662,10 +785,12 @@ function buildCalendar() {
 
         monthBox.appendChild(title);
 
+
         const weekdays =
             document.createElement("div");
 
         weekdays.className = "weekdays";
+
 
         weekdayNames.forEach(day => {
 
@@ -678,12 +803,15 @@ function buildCalendar() {
 
         });
 
+
         monthBox.appendChild(weekdays);
+
 
         const days =
             document.createElement("div");
 
         days.className = "days";
+
 
         const firstDay =
             new Date(year, month, 1).getDay();
@@ -691,26 +819,31 @@ function buildCalendar() {
         const numberOfDays =
             new Date(year, month + 1, 0).getDate();
 
+
         for (let blank = 0; blank < firstDay; blank++) {
 
             const empty =
                 document.createElement("div");
 
-            empty.className = "day invalid";
+            empty.className =
+                "day invalid";
 
             days.appendChild(empty);
 
         }
+
 
         for (let day = 1; day <= numberOfDays; day++) {
 
             const dateKey =
                 `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 
+
             const dayBox =
                 document.createElement("div");
 
             dayBox.className = "day";
+
 
             const number =
                 document.createElement("span");
@@ -721,16 +854,21 @@ function buildCalendar() {
 
             dayBox.appendChild(number);
 
+
             const select =
                 document.createElement("select");
+
 
             const emptyOption =
                 document.createElement("option");
 
             emptyOption.value = "";
-            emptyOption.textContent = "Choose";
+
+            emptyOption.textContent =
+                "Choose";
 
             select.appendChild(emptyOption);
+
 
             ["Angelo", "Matthew"].forEach(person => {
 
@@ -738,39 +876,53 @@ function buildCalendar() {
                     document.createElement("option");
 
                 option.value = person;
+
                 option.textContent = person;
 
                 select.appendChild(option);
 
             });
 
+
             if (data[dateKey]) {
-                select.value = data[dateKey];
+
+                select.value =
+                    data[dateKey];
+
             }
 
-            select.addEventListener("change", function() {
 
-                if (currentMode !== "edit") return;
+            select.addEventListener(
+                "change",
+                function() {
 
-                const updated =
-                    getCalendarData();
+                    if (currentMode !== "edit") return;
 
-                updated[dateKey] =
-                    select.value;
+                    const updated =
+                        getCalendarData();
 
-                saveCalendarData(updated);
+                    updated[dateKey] =
+                        select.value;
 
-            });
+                    saveCalendarData(updated);
+
+                }
+            );
+
 
             if (currentMode !== "edit") {
+
                 select.disabled = true;
+
             }
+
 
             dayBox.appendChild(select);
 
             days.appendChild(dayBox);
 
         }
+
 
         monthBox.appendChild(days);
 
@@ -781,9 +933,7 @@ function buildCalendar() {
 }
 
 
-/* ================================
-   SIGNING TRACKER
-================================ */
+/* SIGNING TRACKER */
 
 function getTrackerData() {
 
@@ -814,10 +964,12 @@ function buildTracker() {
     const data =
         getTrackerData();
 
+
     for (let day = 1; day <= 31; day++) {
 
         const row =
             document.createElement("tr");
+
 
         const dayCell =
             document.createElement("td");
@@ -834,39 +986,52 @@ function buildTracker() {
         const personSelect =
             document.createElement("select");
 
-        personSelect.innerHTML =
-            `
+
+        personSelect.innerHTML = `
             <option value="">Choose</option>
             <option value="Angelo">Angelo</option>
             <option value="Matthew">Matthew</option>
-            `;
+        `;
+
 
         if (data[day] && data[day].person) {
+
             personSelect.value =
                 data[day].person;
+
         }
 
-        personSelect.addEventListener("change", function() {
 
-            if (currentMode !== "edit") return;
+        personSelect.addEventListener(
+            "change",
+            function() {
 
-            const updated =
-                getTrackerData();
+                if (currentMode !== "edit") return;
 
-            if (!updated[day]) {
-                updated[day] = {};
+                const updated =
+                    getTrackerData();
+
+                if (!updated[day]) {
+
+                    updated[day] = {};
+
+                }
+
+                updated[day].person =
+                    personSelect.value;
+
+                saveTrackerData(updated);
+
             }
+        );
 
-            updated[day].person =
-                personSelect.value;
-
-            saveTrackerData(updated);
-
-        });
 
         if (currentMode !== "edit") {
+
             personSelect.disabled = true;
+
         }
+
 
         personCell.appendChild(personSelect);
 
@@ -879,43 +1044,57 @@ function buildTracker() {
         const statusSelect =
             document.createElement("select");
 
-        statusSelect.innerHTML =
-            `
+
+        statusSelect.innerHTML = `
             <option value="">Choose</option>
             <option value="SIGNED">SIGNED</option>
             <option value="MISSING">MISSING</option>
-            `;
+        `;
+
 
         if (data[day] && data[day].status) {
+
             statusSelect.value =
                 data[day].status;
+
         }
 
-        statusSelect.addEventListener("change", function() {
 
-            if (currentMode !== "edit") return;
+        statusSelect.addEventListener(
+            "change",
+            function() {
 
-            const updated =
-                getTrackerData();
+                if (currentMode !== "edit") return;
 
-            if (!updated[day]) {
-                updated[day] = {};
+                const updated =
+                    getTrackerData();
+
+                if (!updated[day]) {
+
+                    updated[day] = {};
+
+                }
+
+                updated[day].status =
+                    statusSelect.value;
+
+                saveTrackerData(updated);
+
             }
+        );
 
-            updated[day].status =
-                statusSelect.value;
-
-            saveTrackerData(updated);
-
-        });
 
         if (currentMode !== "edit") {
+
             statusSelect.disabled = true;
+
         }
+
 
         statusCell.appendChild(statusSelect);
 
         row.appendChild(statusCell);
+
 
         body.appendChild(row);
 
@@ -924,15 +1103,12 @@ function buildTracker() {
 }
 
 
-/* ================================
-   DAILY PAPER
-================================ */
+/* DAILY PAPER */
 
 function saveDailyPaper() {
 
-    if (currentMode !== "edit") {
-        return;
-    }
+    if (currentMode !== "edit") return;
+
 
     const date =
         document.getElementById("paperDate").value;
@@ -946,145 +1122,33 @@ function saveDailyPaper() {
     const notes =
         document.getElementById("paperNotes").value;
 
+
     if (!date) {
+
         alert("Please choose a date.");
+
         return;
+
     }
+
 
     const saved =
         JSON.parse(
             localStorage.getItem("savedPapers") || "[]"
         );
+
 
     saved.push({
+
         date: date,
+
         person: person,
+
         first: first,
+
         notes: notes,
+
         savedAt: new Date().toLocaleString()
-    });
-
-    localStorage.setItem(
-        "savedPapers",
-        JSON.stringify(saved)
-    );
-
-    displaySavedData();
-
-    alert("Daily paper saved.");
-
-}
-
-
-/* ================================
-   NEW COPY
-================================ */
-
-function newDailyPaper() {
-
-    if (currentMode !== "edit") {
-        return;
-    }
-
-    document.getElementById("paperDate").value = "";
-    document.getElementById("paperPerson").value = "";
-    document.getElementById("paperFirst").value = "";
-    document.getElementById("paperNotes").value = "";
-
-}
-
-
-/* ================================
-   SAVED DATA
-================================ */
-
-function displaySavedData() {
-
-    const container =
-        document.getElementById("savedData");
-
-    const saved =
-        JSON.parse(
-            localStorage.getItem("savedPapers") || "[]"
-        );
-
-    container.innerHTML = "";
-
-    if (saved.length === 0) {
-
-        container.innerHTML =
-            "<p>No saved papers yet.</p>";
-
-        return;
 
     }
-
-    saved.forEach((paper, index) => {
-
-        const item =
-            document.createElement("div");
-
-        item.className = "savedItem";
-
-        item.innerHTML =
-            `
-            <strong>Date:</strong> ${paper.date}<br>
-            <strong>Who showered:</strong> ${paper.person || "Not entered"}<br>
-            <strong>Who showered first:</strong> ${paper.first || "Not entered"}<br>
-            <strong>Notes:</strong> ${paper.notes || "None"}<br>
-            <strong>Saved:</strong> ${paper.savedAt}
-            `;
-
-        if (currentMode === "edit") {
-
-            const deleteButton =
-                document.createElement("button");
-
-            deleteButton.textContent =
-                "DELETE";
-
-            deleteButton.onclick = function() {
-
-                if (confirm("Delete this saved paper?")) {
-
-                    saved.splice(index, 1);
-
-                    localStorage.setItem(
-                        "savedPapers",
-                        JSON.stringify(saved)
-                    );
-
-                    displaySavedData();
-
-                }
-
-            };
-
-            item.appendChild(deleteButton);
-
-        }
-
-        container.appendChild(item);
-
-    });
-
-}
-
-
-/* ================================
-   STARTUP
-================================ */
-
-document.getElementById("passwordInput")
-    .addEventListener("keydown", function(event) {
-
-        if (event.key === "Enter") {
-            login();
-        }
-
-    });
-
-</script>
-
-</body>
-</html>
+```
