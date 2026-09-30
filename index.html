@@ -578,6 +578,19 @@ select {
 
     <div id="trackerContainer"></div>
 
+    <!-- ONLY NEW BUTTON -->
+    <div class="controls">
+
+        <button
+            class="action-button blue-button"
+            onclick="saveCurrentTracker()">
+
+            SAVE TRACKER
+
+        </button>
+
+    </div>
+
 </section>
 
 
@@ -715,6 +728,14 @@ select {
     </h2>
 
     <div id="savedMonthsContainer"></div>
+
+    <!-- ONLY NEW SAVED DATA SECTION -->
+
+    <h2>
+        Saved Signing Trackers
+    </h2>
+
+    <div id="savedTrackersContainer"></div>
 
     <h2>
         Saved Daily Papers
@@ -879,6 +900,23 @@ let savedMonths =
     JSON.parse(
         localStorage.getItem("showerSavedMonths")
     ) || [];
+
+
+/* ============================================================
+   NEW: SAVED SIGNING TRACKERS
+   ============================================================ */
+
+let savedTrackers =
+    JSON.parse(
+        localStorage.getItem("showerSavedTrackers")
+    ) || [];
+
+
+/* Make sure it is an array */
+
+if (!Array.isArray(savedTrackers)) {
+    savedTrackers = [];
+}
 
 
 /* ============================================================
@@ -1958,6 +1996,393 @@ function saveTracker() {
 
 
 /* ============================================================
+   NEW: SAVE CURRENT SIGNING TRACKER
+   ============================================================ */
+
+function saveCurrentTracker() {
+
+    if (!editMode) {
+        return;
+    }
+
+
+    const year =
+        Number(
+            document.getElementById(
+                "trackerYear"
+            ).value
+        );
+
+
+    const month =
+        Number(
+            document.getElementById(
+                "trackerMonth"
+            ).value
+        );
+
+
+    const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    ];
+
+
+    const days = {};
+
+
+    for (
+        let day = 1;
+        day <= 31;
+        day++
+    ) {
+
+        const key =
+            trackerKey(
+                year,
+                month,
+                day
+            );
+
+
+        const stored =
+            trackerData[key] || {};
+
+
+        days[day] = {
+
+            person:
+                stored.person || "",
+
+            status:
+                stored.status || ""
+
+        };
+    }
+
+
+    const savedTracker = {
+
+        id:
+            Date.now(),
+
+        year:
+            year,
+
+        month:
+            month,
+
+        monthName:
+            monthNames[month],
+
+        savedAt:
+            new Date()
+                .toLocaleString(),
+
+        days:
+            days
+
+    };
+
+
+    savedTrackers.unshift(
+        savedTracker
+    );
+
+
+    localStorage.setItem(
+        "showerSavedTrackers",
+        JSON.stringify(
+            savedTrackers
+        )
+    );
+
+
+    renderSavedData();
+
+
+    alert(
+        monthNames[month] +
+        " " +
+        year +
+        " Signing Tracker was saved."
+    );
+}
+
+
+/* ============================================================
+   NEW: SAVED SIGNING TRACKERS
+   ============================================================ */
+
+function renderSavedTrackers() {
+
+    const container =
+        document.getElementById(
+            "savedTrackersContainer"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    container.innerHTML = "";
+
+
+    if (
+        !Array.isArray(savedTrackers) ||
+        savedTrackers.length === 0
+    ) {
+
+        container.innerHTML =
+            "<p>No saved signing trackers yet.</p>";
+
+        return;
+    }
+
+
+    savedTrackers.forEach(
+        function(savedTracker) {
+
+            const box =
+                document.createElement(
+                    "div"
+                );
+
+
+            box.className =
+                "saved-month";
+
+
+            const title =
+                document.createElement(
+                    "h3"
+                );
+
+
+            title.textContent =
+                savedTracker.monthName +
+                " " +
+                savedTracker.year +
+                " — Signing Tracker";
+
+
+            box.appendChild(
+                title
+            );
+
+
+            const savedTime =
+                document.createElement(
+                    "p"
+                );
+
+
+            savedTime.textContent =
+                "Saved: " +
+                savedTracker.savedAt;
+
+
+            box.appendChild(
+                savedTime
+            );
+
+
+            const table =
+                document.createElement(
+                    "table"
+                );
+
+
+            table.className =
+                "tracker-table";
+
+
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>DAY</th>
+                        <th>WHO</th>
+                        <th>SIGNING STATUS</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            `;
+
+
+            const tbody =
+                table.querySelector(
+                    "tbody"
+                );
+
+
+            for (
+                let day = 1;
+                day <= 31;
+                day++
+            ) {
+
+                const tr =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                const dayCell =
+                    document.createElement(
+                        "td"
+                    );
+
+
+                dayCell.textContent =
+                    day;
+
+
+                tr.appendChild(
+                    dayCell
+                );
+
+
+                const personCell =
+                    document.createElement(
+                        "td"
+                    );
+
+
+                personCell.textContent =
+                    savedTracker.days[day]?.person ||
+                    "Not assigned";
+
+
+                tr.appendChild(
+                    personCell
+                );
+
+
+                const statusCell =
+                    document.createElement(
+                        "td"
+                    );
+
+
+                statusCell.textContent =
+                    savedTracker.days[day]?.status ||
+                    "Not selected";
+
+
+                tr.appendChild(
+                    statusCell
+                );
+
+
+                tbody.appendChild(
+                    tr
+                );
+            }
+
+
+            box.appendChild(
+                table
+            );
+
+
+            if (editMode) {
+
+                const deleteButton =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                deleteButton.className =
+                    "delete-button";
+
+
+                deleteButton.textContent =
+                    "DELETE SAVED TRACKER";
+
+
+                deleteButton.onclick =
+                    function() {
+
+                        deleteSavedTracker(
+                            savedTracker.id
+                        );
+
+                    };
+
+
+                box.appendChild(
+                    deleteButton
+                );
+            }
+
+
+            container.appendChild(
+                box
+            );
+
+        }
+    );
+}
+
+
+/* ============================================================
+   NEW: DELETE SAVED SIGNING TRACKER
+   ============================================================ */
+
+function deleteSavedTracker(id) {
+
+    if (!editMode) {
+        return;
+    }
+
+
+    const answer =
+        confirm(
+            "Delete this saved signing tracker?"
+        );
+
+
+    if (!answer) {
+        return;
+    }
+
+
+    savedTrackers =
+        savedTrackers.filter(
+            function(item) {
+
+                return item.id !== id;
+
+            }
+        );
+
+
+    localStorage.setItem(
+        "showerSavedTrackers",
+        JSON.stringify(
+            savedTrackers
+        )
+    );
+
+
+    renderSavedTrackers();
+}
+
+
+/* ============================================================
    DAILY PAPER
    ============================================================ */
 
@@ -2099,6 +2524,13 @@ function newDailyPaper() {
 function renderSavedData() {
 
     renderSavedMonths();
+
+    /*
+       NEW
+       Saved Signing Trackers
+    */
+
+    renderSavedTrackers();
 
     renderSavedPapers();
 }
