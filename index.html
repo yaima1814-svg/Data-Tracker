@@ -6,322 +6,316 @@
 <title>Matt + Angelo Shower Schedule</title>
 
 <style>
-*{
-    box-sizing:border-box;
+* {
+    box-sizing: border-box;
 }
 
-body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#fff;
-    color:#000;
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: white;
+    color: black;
 }
 
 /* LOGIN */
 
-#loginScreen{
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:#fff;
+#loginScreen {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.loginBox{
-    width:90%;
-    max-width:420px;
-    border:2px solid #000;
-    padding:35px;
-    text-align:center;
+.loginBox {
+    width: 90%;
+    max-width: 420px;
+    border: 2px solid black;
+    padding: 35px;
+    text-align: center;
 }
 
-.loginBox h1{
-    margin-top:0;
+.loginBox h1 {
+    margin-top: 0;
 }
 
-.loginBox input{
-    width:100%;
-    padding:13px;
-    margin:15px 0;
-    border:1px solid #000;
-    font-size:16px;
+.loginBox input {
+    width: 100%;
+    padding: 13px;
+    margin: 15px 0;
+    border: 1px solid black;
+    font-size: 16px;
 }
 
-.loginBox button{
-    width:100%;
-    padding:13px;
-    background:#000;
-    color:#fff;
-    border:none;
-    font-size:16px;
-    cursor:pointer;
+.loginBox button {
+    width: 100%;
+    padding: 13px;
+    background: black;
+    color: white;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
 }
 
-#loginMessage{
-    margin-top:15px;
-    font-weight:bold;
+.loginBox button:hover {
+    opacity: 0.8;
+}
+
+#loginMessage {
+    margin-top: 15px;
+    font-weight: bold;
 }
 
 /* APP */
 
-#app{
-    display:none;
+#app {
+    display: none;
 }
 
-header{
-    border-bottom:2px solid #000;
-    padding:18px;
-    text-align:center;
+header {
+    border-bottom: 2px solid black;
+    padding: 18px;
+    text-align: center;
 }
 
-header h1{
-    margin:0;
+header h1 {
+    margin: 0;
 }
 
-#modeDisplay{
-    margin-top:8px;
-    font-weight:bold;
+#modeDisplay {
+    margin-top: 8px;
+    font-weight: bold;
 }
 
-#connectionStatus{
-    margin-top:5px;
-    font-size:13px;
+#connectionStatus {
+    margin-top: 6px;
+    font-size: 13px;
 }
 
 /* NAVIGATION */
 
-nav{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:8px;
-    padding:15px;
-    border-bottom:1px solid #000;
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    padding: 15px;
+    border-bottom: 1px solid black;
 }
 
-nav button{
-    border:none;
-    background:#fff;
-    color:blue;
-    font-weight:bold;
-    font-size:15px;
-    cursor:pointer;
-    padding:8px 12px;
+nav button {
+    border: none;
+    background: white;
+    color: blue;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    padding: 8px 12px;
 }
 
-nav button:hover{
-    text-decoration:underline;
+nav button:hover {
+    text-decoration: underline;
 }
 
 /* SECTIONS */
 
-section{
-    display:none;
-    padding:25px;
-    max-width:1400px;
-    margin:auto;
+section {
+    display: none;
+    padding: 25px;
+    max-width: 1400px;
+    margin: auto;
 }
 
-section.active{
-    display:block;
+section.active {
+    display: block;
 }
 
-h2{
-    border-bottom:2px solid #000;
-    padding-bottom:8px;
-}
-
-/* CONTROLS */
-
-.controls{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    margin-bottom:20px;
-}
-
-select,
-button{
-    padding:9px;
-    font-size:14px;
+h2 {
+    border-bottom: 2px solid black;
+    padding-bottom: 8px;
 }
 
 /* CALENDAR */
 
-.calendar{
-    display:grid;
-    grid-template-columns:repeat(3,minmax(310px,1fr));
-    gap:15px;
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
-.month{
-    border:1px solid #000;
-    padding:10px;
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(310px, 1fr));
+    gap: 15px;
 }
 
-.month h3{
-    text-align:center;
-    font-weight:bold;
-    margin-top:0;
+.month {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.month h3 {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 0;
 }
 
 .weekdays,
-.days{
-    display:grid;
-    grid-template-columns:repeat(7,1fr);
-    gap:3px;
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
 }
 
-.weekdays div{
-    font-weight:bold;
-    text-align:center;
-    font-size:12px;
+.weekdays div {
+    font-weight: bold;
+    text-align: center;
+    font-size: 12px;
 }
 
-.day{
-    min-height:75px;
-    min-width:43px;
-    border:1px solid #aaa;
-    padding:4px;
-    font-size:11px;
+.day {
+    min-height: 75px;
+    min-width: 43px;
+    border: 1px solid #aaa;
+    padding: 4px;
+    font-size: 11px;
 }
 
-.day.invalid{
-    background:#eee;
-    color:#aaa;
+.day.invalid {
+    background: #eee;
+    color: #aaa;
 }
 
-.dayNumber{
-    font-weight:bold;
-    display:block;
-    margin-bottom:4px;
+.dayNumber {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 4px;
 }
 
-.day select{
-    width:82px;
-    max-width:100%;
-    padding:4px 2px;
-    font-size:10px;
+.day select {
+    width: 82px;
+    max-width: 100%;
+    padding: 4px 2px;
+    font-size: 10px;
 }
 
 /* TRACKER */
 
-.tracker{
-    width:100%;
-    border-collapse:collapse;
+.tracker {
+    width: 100%;
+    border-collapse: collapse;
 }
 
 .tracker th,
-.tracker td{
-    border:1px solid #000;
-    padding:8px;
-    text-align:center;
+.tracker td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
 }
 
-.tracker th{
-    font-weight:bold;
+.tracker th {
+    font-weight: bold;
 }
 
-.tracker select{
-    width:100%;
+.tracker select {
+    width: 100%;
 }
 
 /* DAILY PAPER */
 
-.dailyPaper{
-    border:2px solid #000;
-    padding:25px;
-    max-width:900px;
-    margin:auto;
+.dailyPaper {
+    border: 2px solid black;
+    padding: 25px;
+    max-width: 900px;
+    margin: auto;
 }
 
-.dailyPaper textarea{
-    width:100%;
-    min-height:120px;
-    padding:10px;
-    resize:vertical;
+.dailyPaper textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 10px;
+    resize: vertical;
 }
 
-.actionButtons{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-top:20px;
+.actionButtons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
 }
 
-.actionButtons button{
-    background:#000;
-    color:#fff;
-    border:none;
-    cursor:pointer;
+.actionButtons button {
+    background: black;
+    color: white;
+    border: none;
+    cursor: pointer;
 }
 
 /* SAVED DATA */
 
-.savedItem{
-    border:1px solid #000;
-    padding:15px;
-    margin-bottom:10px;
+.savedItem {
+    border: 1px solid black;
+    padding: 15px;
+    margin-bottom: 10px;
 }
 
-.savedItem button{
-    margin-top:8px;
+.savedItem button {
+    margin-top: 8px;
 }
 
 /* CONTRACT */
 
-.contract{
-    border:2px solid #000;
-    padding:25px;
-    line-height:1.6;
+.contract {
+    border: 2px solid black;
+    padding: 25px;
+    line-height: 1.6;
 }
 
-.contract h3{
-    text-align:center;
+.contract h3 {
+    text-align: center;
 }
 
-.agreedRule{
-    font-weight:bold;
-    border:2px solid #000;
-    padding:15px;
+.agreedRule {
+    font-weight: bold;
+    border: 2px solid black;
+    padding: 15px;
 }
 
 /* LOGOUT */
 
-#logoutButton{
-    position:fixed;
-    right:15px;
-    top:15px;
-    background:#fff;
-    border:1px solid #000;
-    cursor:pointer;
+#logoutButton {
+    position: fixed;
+    right: 15px;
+    top: 15px;
+    background: white;
+    border: 1px solid black;
+    cursor: pointer;
 }
 
 /* MOBILE */
 
-@media(max-width:1100px){
-    .calendar{
-        grid-template-columns:repeat(2,minmax(300px,1fr));
+@media (max-width: 1100px) {
+    .calendar {
+        grid-template-columns: repeat(2, minmax(300px, 1fr));
     }
 }
 
-@media(max-width:650px){
-    .calendar{
-        grid-template-columns:1fr;
+@media (max-width: 650px) {
+    .calendar {
+        grid-template-columns: 1fr;
     }
 
-    section{
-        padding:15px;
+    section {
+        padding: 15px;
     }
 
-    #logoutButton{
-        position:static;
-        display:block;
-        margin:10px auto;
+    #logoutButton {
+        position: static;
+        display: block;
+        margin: 10px auto;
     }
 
-    .day select{
-        width:82px;
+    .day select {
+        width: 82px;
     }
 }
 </style>
@@ -329,7 +323,7 @@ button{
 
 <body>
 
-<!-- LOGIN -->
+<!-- LOGIN SCREEN -->
 
 <div id="loginScreen">
 
@@ -348,7 +342,7 @@ button{
             autocomplete="off"
         >
 
-        <button id="loginButton" type="button">
+        <button type="button" id="loginButton">
             ENTER
         </button>
 
@@ -370,13 +364,13 @@ button{
     <div id="modeDisplay"></div>
 
     <div id="connectionStatus">
-        Connecting to shared database...
+        Not connected yet
     </div>
 
 </header>
 
 
-<button id="logoutButton" type="button">
+<button type="button" id="logoutButton">
     LOG OUT
 </button>
 
@@ -515,11 +509,11 @@ button{
 
         <div class="actionButtons">
 
-            <button id="savePaperButton" type="button">
+            <button type="button" id="savePaperButton">
                 SAVE
             </button>
 
-            <button id="newPaperButton" type="button">
+            <button type="button" id="newPaperButton">
                 NEW COPY
             </button>
 
@@ -555,7 +549,6 @@ button{
             <strong>Between: Matt and Angelo</strong>
         </p>
 
-
         <h3>PURPOSE</h3>
 
         <p>
@@ -563,14 +556,12 @@ button{
             fair, and consistent.
         </p>
 
-
         <h3>AGREED RULE</h3>
 
         <p class="agreedRule">
             NO MATTER WHAT DAY IT IS, WHAT TIME SOMEONE SHOWERS,
             OR WHO SHOWERS FIRST, THE SHOWER SCHEDULE WILL STILL BE FOLLOWED.
         </p>
-
 
         <h3>RULES</h3>
 
@@ -604,109 +595,32 @@ button{
 </div>
 
 
-<!-- FIREBASE + APP CODE -->
+<!-- =====================================================
+     LOGIN SYSTEM
+     THIS IS SEPARATE SO THE PASSWORD BUTTON KEEPS WORKING
+     ===================================================== -->
 
-<script type="module">
+<script>
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+var MINE_PASSWORD = "1014131814";
+var VIEW_PASSWORD = "1814";
 
-import {
-    getDatabase,
-    ref,
-    onValue,
-    set,
-    push,
-    remove
-}
-from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
+var currentMode = "";
 
-import {
-    getAuth,
-    signInAnonymously
-}
-from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+document
+.getElementById("loginButton")
+.addEventListener("click", function () {
+
+    login();
+
+});
 
 
-/* =========================================================
-   FIREBASE CONFIGURATION
-   REPLACE THESE VALUES WITH YOUR FIREBASE CONFIGURATION
-   ========================================================= */
+document
+.getElementById("passwordInput")
+.addEventListener("keydown", function (event) {
 
-const firebaseConfig = {
-
-    apiKey: "PASTE_YOUR_API_KEY_HERE",
-
-    authDomain: "PASTE_YOUR_PROJECT.firebaseapp.com",
-
-    databaseURL: "PASTE_YOUR_DATABASE_URL_HERE",
-
-    projectId: "PASTE_YOUR_PROJECT_ID_HERE",
-
-    storageBucket: "PASTE_YOUR_STORAGE_BUCKET_HERE",
-
-    messagingSenderId: "PASTE_YOUR_MESSAGING_SENDER_ID_HERE",
-
-    appId: "PASTE_YOUR_APP_ID_HERE"
-
-};
-
-
-/* =========================================================
-   FIREBASE STARTUP
-   ========================================================= */
-
-const firebaseApp = initializeApp(firebaseConfig);
-
-const database = getDatabase(firebaseApp);
-
-const auth = getAuth(firebaseApp);
-
-
-/* =========================================================
-   PASSWORDS
-   ========================================================= */
-
-const MINE_PASSWORD = "1014131814";
-
-const VIEW_PASSWORD = "1814";
-
-let currentMode = "";
-
-let databaseData = {
-    calendarData:{},
-    trackerData:{},
-    savedPapers:[]
-};
-
-
-/* =========================================================
-   DATABASE REFERENCE
-   ========================================================= */
-
-const mainDatabaseRef = ref(database,"showerSchedule");
-
-
-/* =========================================================
-   LOGIN
-   ========================================================= */
-
-const loginButton =
-    document.getElementById("loginButton");
-
-const passwordInput =
-    document.getElementById("passwordInput");
-
-const loginMessage =
-    document.getElementById("loginMessage");
-
-
-loginButton.addEventListener("click",login);
-
-
-passwordInput.addEventListener("keydown",function(event){
-
-    if(event.key === "Enter"){
+    if (event.key === "Enter") {
 
         login();
 
@@ -715,52 +629,44 @@ passwordInput.addEventListener("keydown",function(event){
 });
 
 
-async function login(){
+function login() {
 
-    const password =
-        passwordInput.value.trim();
+    var password =
+        document.getElementById("passwordInput").value.trim();
 
-
-    loginMessage.textContent = "";
-
-
-    if(password !== MINE_PASSWORD &&
-       password !== VIEW_PASSWORD){
-
-        loginMessage.textContent =
-            "Incorrect password.";
-
-        return;
-
-    }
+    var message =
+        document.getElementById("loginMessage");
 
 
-    try{
-
-        await signInAnonymously(auth);
-
-    }catch(error){
-
-        console.error(error);
-
-        loginMessage.textContent =
-            "Could not connect to the shared database.";
-
-        return;
-
-    }
-
-
-    if(password === MINE_PASSWORD){
+    if (password === MINE_PASSWORD) {
 
         currentMode = "edit";
 
-    }else{
+        openApp("EDIT MODE");
 
-        currentMode = "view";
+        return;
 
     }
 
+
+    if (password === VIEW_PASSWORD) {
+
+        currentMode = "view";
+
+        openApp("VIEW ONLY");
+
+        return;
+
+    }
+
+
+    message.textContent =
+        "Incorrect password.";
+
+}
+
+
+function openApp(mode) {
 
     document.getElementById("loginScreen").style.display =
         "none";
@@ -768,19 +674,11 @@ async function login(){
     document.getElementById("app").style.display =
         "block";
 
+    document.getElementById("modeDisplay").textContent =
+        mode;
 
-    if(currentMode === "edit"){
-
-        document.getElementById("modeDisplay").textContent =
-            "EDIT MODE";
-
-    }else{
-
-        document.getElementById("modeDisplay").textContent =
-            "VIEW ONLY";
-
-    }
-
+    document.getElementById("loginMessage").textContent =
+        "";
 
     enableEditing(currentMode === "edit");
 
@@ -793,16 +691,7 @@ async function login(){
 }
 
 
-/* =========================================================
-   LOG OUT
-   ========================================================= */
-
-document
-.getElementById("logoutButton")
-.addEventListener("click",logout);
-
-
-function logout(){
+function logout() {
 
     currentMode = "";
 
@@ -812,25 +701,30 @@ function logout(){
     document.getElementById("loginScreen").style.display =
         "flex";
 
-    passwordInput.value = "";
+    document.getElementById("passwordInput").value =
+        "";
 
-    loginMessage.textContent = "";
+    document.getElementById("loginMessage").textContent =
+        "";
 
 }
 
 
-/* =========================================================
-   NAVIGATION
-   ========================================================= */
+document
+.getElementById("logoutButton")
+.addEventListener("click", logout);
+
+
+/* NAVIGATION */
 
 document
 .querySelectorAll("nav button")
-.forEach(function(button){
+.forEach(function(button) {
 
-    button.addEventListener("click",function(){
+    button.addEventListener("click", function() {
 
         showSection(
-            button.dataset.section
+            button.getAttribute("data-section")
         );
 
     });
@@ -838,11 +732,11 @@ document
 });
 
 
-function showSection(sectionId){
+function showSection(sectionId) {
 
     document
     .querySelectorAll("section")
-    .forEach(function(section){
+    .forEach(function(section) {
 
         section.classList.remove("active");
 
@@ -856,11 +750,9 @@ function showSection(sectionId){
 }
 
 
-/* =========================================================
-   ENABLE / DISABLE EDITING
-   ========================================================= */
+/* EDITING */
 
-function enableEditing(canEdit){
+function enableEditing(canEdit) {
 
     document
     .querySelectorAll(
@@ -870,7 +762,7 @@ function enableEditing(canEdit){
         "#dailySection textarea," +
         "#dailySection select"
     )
-    .forEach(function(element){
+    .forEach(function(element) {
 
         element.disabled = !canEdit;
 
@@ -879,7 +771,7 @@ function enableEditing(canEdit){
 
     document
     .querySelectorAll("#dailySection button")
-    .forEach(function(button){
+    .forEach(function(button) {
 
         button.disabled = !canEdit;
 
@@ -888,72 +780,9 @@ function enableEditing(canEdit){
 }
 
 
-/* =========================================================
-   FIREBASE REALTIME LISTENER
-   ========================================================= */
+/* CALENDAR */
 
-onValue(mainDatabaseRef,function(snapshot){
-
-    const data = snapshot.val();
-
-
-    if(data){
-
-        databaseData = {
-
-            calendarData:data.calendarData || {},
-
-            trackerData:data.trackerData || {},
-
-            savedPapers:data.savedPapers || []
-
-        };
-
-    }else{
-
-        databaseData = {
-
-            calendarData:{},
-
-            trackerData:{},
-
-            savedPapers:[]
-
-        };
-
-    }
-
-
-    document.getElementById("connectionStatus").textContent =
-        "CONNECTED — Shared data is up to date.";
-
-
-    if(document.getElementById("app").style.display !== "none"){
-
-        buildCalendar();
-
-        buildTracker();
-
-        displaySavedData();
-
-    }
-
-},function(error){
-
-    console.error(error);
-
-    document.getElementById("connectionStatus").textContent =
-        "DATABASE CONNECTION ERROR";
-
-});
-
-
-/* =========================================================
-   CALENDAR
-   ========================================================= */
-
-const monthNames = [
-
+var monthNames = [
     "January",
     "February",
     "March",
@@ -966,12 +795,10 @@ const monthNames = [
     "October",
     "November",
     "December"
-
 ];
 
 
-const weekdayNames = [
-
+var weekdayNames = [
     "Sun",
     "Mon",
     "Tue",
@@ -979,47 +806,42 @@ const weekdayNames = [
     "Thu",
     "Fri",
     "Sat"
-
 ];
 
 
-const yearSelect =
-    document.getElementById("yearSelect");
+var calendarData = {};
 
 
-yearSelect.addEventListener(
-    "change",
-    buildCalendar
-);
+document
+.getElementById("yearSelect")
+.addEventListener("change", buildCalendar);
 
 
-function buildCalendar(){
+function buildCalendar() {
 
-    const year =
-        parseInt(yearSelect.value);
+    var year =
+        parseInt(
+            document.getElementById("yearSelect").value
+        );
 
 
-    const calendar =
+    var calendar =
         document.getElementById("calendar");
 
 
     calendar.innerHTML = "";
 
 
-    const data =
-        databaseData.calendarData || {};
+    for (var month = 0; month < 12; month++) {
 
-
-    for(let month = 0; month < 12; month++){
-
-        const monthBox =
+        var monthBox =
             document.createElement("div");
 
         monthBox.className =
             "month";
 
 
-        const title =
+        var title =
             document.createElement("h3");
 
         title.textContent =
@@ -1028,19 +850,20 @@ function buildCalendar(){
         monthBox.appendChild(title);
 
 
-        const weekdays =
+        var weekdays =
             document.createElement("div");
 
         weekdays.className =
             "weekdays";
 
 
-        weekdayNames.forEach(function(day){
+        weekdayNames.forEach(function(day) {
 
-            const cell =
+            var cell =
                 document.createElement("div");
 
-            cell.textContent = day;
+            cell.textContent =
+                day;
 
             weekdays.appendChild(cell);
 
@@ -1050,24 +873,28 @@ function buildCalendar(){
         monthBox.appendChild(weekdays);
 
 
-        const days =
+        var days =
             document.createElement("div");
 
         days.className =
             "days";
 
 
-        const firstDay =
-            new Date(year,month,1).getDay();
+        var firstDay =
+            new Date(year, month, 1).getDay();
 
 
-        const numberOfDays =
-            new Date(year,month + 1,0).getDate();
+        var numberOfDays =
+            new Date(year, month + 1, 0).getDate();
 
 
-        for(let blank = 0; blank < firstDay; blank++){
+        for (
+            var blank = 0;
+            blank < firstDay;
+            blank++
+        ) {
 
-            const empty =
+            var empty =
                 document.createElement("div");
 
             empty.className =
@@ -1078,24 +905,28 @@ function buildCalendar(){
         }
 
 
-        for(let day = 1; day <= numberOfDays; day++){
+        for (
+            var day = 1;
+            day <= numberOfDays;
+            day++
+        ) {
 
-            const dateKey =
+            var dateKey =
                 year +
                 "-" +
-                String(month + 1).padStart(2,"0") +
+                String(month + 1).padStart(2, "0") +
                 "-" +
-                String(day).padStart(2,"0");
+                String(day).padStart(2, "0");
 
 
-            const dayBox =
+            var dayBox =
                 document.createElement("div");
 
             dayBox.className =
                 "day";
 
 
-            const number =
+            var number =
                 document.createElement("span");
 
             number.className =
@@ -1108,42 +939,22 @@ function buildCalendar(){
             dayBox.appendChild(number);
 
 
-            const select =
+            var select =
                 document.createElement("select");
 
 
-            const emptyOption =
-                document.createElement("option");
-
-            emptyOption.value = "";
-
-            emptyOption.textContent =
-                "Choose";
-
-
-            select.appendChild(emptyOption);
+            select.innerHTML =
+                `
+                <option value="">Choose</option>
+                <option value="Angelo">Angelo</option>
+                <option value="Matthew">Matthew</option>
+                `;
 
 
-            ["Angelo","Matthew"].forEach(function(person){
-
-                const option =
-                    document.createElement("option");
-
-                option.value =
-                    person;
-
-                option.textContent =
-                    person;
-
-                select.appendChild(option);
-
-            });
-
-
-            if(data[dateKey]){
+            if (calendarData[dateKey]) {
 
                 select.value =
-                    data[dateKey];
+                    calendarData[dateKey];
 
             }
 
@@ -1154,36 +965,38 @@ function buildCalendar(){
 
             select.addEventListener(
                 "change",
-                async function(){
+                function() {
 
-                    if(currentMode !== "edit") return;
-
-
-                    const updated =
-                        {...databaseData.calendarData};
+                    if (currentMode !== "edit") {
+                        return;
+                    }
 
 
-                    if(select.value === ""){
+                    var key =
+                        this.getAttribute("data-date");
 
-                        delete updated[dateKey];
 
-                    }else{
+                    if (this.value === "") {
 
-                        updated[dateKey] =
-                            select.value;
+                        delete calendarData[key];
+
+                    } else {
+
+                        calendarData[key] =
+                            this.value;
 
                     }
 
 
-                    await set(
-                        ref(
-                            database,
-                            "showerSchedule/calendarData"
-                        ),
-                        updated
-                    );
+                    saveLocalBackup();
 
                 }
+            );
+
+
+            select.setAttribute(
+                "data-date",
+                dateKey
             );
 
 
@@ -1203,30 +1016,27 @@ function buildCalendar(){
 }
 
 
-/* =========================================================
-   SIGNING TRACKER
-   ========================================================= */
+/* TRACKER */
 
-function buildTracker(){
+var trackerData = {};
 
-    const body =
+
+function buildTracker() {
+
+    var body =
         document.getElementById("trackerBody");
 
 
     body.innerHTML = "";
 
 
-    const data =
-        databaseData.trackerData || {};
+    for (var day = 1; day <= 31; day++) {
 
-
-    for(let day = 1; day <= 31; day++){
-
-        const row =
+        var row =
             document.createElement("tr");
 
 
-        const dayCell =
+        var dayCell =
             document.createElement("td");
 
         dayCell.textContent =
@@ -1235,13 +1045,11 @@ function buildTracker(){
         row.appendChild(dayCell);
 
 
-        /* WHO */
-
-        const personCell =
+        var personCell =
             document.createElement("td");
 
 
-        const personSelect =
+        var personSelect =
             document.createElement("select");
 
 
@@ -1253,13 +1061,13 @@ function buildTracker(){
             `;
 
 
-        if(
-            data[day] &&
-            data[day].person
-        ){
+        if (
+            trackerData[day] &&
+            trackerData[day].person
+        ) {
 
             personSelect.value =
-                data[day].person;
+                trackerData[day].person;
 
         }
 
@@ -1270,43 +1078,37 @@ function buildTracker(){
 
         personSelect.addEventListener(
             "change",
-            async function(){
+            function() {
 
-                if(currentMode !== "edit") return;
-
-
-                const updated =
-                    {...databaseData.trackerData};
+                if (currentMode !== "edit") {
+                    return;
+                }
 
 
-                if(!updated[day]){
+                var d =
+                    this.getAttribute("data-day");
 
-                    updated[day] = {};
+
+                if (!trackerData[d]) {
+
+                    trackerData[d] = {};
 
                 }
 
 
-                if(personSelect.value === ""){
-
-                    delete updated[day].person;
-
-                }else{
-
-                    updated[day].person =
-                        personSelect.value;
-
-                }
+                trackerData[d].person =
+                    this.value;
 
 
-                await set(
-                    ref(
-                        database,
-                        "showerSchedule/trackerData"
-                    ),
-                    updated
-                );
+                saveLocalBackup();
 
             }
+        );
+
+
+        personSelect.setAttribute(
+            "data-day",
+            day
         );
 
 
@@ -1315,13 +1117,11 @@ function buildTracker(){
         row.appendChild(personCell);
 
 
-        /* STATUS */
-
-        const statusCell =
+        var statusCell =
             document.createElement("td");
 
 
-        const statusSelect =
+        var statusSelect =
             document.createElement("select");
 
 
@@ -1333,13 +1133,13 @@ function buildTracker(){
             `;
 
 
-        if(
-            data[day] &&
-            data[day].status
-        ){
+        if (
+            trackerData[day] &&
+            trackerData[day].status
+        ) {
 
             statusSelect.value =
-                data[day].status;
+                trackerData[day].status;
 
         }
 
@@ -1350,43 +1150,37 @@ function buildTracker(){
 
         statusSelect.addEventListener(
             "change",
-            async function(){
+            function() {
 
-                if(currentMode !== "edit") return;
-
-
-                const updated =
-                    {...databaseData.trackerData};
+                if (currentMode !== "edit") {
+                    return;
+                }
 
 
-                if(!updated[day]){
+                var d =
+                    this.getAttribute("data-day");
 
-                    updated[day] = {};
+
+                if (!trackerData[d]) {
+
+                    trackerData[d] = {};
 
                 }
 
 
-                if(statusSelect.value === ""){
-
-                    delete updated[day].status;
-
-                }else{
-
-                    updated[day].status =
-                        statusSelect.value;
-
-                }
+                trackerData[d].status =
+                    this.value;
 
 
-                await set(
-                    ref(
-                        database,
-                        "showerSchedule/trackerData"
-                    ),
-                    updated
-                );
+                saveLocalBackup();
 
             }
+        );
+
+
+        statusSelect.setAttribute(
+            "data-day",
+            day
         );
 
 
@@ -1402,48 +1196,45 @@ function buildTracker(){
 }
 
 
-/* =========================================================
-   DAILY PAPER
-   ========================================================= */
+/* DAILY PAPER */
+
+var savedPapers = [];
+
 
 document
 .getElementById("savePaperButton")
-.addEventListener(
-    "click",
-    saveDailyPaper
-);
+.addEventListener("click", saveDailyPaper);
 
 
 document
 .getElementById("newPaperButton")
-.addEventListener(
-    "click",
-    newDailyPaper
-);
+.addEventListener("click", newDailyPaper);
 
 
-async function saveDailyPaper(){
+function saveDailyPaper() {
 
-    if(currentMode !== "edit") return;
+    if (currentMode !== "edit") {
+        return;
+    }
 
 
-    const date =
+    var date =
         document.getElementById("paperDate").value;
 
 
-    const person =
+    var person =
         document.getElementById("paperPerson").value;
 
 
-    const first =
+    var first =
         document.getElementById("paperFirst").value;
 
 
-    const notes =
+    var notes =
         document.getElementById("paperNotes").value;
 
 
-    if(!date){
+    if (!date) {
 
         alert("Please choose a date.");
 
@@ -1452,44 +1243,35 @@ async function saveDailyPaper(){
     }
 
 
-    const savedPapers =
-        Array.isArray(databaseData.savedPapers)
-        ? [...databaseData.savedPapers]
-        : [];
-
-
     savedPapers.push({
 
-        date:date,
+        date: date,
 
-        person:person,
+        person: person,
 
-        first:first,
+        first: first,
 
-        notes:notes,
+        notes: notes,
 
-        savedAt:new Date().toLocaleString()
+        savedAt: new Date().toLocaleString()
 
     });
 
 
-    await set(
-        ref(
-            database,
-            "showerSchedule/savedPapers"
-        ),
-        savedPapers
-    );
+    saveLocalBackup();
 
+    displaySavedData();
 
     alert("Daily paper saved.");
 
 }
 
 
-function newDailyPaper(){
+function newDailyPaper() {
 
-    if(currentMode !== "edit") return;
+    if (currentMode !== "edit") {
+        return;
+    }
 
 
     document.getElementById("paperDate").value =
@@ -1507,26 +1289,18 @@ function newDailyPaper(){
 }
 
 
-/* =========================================================
-   SAVED DATA
-   ========================================================= */
+/* SAVED DATA */
 
-function displaySavedData(){
+function displaySavedData() {
 
-    const container =
+    var container =
         document.getElementById("savedData");
-
-
-    const saved =
-        Array.isArray(databaseData.savedPapers)
-        ? databaseData.savedPapers
-        : [];
 
 
     container.innerHTML = "";
 
 
-    if(saved.length === 0){
+    if (savedPapers.length === 0) {
 
         container.innerHTML =
             "<p>No saved papers yet.</p>";
@@ -1536,9 +1310,9 @@ function displaySavedData(){
     }
 
 
-    saved.forEach(function(paper,index){
+    savedPapers.forEach(function(paper, index) {
 
-        const item =
+        var item =
             document.createElement("div");
 
 
@@ -1546,52 +1320,32 @@ function displaySavedData(){
             "savedItem";
 
 
-        const dateText =
-            paper.date || "Not entered";
-
-
-        const personText =
-            paper.person || "Not entered";
-
-
-        const firstText =
-            paper.first || "Not entered";
-
-
-        const notesText =
-            paper.notes || "None";
-
-
-        const savedText =
-            paper.savedAt || "Unknown";
-
-
         item.innerHTML =
             `
             <strong>Date:</strong>
-            ${escapeHTML(dateText)}
+            ${escapeHTML(paper.date)}
             <br>
 
             <strong>Who showered:</strong>
-            ${escapeHTML(personText)}
+            ${escapeHTML(paper.person || "Not entered")}
             <br>
 
             <strong>Who showered first:</strong>
-            ${escapeHTML(firstText)}
+            ${escapeHTML(paper.first || "Not entered")}
             <br>
 
             <strong>Notes:</strong>
-            ${escapeHTML(notesText)}
+            ${escapeHTML(paper.notes || "None")}
             <br>
 
             <strong>Saved:</strong>
-            ${escapeHTML(savedText)}
+            ${escapeHTML(paper.savedAt || "Unknown")}
             `;
 
 
-        if(currentMode === "edit"){
+        if (currentMode === "edit") {
 
-            const deleteButton =
+            var deleteButton =
                 document.createElement("button");
 
 
@@ -1601,33 +1355,22 @@ function displaySavedData(){
 
             deleteButton.addEventListener(
                 "click",
-                async function(){
+                function() {
 
-                    if(
+                    if (
                         !confirm(
                             "Delete this saved paper?"
                         )
-                    ){
-
+                    ) {
                         return;
-
                     }
 
 
-                    const updated =
-                        [...saved];
+                    savedPapers.splice(index, 1);
 
+                    saveLocalBackup();
 
-                    updated.splice(index,1);
-
-
-                    await set(
-                        ref(
-                            database,
-                            "showerSchedule/savedPapers"
-                        ),
-                        updated
-                    );
+                    displaySavedData();
 
                 }
             );
@@ -1645,30 +1388,96 @@ function displaySavedData(){
 }
 
 
-/* =========================================================
-   SAFETY FOR SAVED TEXT
-   ========================================================= */
+/* LOCAL BACKUP */
 
-function escapeHTML(value){
+function saveLocalBackup() {
 
-    return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+    localStorage.setItem(
+        "calendarData",
+        JSON.stringify(calendarData)
+    );
+
+    localStorage.setItem(
+        "trackerData",
+        JSON.stringify(trackerData)
+    );
+
+    localStorage.setItem(
+        "savedPapers",
+        JSON.stringify(savedPapers)
+    );
 
 }
 
 
-/* =========================================================
-   START
-   ========================================================= */
+/* LOAD LOCAL BACKUP */
 
-document
-.getElementById("connectionStatus")
-.textContent =
-    "Firebase loaded — waiting for database connection.";
+function loadLocalBackup() {
+
+    try {
+
+        calendarData =
+            JSON.parse(
+                localStorage.getItem("calendarData") || "{}"
+            );
+
+    } catch {
+
+        calendarData = {};
+
+    }
+
+
+    try {
+
+        trackerData =
+            JSON.parse(
+                localStorage.getItem("trackerData") || "{}"
+            );
+
+    } catch {
+
+        trackerData = {};
+
+    }
+
+
+    try {
+
+        savedPapers =
+            JSON.parse(
+                localStorage.getItem("savedPapers") || "[]"
+            );
+
+    } catch {
+
+        savedPapers = [];
+
+    }
+
+}
+
+
+/* ESCAPE TEXT */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* START */
+
+loadLocalBackup();
+
+document.getElementById("connectionStatus").textContent =
+    "Local mode — Firebase not connected yet.";
 
 </script>
 
