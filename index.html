@@ -3,337 +3,465 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Matt + Angelo Shower Schedule</title>
+<title>Shower Schedule</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: white;
-    color: black;
-}
-
-/* LOGIN */
-
-#loginScreen {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.loginBox {
-    width: 90%;
-    max-width: 420px;
-    border: 2px solid black;
-    padding: 35px;
-    text-align: center;
-}
-
-.loginBox h1 {
-    margin-top: 0;
-}
-
-.loginBox input {
-    width: 100%;
-    padding: 13px;
-    margin: 15px 0;
-    border: 1px solid black;
-    font-size: 16px;
-}
-
-.loginBox button {
-    width: 100%;
-    padding: 13px;
-    background: black;
-    color: white;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.loginBox button:hover {
-    opacity: 0.8;
-}
-
-#loginMessage {
-    margin-top: 15px;
-    font-weight: bold;
-}
-
-/* APP */
-
-#app {
-    display: none;
-}
-
-header {
-    border-bottom: 2px solid black;
-    padding: 18px;
-    text-align: center;
-}
-
-header h1 {
-    margin: 0;
-}
-
-#modeDisplay {
-    margin-top: 8px;
-    font-weight: bold;
-}
-
-#connectionStatus {
-    margin-top: 6px;
-    font-size: 13px;
-}
-
-/* NAVIGATION */
-
-nav {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    padding: 15px;
-    border-bottom: 1px solid black;
-}
-
-nav button {
-    border: none;
-    background: white;
-    color: blue;
-    font-weight: bold;
-    font-size: 15px;
-    cursor: pointer;
-    padding: 8px 12px;
-}
-
-nav button:hover {
-    text-decoration: underline;
-}
-
-/* SECTIONS */
-
-section {
-    display: none;
-    padding: 25px;
-    max-width: 1400px;
-    margin: auto;
-}
-
-section.active {
-    display: block;
-}
-
-h2 {
-    border-bottom: 2px solid black;
-    padding-bottom: 8px;
-}
-
-/* CALENDAR */
-
-.controls {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.calendar {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(310px, 1fr));
-    gap: 15px;
-}
-
-.month {
-    border: 1px solid black;
-    padding: 10px;
-}
-
-.month h3 {
-    text-align: center;
-    font-weight: bold;
-    margin-top: 0;
-}
-
-.weekdays,
-.days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 3px;
-}
-
-.weekdays div {
-    font-weight: bold;
-    text-align: center;
-    font-size: 12px;
-}
-
-.day {
-    min-height: 75px;
-    min-width: 43px;
-    border: 1px solid #aaa;
-    padding: 4px;
-    font-size: 11px;
-}
-
-.day.invalid {
-    background: #eee;
-    color: #aaa;
-}
-
-.dayNumber {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 4px;
-}
-
-.day select {
-    width: 82px;
-    max-width: 100%;
-    padding: 4px 2px;
-    font-size: 10px;
-}
-
-/* TRACKER */
-
-.tracker {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.tracker th,
-.tracker td {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: center;
-}
-
-.tracker th {
-    font-weight: bold;
-}
-
-.tracker select {
-    width: 100%;
-}
-
-/* DAILY PAPER */
-
-.dailyPaper {
-    border: 2px solid black;
-    padding: 25px;
-    max-width: 900px;
-    margin: auto;
-}
-
-.dailyPaper textarea {
-    width: 100%;
-    min-height: 120px;
-    padding: 10px;
-    resize: vertical;
-}
-
-.actionButtons {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 20px;
-}
-
-.actionButtons button {
-    background: black;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-/* SAVED DATA */
-
-.savedItem {
-    border: 1px solid black;
-    padding: 15px;
-    margin-bottom: 10px;
-}
-
-.savedItem button {
-    margin-top: 8px;
-}
-
-/* CONTRACT */
-
-.contract {
-    border: 2px solid black;
-    padding: 25px;
-    line-height: 1.6;
-}
-
-.contract h3 {
-    text-align: center;
-}
-
-.agreedRule {
-    font-weight: bold;
-    border: 2px solid black;
-    padding: 15px;
-}
-
-/* LOGOUT */
-
-#logoutButton {
-    position: fixed;
-    right: 15px;
-    top: 15px;
-    background: white;
-    border: 1px solid black;
-    cursor: pointer;
-}
-
-/* MOBILE */
-
-@media (max-width: 1100px) {
-    .calendar {
-        grid-template-columns: repeat(2, minmax(300px, 1fr));
-    }
-}
-
-@media (max-width: 650px) {
-    .calendar {
-        grid-template-columns: 1fr;
+    * {
+        box-sizing: border-box;
     }
 
-    section {
-        padding: 15px;
+    body {
+        margin: 0;
+        background: white;
+        color: black;
+        font-family: Arial, Helvetica, sans-serif;
     }
 
-    #logoutButton {
-        position: static;
+    header {
+        background: black;
+        color: white;
+        text-align: center;
+        padding: 20px;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 30px;
+    }
+
+    header p {
+        margin: 8px 0 0;
+        font-size: 16px;
+    }
+
+    nav {
+        background: white;
+        border-bottom: 3px solid black;
+        padding: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    nav button {
+        background: white;
+        border: 2px solid #0057b8;
+        color: #0057b8;
+        font-weight: bold;
+        font-size: 16px;
+        padding: 10px 15px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    nav button:hover {
+        background: #eef6ff;
+    }
+
+    .section {
+        display: none;
+        padding: 20px;
+        max-width: 1500px;
+        margin: auto;
+    }
+
+    .section.active {
         display: block;
-        margin: 10px auto;
     }
 
-    .day select {
-        width: 82px;
+    .section-title {
+        color: #0057b8;
+        font-weight: bold;
+        font-size: 27px;
+        border-bottom: 3px solid black;
+        padding-bottom: 8px;
+        margin-bottom: 20px;
     }
-}
+
+    .controls {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+        font-size: 17px;
+    }
+
+    select,
+    input,
+    textarea {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* ALL DROPDOWNS */
+    select {
+        min-width: 150px;
+        min-height: 52px;
+        padding: 8px 12px;
+        font-size: 18px;
+        font-weight: bold;
+        border: 2px solid black;
+        border-radius: 6px;
+        background: white;
+        color: black;
+        cursor: pointer;
+    }
+
+    button {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .action-button {
+        min-height: 52px;
+        padding: 10px 20px;
+        font-size: 18px;
+        font-weight: bold;
+        border: 2px solid black;
+        background: white;
+        color: black;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .action-button:hover {
+        background: #eeeeee;
+    }
+
+    .blue-button {
+        border-color: #0057b8;
+        color: #0057b8;
+    }
+
+    .calendar-wrapper {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(150px, 1fr));
+        gap: 6px;
+        min-width: 1080px;
+    }
+
+    .day-header {
+        background: black;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+        padding: 12px;
+        font-size: 17px;
+    }
+
+    .calendar-day {
+        border: 2px solid black;
+        min-height: 145px;
+        padding: 10px;
+        background: white;
+    }
+
+    .calendar-day.invalid {
+        background: #eeeeee;
+    }
+
+    .day-number {
+        font-size: 21px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .calendar-day select {
+        width: 100%;
+        min-width: 0;
+        min-height: 58px;
+        font-size: 17px;
+    }
+
+    .month-title {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        margin: 30px 0 12px;
+        padding: 10px;
+        border: 3px solid black;
+        background: white;
+    }
+
+    .tracker-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+    .tracker-table th,
+    .tracker-table td {
+        border: 2px solid black;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .tracker-table th {
+        background: black;
+        color: white;
+        font-size: 17px;
+    }
+
+    .tracker-table td {
+        font-size: 17px;
+    }
+
+    .tracker-table select {
+        width: 100%;
+        min-width: 180px;
+        min-height: 58px;
+    }
+
+    .contract {
+        border: 3px solid black;
+        padding: 25px;
+        line-height: 1.6;
+        font-size: 18px;
+    }
+
+    .contract h2 {
+        text-align: center;
+        margin-top: 0;
+    }
+
+    .contract h3 {
+        margin-bottom: 5px;
+    }
+
+    .agreed-rule {
+        border: 3px solid black;
+        padding: 15px;
+        font-weight: bold;
+        font-size: 20px;
+        margin: 15px 0;
+    }
+
+    .paper {
+        border: 3px solid black;
+        padding: 25px;
+        min-height: 600px;
+    }
+
+    .paper h2 {
+        text-align: center;
+        margin-top: 0;
+    }
+
+    .paper-row {
+        margin: 18px 0;
+    }
+
+    .paper-row label {
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .paper-row input,
+    .paper-row select {
+        width: 100%;
+        max-width: 600px;
+    }
+
+    .paper-row textarea {
+        width: 100%;
+        min-height: 180px;
+        border: 2px solid black;
+        padding: 12px;
+        font-size: 18px;
+        resize: vertical;
+    }
+
+    .saved-item {
+        border: 2px solid black;
+        padding: 18px;
+        margin-bottom: 15px;
+    }
+
+    .saved-item h3 {
+        margin-top: 0;
+    }
+
+    .saved-item pre {
+        white-space: pre-wrap;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
+    }
+
+    .login-screen {
+        position: fixed;
+        inset: 0;
+        background: white;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .login-box {
+        width: 100%;
+        max-width: 450px;
+        border: 3px solid black;
+        padding: 30px;
+        text-align: center;
+    }
+
+    .login-box h1 {
+        margin-top: 0;
+    }
+
+    .login-box input {
+        width: 100%;
+        height: 55px;
+        border: 2px solid black;
+        font-size: 20px;
+        padding: 10px;
+        margin: 15px 0;
+        text-align: center;
+    }
+
+    .login-box button {
+        width: 100%;
+        height: 55px;
+        font-size: 19px;
+        font-weight: bold;
+        border: 2px solid black;
+        background: white;
+        cursor: pointer;
+    }
+
+    .login-box button:hover {
+        background: #eeeeee;
+    }
+
+    #loginMessage {
+        color: black;
+        font-weight: bold;
+        min-height: 25px;
+        margin-top: 10px;
+    }
+
+    .view-notice {
+        border: 2px solid black;
+        padding: 12px;
+        margin-bottom: 20px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .saved-month {
+        border: 3px solid black;
+        padding: 18px;
+        margin-bottom: 20px;
+    }
+
+    .saved-month h3 {
+        margin-top: 0;
+        color: #0057b8;
+    }
+
+    .saved-month-grid {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(120px, 1fr));
+        gap: 4px;
+        overflow-x: auto;
+    }
+
+    .saved-month-day {
+        border: 1px solid black;
+        min-height: 100px;
+        padding: 7px;
+    }
+
+    .saved-month-day strong {
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .small-select {
+        min-height: 45px;
+        font-size: 16px;
+    }
+
+    .delete-button {
+        margin-top: 10px;
+        min-height: 45px;
+        padding: 8px 15px;
+        font-size: 16px;
+        font-weight: bold;
+        border: 2px solid black;
+        background: white;
+        cursor: pointer;
+    }
+
+    .delete-button:hover {
+        background: #eeeeee;
+    }
+
+    @media (max-width: 700px) {
+        .section {
+            padding: 12px;
+        }
+
+        .section-title {
+            font-size: 23px;
+        }
+
+        select {
+            width: 100%;
+        }
+
+        .controls {
+            display: block;
+        }
+
+        .controls > * {
+            margin-bottom: 10px;
+        }
+
+        .action-button {
+            width: 100%;
+        }
+
+        .contract {
+            font-size: 16px;
+            padding: 15px;
+        }
+    }
+
+    @media print {
+        nav,
+        .controls,
+        .delete-button {
+            display: none !important;
+        }
+
+        .section {
+            display: block !important;
+        }
+
+        .login-screen {
+            display: none !important;
+        }
+    }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN SCREEN -->
-
-<div id="loginScreen">
-
-    <div class="loginBox">
-
-        <h1>MATT + ANGELO</h1>
-
-        <h2>SHOWER SCHEDULE</h2>
-
-        <p>Enter password</p>
+<div class="login-screen" id="loginScreen">
+    <div class="login-box">
+        <h1>SHOWER SCHEDULE</h1>
+        <p>Enter your password to continue.</p>
 
         <input
             type="password"
@@ -342,1142 +470,1307 @@ h2 {
             autocomplete="off"
         >
 
-        <button type="button" id="loginButton">
-            ENTER
-        </button>
+        <button onclick="login()">ENTER</button>
 
         <div id="loginMessage"></div>
-
     </div>
-
 </div>
 
-
-<!-- MAIN APP -->
-
-<div id="app">
-
 <header>
-
-    <h1>MATT + ANGELO SHOWER SCHEDULE</h1>
-
-    <div id="modeDisplay"></div>
-
-    <div id="connectionStatus">
-        Not connected yet
-    </div>
-
+    <h1>SHOWER SCHEDULE</h1>
+    <p id="modeText">Loading...</p>
 </header>
 
-
-<button type="button" id="logoutButton">
-    LOG OUT
-</button>
-
-
-<!-- NAVIGATION -->
-
 <nav>
-
-    <button type="button" data-section="calendarSection">
-        CALENDAR
-    </button>
-
-    <button type="button" data-section="trackerSection">
-        SIGNING TRACKER
-    </button>
-
-    <button type="button" data-section="savedSection">
-        SAVED DATA
-    </button>
-
-    <button type="button" data-section="contractSection">
-        RULES AND REGULATION (CONTRACT)
-    </button>
-
-    <button type="button" data-section="dailySection">
-        DAILY PAPER
-    </button>
-
+    <button onclick="showSection('tracker')">SIGNING TRACKER</button>
+    <button onclick="showSection('contract')">RULES AND REGULATION</button>
+    <button onclick="showSection('calendar')">CALENDAR</button>
+    <button onclick="showSection('saved')">SAVED DATA</button>
+    <button onclick="showSection('paper')">DAILY PAPER</button>
 </nav>
 
+<!-- SIGNING TRACKER -->
+<section id="tracker" class="section">
+    <div class="section-title">SIGNING TRACKER</div>
+
+    <div class="controls">
+        <label for="trackerMonth">Month:</label>
+
+        <select id="trackerMonth" onchange="renderTracker()">
+            <option value="0">January</option>
+            <option value="1">February</option>
+            <option value="2">March</option>
+            <option value="3">April</option>
+            <option value="4">May</option>
+            <option value="5">June</option>
+            <option value="6">July</option>
+            <option value="7">August</option>
+            <option value="8" selected>September</option>
+            <option value="9">October</option>
+            <option value="10">November</option>
+            <option value="11">December</option>
+        </select>
+
+        <label for="trackerYear">Year:</label>
+
+        <select id="trackerYear" onchange="renderTracker()">
+            <option>2026</option>
+            <option>2027</option>
+            <option>2028</option>
+            <option>2029</option>
+            <option>2030</option>
+        </select>
+    </div>
+
+    <div id="trackerContainer"></div>
+</section>
+
+<!-- CONTRACT -->
+<section id="contract" class="section">
+    <div class="section-title">RULES AND REGULATION</div>
+
+    <div class="contract">
+
+        <h2>SHOWER SCHEDULE AGREEMENT</h2>
+
+        <p><strong>Between: Matt and Angelo</strong></p>
+
+        <h3>PURPOSE</h3>
+
+        <p>
+            This agreement is made to keep the shower schedule clear, fair,
+            and consistent.
+        </p>
+
+        <h3>AGREED RULE</h3>
+
+        <div class="agreed-rule">
+            NO MATTER WHAT DAY IT IS, WHAT TIME SOMEONE SHOWERS, OR WHO
+            SHOWERS FIRST, THE SHOWER SCHEDULE WILL STILL BE FOLLOWED.
+        </div>
+
+        <h3>RULES</h3>
+
+        <p>
+            <strong>I.</strong> Showering earlier or later does NOT change
+            the schedule.
+        </p>
+
+        <p>
+            <strong>II.</strong> If someone showers before their scheduled
+            day, it does NOT automatically give them the next shower day.
+        </p>
+
+        <p>
+            <strong>III.</strong> The next person follows the schedule exactly
+            as written.
+        </p>
+
+        <p>
+            <strong>IV.</strong> The schedule can only be changed if BOTH
+            Matt and Angelo agree to the change.
+        </p>
+
+        <p>
+            <strong>V.</strong> Who ever showers first any day has to sign the
+            paper witch is given at the end of each shower.
+        </p>
+
+    </div>
+</section>
 
 <!-- CALENDAR -->
-
-<section id="calendarSection" class="active">
-
-    <h2>CALENDAR</h2>
+<section id="calendar" class="section">
+    <div class="section-title">CALENDAR</div>
 
     <div class="controls">
 
-        <label>
-            Year:
+        <label for="calendarYear">Year:</label>
 
-            <select id="yearSelect">
+        <select id="calendarYear" onchange="renderCalendar()">
+            <option selected>2026</option>
+            <option>2027</option>
+            <option>2028</option>
+            <option>2029</option>
+            <option>2030</option>
+        </select>
 
-                <option value="2026">2026</option>
-                <option value="2027">2027</option>
-                <option value="2028">2028</option>
-                <option value="2029">2029</option>
-                <option value="2030">2030</option>
+        <button class="action-button blue-button" onclick="saveCurrentMonth()">
+            SAVE MONTH
+        </button>
 
-            </select>
-
-        </label>
+        <button class="action-button" onclick="resetCalendar()">
+            RESET CURRENT YEAR
+        </button>
 
     </div>
 
-    <div id="calendar" class="calendar"></div>
-
+    <div id="calendarContainer"></div>
 </section>
 
+<!-- SAVED DATA -->
+<section id="saved" class="section">
+    <div class="section-title">SAVED DATA</div>
 
-<!-- SIGNING TRACKER -->
+    <div class="view-notice" id="savedNotice">
+        Saved information is stored on this device.
+    </div>
 
-<section id="trackerSection">
+    <h2>Saved Months</h2>
 
-    <h2>SIGNING TRACKER</h2>
+    <div id="savedMonthsContainer"></div>
 
-    <table class="tracker">
+    <h2>Saved Daily Papers</h2>
 
-        <thead>
-
-            <tr>
-                <th>DAY</th>
-                <th>WHO</th>
-                <th>SIGNING STATUS</th>
-            </tr>
-
-        </thead>
-
-        <tbody id="trackerBody"></tbody>
-
-    </table>
-
+    <div id="savedPapersContainer"></div>
 </section>
-
 
 <!-- DAILY PAPER -->
+<section id="paper" class="section">
+    <div class="section-title">DAILY PAPER</div>
 
-<section id="dailySection">
+    <div class="paper">
 
-    <h2>DAILY PAPER</h2>
+        <h2>DAILY SHOWER PAPER</h2>
 
-    <div class="dailyPaper">
+        <div class="paper-row">
+            <label for="paperDate">DATE</label>
+            <input
+                type="date"
+                id="paperDate"
+                style="height:52px;border:2px solid black;padding:8px;font-size:18px;"
+            >
+        </div>
 
-        <h3>DAILY SHOWER SCHEDULE PAPER</h3>
+        <div class="paper-row">
+            <label for="firstShowerer">WHO SHOWERED FIRST?</label>
 
-        <p>
-            <strong>Date:</strong>
-        </p>
+            <select id="firstShowerer">
+                <option value="">Choose one</option>
+                <option value="Angelo">Angelo</option>
+                <option value="Matthew">Matthew</option>
+            </select>
+        </div>
 
-        <input type="date" id="paperDate">
+        <div class="paper-row">
+            <label for="paperStatus">SIGNING STATUS</label>
 
+            <select id="paperStatus">
+                <option value="">Choose one</option>
+                <option value="SIGNED">SIGNED</option>
+                <option value="MISSING">MISSING</option>
+            </select>
+        </div>
 
-        <p>
-            <strong>Who showered:</strong>
-        </p>
+        <div class="paper-row">
+            <label for="paperNotes">NOTES</label>
 
-        <select id="paperPerson">
+            <textarea
+                id="paperNotes"
+                placeholder="Write notes here..."
+            ></textarea>
+        </div>
 
-            <option value="">Choose</option>
-            <option value="Angelo">Angelo</option>
-            <option value="Matthew">Matthew</option>
+        <div class="controls">
 
-        </select>
-
-
-        <p>
-            <strong>Who showered first:</strong>
-        </p>
-
-        <select id="paperFirst">
-
-            <option value="">Choose</option>
-            <option value="Angelo">Angelo</option>
-            <option value="Matthew">Matthew</option>
-
-        </select>
-
-
-        <p>
-            <strong>Notes:</strong>
-        </p>
-
-        <textarea id="paperNotes"></textarea>
-
-
-        <div class="actionButtons">
-
-            <button type="button" id="savePaperButton">
+            <button
+                class="action-button blue-button"
+                onclick="saveDailyPaper()"
+            >
                 SAVE
             </button>
 
-            <button type="button" id="newPaperButton">
+            <button
+                class="action-button"
+                onclick="newDailyPaper()"
+            >
                 NEW COPY
             </button>
 
         </div>
 
     </div>
-
 </section>
-
-
-<!-- SAVED DATA -->
-
-<section id="savedSection">
-
-    <h2>SAVED DATA</h2>
-
-    <div id="savedData"></div>
-
-</section>
-
-
-<!-- CONTRACT -->
-
-<section id="contractSection">
-
-    <h2>RULES AND REGULATION (CONTRACT)</h2>
-
-    <div class="contract">
-
-        <h3>SHOWER SCHEDULE AGREEMENT</h3>
-
-        <p>
-            <strong>Between: Matt and Angelo</strong>
-        </p>
-
-        <h3>PURPOSE</h3>
-
-        <p>
-            This agreement is made to keep the shower schedule clear,
-            fair, and consistent.
-        </p>
-
-        <h3>AGREED RULE</h3>
-
-        <p class="agreedRule">
-            NO MATTER WHAT DAY IT IS, WHAT TIME SOMEONE SHOWERS,
-            OR WHO SHOWERS FIRST, THE SHOWER SCHEDULE WILL STILL BE FOLLOWED.
-        </p>
-
-        <h3>RULES</h3>
-
-        <p>
-            I. Showering earlier or later does NOT change the schedule.
-        </p>
-
-        <p>
-            II. If someone showers before their scheduled day,
-            it does NOT automatically give them the next shower day.
-        </p>
-
-        <p>
-            III. The next person follows the schedule exactly as written.
-        </p>
-
-        <p>
-            IV. The schedule can only be changed if BOTH Matt and Angelo
-            agree to the change.
-        </p>
-
-        <p>
-            V. Who ever showers first any day has to sign the paper witch
-            is given at the end of each shower.
-        </p>
-
-    </div>
-
-</section>
-
-</div>
-
-
-<!-- =====================================================
-     LOGIN SYSTEM
-     THIS IS SEPARATE SO THE PASSWORD BUTTON KEEPS WORKING
-     ===================================================== -->
 
 <script>
+/* ============================================================
+   PASSWORDS
+   ============================================================ */
 
-var MINE_PASSWORD = "1014131814";
-var VIEW_PASSWORD = "1814";
+const MINE_PASSWORD = "1014131814";
+const VIEW_PASSWORD = "1814";
 
-var currentMode = "";
-
-document
-.getElementById("loginButton")
-.addEventListener("click", function () {
-
-    login();
-
-});
+let editMode = false;
 
 
-document
-.getElementById("passwordInput")
-.addEventListener("keydown", function (event) {
+/* ============================================================
+   DATA
+   ============================================================ */
 
-    if (event.key === "Enter") {
+let calendarData =
+    JSON.parse(localStorage.getItem("showerCalendarData")) || {};
 
-        login();
+let trackerData =
+    JSON.parse(localStorage.getItem("showerTrackerData")) || {};
 
-    }
+let savedPapers =
+    JSON.parse(localStorage.getItem("showerSavedPapers")) || [];
 
-});
+let savedMonths =
+    JSON.parse(localStorage.getItem("showerSavedMonths")) || [];
 
+
+/* ============================================================
+   LOGIN
+   ============================================================ */
 
 function login() {
 
-    var password =
-        document.getElementById("passwordInput").value.trim();
+    const password =
+        document.getElementById("passwordInput").value;
 
-    var message =
+    const message =
         document.getElementById("loginMessage");
-
 
     if (password === MINE_PASSWORD) {
 
-        currentMode = "edit";
+        editMode = true;
 
-        openApp("EDIT MODE");
+        document.getElementById("loginScreen").style.display = "none";
 
-        return;
+        document.getElementById("modeText").textContent =
+            "EDIT MODE";
+
+        enableEditing();
+
+        initializePage();
+
+    } else if (password === VIEW_PASSWORD) {
+
+        editMode = false;
+
+        document.getElementById("loginScreen").style.display = "none";
+
+        document.getElementById("modeText").textContent =
+            "VIEW ONLY";
+
+        disableEditing();
+
+        initializePage();
+
+    } else {
+
+        message.textContent =
+            "Incorrect password.";
 
     }
-
-
-    if (password === VIEW_PASSWORD) {
-
-        currentMode = "view";
-
-        openApp("VIEW ONLY");
-
-        return;
-
-    }
-
-
-    message.textContent =
-        "Incorrect password.";
-
 }
 
 
-function openApp(mode) {
+/* ============================================================
+   EDIT / VIEW MODE
+   ============================================================ */
 
-    document.getElementById("loginScreen").style.display =
-        "none";
+function disableEditing() {
 
-    document.getElementById("app").style.display =
-        "block";
-
-    document.getElementById("modeDisplay").textContent =
-        mode;
-
-    document.getElementById("loginMessage").textContent =
-        "";
-
-    enableEditing(currentMode === "edit");
-
-    buildCalendar();
-
-    buildTracker();
-
-    displaySavedData();
-
-}
-
-
-function logout() {
-
-    currentMode = "";
-
-    document.getElementById("app").style.display =
-        "none";
-
-    document.getElementById("loginScreen").style.display =
-        "flex";
-
-    document.getElementById("passwordInput").value =
-        "";
-
-    document.getElementById("loginMessage").textContent =
-        "";
-
-}
-
-
-document
-.getElementById("logoutButton")
-.addEventListener("click", logout);
-
-
-/* NAVIGATION */
-
-document
-.querySelectorAll("nav button")
-.forEach(function(button) {
-
-    button.addEventListener("click", function() {
-
-        showSection(
-            button.getAttribute("data-section")
-        );
-
+    document.querySelectorAll("select").forEach(function(select) {
+        select.disabled = true;
     });
 
-});
+    document.querySelectorAll("input").forEach(function(input) {
+        if (input.id !== "passwordInput") {
+            input.disabled = true;
+        }
+    });
 
+    document.querySelectorAll("textarea").forEach(function(textarea) {
+        textarea.disabled = true;
+    });
+
+    document.querySelectorAll(".action-button").forEach(function(button) {
+        button.style.display = "none";
+    });
+}
+
+
+function enableEditing() {
+
+    document.querySelectorAll("select").forEach(function(select) {
+        select.disabled = false;
+    });
+
+    document.querySelectorAll("input").forEach(function(input) {
+        input.disabled = false;
+    });
+
+    document.querySelectorAll("textarea").forEach(function(textarea) {
+        textarea.disabled = false;
+    });
+
+    document.querySelectorAll(".action-button").forEach(function(button) {
+        button.style.display = "";
+    });
+}
+
+
+/* ============================================================
+   SECTIONS
+   ============================================================ */
 
 function showSection(sectionId) {
 
-    document
-    .querySelectorAll("section")
-    .forEach(function(section) {
-
+    document.querySelectorAll(".section").forEach(function(section) {
         section.classList.remove("active");
-
     });
 
+    document.getElementById(sectionId).classList.add("active");
 
-    document
-    .getElementById(sectionId)
-    .classList.add("active");
+    if (sectionId === "calendar") {
+        renderCalendar();
+    }
 
+    if (sectionId === "tracker") {
+        renderTracker();
+    }
+
+    if (sectionId === "saved") {
+        renderSavedData();
+    }
 }
 
 
-/* EDITING */
+/* ============================================================
+   INITIALIZE
+   ============================================================ */
 
-function enableEditing(canEdit) {
+function initializePage() {
 
-    document
-    .querySelectorAll(
-        "#calendar select," +
-        "#trackerSection select," +
-        "#dailySection input," +
-        "#dailySection textarea," +
-        "#dailySection select"
-    )
-    .forEach(function(element) {
+    setToday();
 
-        element.disabled = !canEdit;
+    renderCalendar();
 
-    });
+    renderTracker();
 
+    renderSavedData();
 
-    document
-    .querySelectorAll("#dailySection button")
-    .forEach(function(button) {
-
-        button.disabled = !canEdit;
-
-    });
-
+    showSection("calendar");
 }
 
 
-/* CALENDAR */
+/* ============================================================
+   DATE
+   ============================================================ */
 
-var monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-];
+function setToday() {
 
+    const today = new Date();
 
-var weekdayNames = [
-    "Sun",
-    "Mon",
-    "Tue",
-    "Wed",
-    "Thu",
-    "Fri",
-    "Sat"
-];
+    const yyyy = today.getFullYear();
+
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
+
+    const dd = String(today.getDate()).padStart(2, "0");
+
+    document.getElementById("paperDate").value =
+        yyyy + "-" + mm + "-" + dd;
+}
 
 
-var calendarData = {};
+/* ============================================================
+   CALENDAR KEY
+   ============================================================ */
+
+function calendarKey(year, month, day) {
+
+    return year + "-" +
+        String(month + 1).padStart(2, "0") + "-" +
+        String(day).padStart(2, "0");
+}
 
 
-document
-.getElementById("yearSelect")
-.addEventListener("change", buildCalendar);
+/* ============================================================
+   RENDER CALENDAR
+   ============================================================ */
 
+function renderCalendar() {
 
-function buildCalendar() {
+    const year =
+        Number(document.getElementById("calendarYear").value);
 
-    var year =
-        parseInt(
-            document.getElementById("yearSelect").value
-        );
+    const container =
+        document.getElementById("calendarContainer");
 
+    container.innerHTML = "";
 
-    var calendar =
-        document.getElementById("calendar");
+    const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    ];
 
+    for (let month = 0; month < 12; month++) {
 
-    calendar.innerHTML = "";
-
-
-    for (var month = 0; month < 12; month++) {
-
-        var monthBox =
+        const monthTitle =
             document.createElement("div");
 
-        monthBox.className =
-            "month";
+        monthTitle.className = "month-title";
 
-
-        var title =
-            document.createElement("h3");
-
-        title.textContent =
+        monthTitle.textContent =
             monthNames[month] + " " + year;
 
-        monthBox.appendChild(title);
+        container.appendChild(monthTitle);
 
-
-        var weekdays =
+        const wrapper =
             document.createElement("div");
 
-        weekdays.className =
-            "weekdays";
+        wrapper.className = "calendar-wrapper";
 
+        const grid =
+            document.createElement("div");
 
-        weekdayNames.forEach(function(day) {
+        grid.className = "calendar-grid";
 
-            var cell =
+        const weekdays = [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"
+        ];
+
+        weekdays.forEach(function(day) {
+
+            const header =
                 document.createElement("div");
 
-            cell.textContent =
-                day;
+            header.className = "day-header";
 
-            weekdays.appendChild(cell);
+            header.textContent = day;
+
+            grid.appendChild(header);
 
         });
 
-
-        monthBox.appendChild(weekdays);
-
-
-        var days =
-            document.createElement("div");
-
-        days.className =
-            "days";
-
-
-        var firstDay =
+        const firstDay =
             new Date(year, month, 1).getDay();
 
-
-        var numberOfDays =
+        const daysInMonth =
             new Date(year, month + 1, 0).getDate();
 
+        for (let i = 0; i < firstDay; i++) {
 
-        for (
-            var blank = 0;
-            blank < firstDay;
-            blank++
-        ) {
-
-            var empty =
+            const empty =
                 document.createElement("div");
 
             empty.className =
-                "day invalid";
+                "calendar-day invalid";
 
-            days.appendChild(empty);
-
+            grid.appendChild(empty);
         }
 
+        for (let day = 1; day <= 31; day++) {
 
-        for (
-            var day = 1;
-            day <= numberOfDays;
-            day++
-        ) {
-
-            var dateKey =
-                year +
-                "-" +
-                String(month + 1).padStart(2, "0") +
-                "-" +
-                String(day).padStart(2, "0");
-
-
-            var dayBox =
+            const cell =
                 document.createElement("div");
 
-            dayBox.className =
-                "day";
+            cell.className = "calendar-day";
 
+            if (day > daysInMonth) {
 
-            var number =
-                document.createElement("span");
+                cell.classList.add("invalid");
 
-            number.className =
-                "dayNumber";
+                grid.appendChild(cell);
 
-            number.textContent =
-                day;
+                continue;
+            }
 
+            const number =
+                document.createElement("div");
 
-            dayBox.appendChild(number);
+            number.className = "day-number";
 
+            number.textContent = day;
 
-            var select =
+            cell.appendChild(number);
+
+            const select =
                 document.createElement("select");
 
+            select.className = "calendar-person-select";
 
-            select.innerHTML =
-                `
+            select.innerHTML = `
                 <option value="">Choose</option>
                 <option value="Angelo">Angelo</option>
                 <option value="Matthew">Matthew</option>
-                `;
-
-
-            if (calendarData[dateKey]) {
-
-                select.value =
-                    calendarData[dateKey];
-
-            }
-
-
-            select.disabled =
-                currentMode !== "edit";
-
-
-            select.addEventListener(
-                "change",
-                function() {
-
-                    if (currentMode !== "edit") {
-                        return;
-                    }
-
-
-                    var key =
-                        this.getAttribute("data-date");
-
-
-                    if (this.value === "") {
-
-                        delete calendarData[key];
-
-                    } else {
-
-                        calendarData[key] =
-                            this.value;
-
-                    }
-
-
-                    saveLocalBackup();
-
-                }
-            );
-
-
-            select.setAttribute(
-                "data-date",
-                dateKey
-            );
-
-
-            dayBox.appendChild(select);
-
-            days.appendChild(dayBox);
-
-        }
-
-
-        monthBox.appendChild(days);
-
-        calendar.appendChild(monthBox);
-
-    }
-
-}
-
-
-/* TRACKER */
-
-var trackerData = {};
-
-
-function buildTracker() {
-
-    var body =
-        document.getElementById("trackerBody");
-
-
-    body.innerHTML = "";
-
-
-    for (var day = 1; day <= 31; day++) {
-
-        var row =
-            document.createElement("tr");
-
-
-        var dayCell =
-            document.createElement("td");
-
-        dayCell.textContent =
-            "Day " + day;
-
-        row.appendChild(dayCell);
-
-
-        var personCell =
-            document.createElement("td");
-
-
-        var personSelect =
-            document.createElement("select");
-
-
-        personSelect.innerHTML =
-            `
-            <option value="">Choose</option>
-            <option value="Angelo">Angelo</option>
-            <option value="Matthew">Matthew</option>
             `;
 
+            const key =
+                calendarKey(year, month, day);
 
-        if (
-            trackerData[day] &&
-            trackerData[day].person
-        ) {
+            select.value =
+                calendarData[key] || "";
 
-            personSelect.value =
-                trackerData[day].person;
+            select.onchange = function() {
 
-        }
-
-
-        personSelect.disabled =
-            currentMode !== "edit";
-
-
-        personSelect.addEventListener(
-            "change",
-            function() {
-
-                if (currentMode !== "edit") {
+                if (!editMode) {
                     return;
                 }
 
+                calendarData[key] =
+                    select.value;
 
-                var d =
-                    this.getAttribute("data-day");
+                localStorage.setItem(
+                    "showerCalendarData",
+                    JSON.stringify(calendarData)
+                );
+            };
 
+            cell.appendChild(select);
 
-                if (!trackerData[d]) {
-
-                    trackerData[d] = {};
-
-                }
-
-
-                trackerData[d].person =
-                    this.value;
-
-
-                saveLocalBackup();
-
-            }
-        );
-
-
-        personSelect.setAttribute(
-            "data-day",
-            day
-        );
-
-
-        personCell.appendChild(personSelect);
-
-        row.appendChild(personCell);
-
-
-        var statusCell =
-            document.createElement("td");
-
-
-        var statusSelect =
-            document.createElement("select");
-
-
-        statusSelect.innerHTML =
-            `
-            <option value="">Choose</option>
-            <option value="SIGNED">SIGNED</option>
-            <option value="MISSING">MISSING</option>
-            `;
-
-
-        if (
-            trackerData[day] &&
-            trackerData[day].status
-        ) {
-
-            statusSelect.value =
-                trackerData[day].status;
-
+            grid.appendChild(cell);
         }
 
+        const totalCells =
+            firstDay + 31;
 
-        statusSelect.disabled =
-            currentMode !== "edit";
+        const remainder =
+            totalCells % 7;
 
+        if (remainder !== 0) {
 
-        statusSelect.addEventListener(
-            "change",
-            function() {
+            const extra =
+                7 - remainder;
 
-                if (currentMode !== "edit") {
-                    return;
-                }
+            for (let i = 0; i < extra; i++) {
 
+                const empty =
+                    document.createElement("div");
 
-                var d =
-                    this.getAttribute("data-day");
+                empty.className =
+                    "calendar-day invalid";
 
-
-                if (!trackerData[d]) {
-
-                    trackerData[d] = {};
-
-                }
-
-
-                trackerData[d].status =
-                    this.value;
-
-
-                saveLocalBackup();
-
+                grid.appendChild(empty);
             }
-        );
+        }
 
+        wrapper.appendChild(grid);
 
-        statusSelect.setAttribute(
-            "data-day",
-            day
-        );
-
-
-        statusCell.appendChild(statusSelect);
-
-        row.appendChild(statusCell);
-
-
-        body.appendChild(row);
-
+        container.appendChild(wrapper);
     }
-
 }
 
 
-/* DAILY PAPER */
+/* ============================================================
+   SAVE MONTH
+   ============================================================ */
 
-var savedPapers = [];
+function saveCurrentMonth() {
 
-
-document
-.getElementById("savePaperButton")
-.addEventListener("click", saveDailyPaper);
-
-
-document
-.getElementById("newPaperButton")
-.addEventListener("click", newDailyPaper);
-
-
-function saveDailyPaper() {
-
-    if (currentMode !== "edit") {
+    if (!editMode) {
         return;
     }
 
+    const year =
+        Number(document.getElementById("calendarYear").value);
 
-    var date =
+    const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    ];
+
+    const month =
+        prompt(
+            "Which month do you want to save?\n\n" +
+            "Type 1 for January, 2 for February, 3 for March, etc."
+        );
+
+    if (month === null) {
+        return;
+    }
+
+    const monthNumber =
+        Number(month) - 1;
+
+    if (
+        !Number.isInteger(monthNumber) ||
+        monthNumber < 0 ||
+        monthNumber > 11
+    ) {
+        alert("Please enter a number from 1 to 12.");
+
+        return;
+    }
+
+    const daysInMonth =
+        new Date(
+            year,
+            monthNumber + 1,
+            0
+        ).getDate();
+
+    const monthData = {};
+
+    for (
+        let day = 1;
+        day <= daysInMonth;
+        day++
+    ) {
+
+        const key =
+            calendarKey(
+                year,
+                monthNumber,
+                day
+            );
+
+        monthData[day] =
+            calendarData[key] || "";
+    }
+
+    const savedMonth = {
+
+        id:
+            Date.now(),
+
+        year:
+            year,
+
+        month:
+            monthNumber,
+
+        monthName:
+            monthNames[monthNumber],
+
+        savedAt:
+            new Date().toLocaleString(),
+
+        days:
+            monthData
+    };
+
+    savedMonths.unshift(savedMonth);
+
+    localStorage.setItem(
+        "showerSavedMonths",
+        JSON.stringify(savedMonths)
+    );
+
+    renderSavedData();
+
+    alert(
+        monthNames[monthNumber] +
+        " " +
+        year +
+        " was saved."
+    );
+}
+
+
+/* ============================================================
+   RESET CALENDAR
+   ============================================================ */
+
+function resetCalendar() {
+
+    if (!editMode) {
+        return;
+    }
+
+    const year =
+        Number(document.getElementById("calendarYear").value);
+
+    const answer =
+        confirm(
+            "Are you sure you want to clear the current year's calendar?"
+        );
+
+    if (!answer) {
+        return;
+    }
+
+    for (let month = 0; month < 12; month++) {
+
+        const daysInMonth =
+            new Date(
+                year,
+                month + 1,
+                0
+            ).getDate();
+
+        for (
+            let day = 1;
+            day <= daysInMonth;
+            day++
+        ) {
+
+            const key =
+                calendarKey(
+                    year,
+                    month,
+                    day
+                );
+
+            delete calendarData[key];
+        }
+    }
+
+    localStorage.setItem(
+        "showerCalendarData",
+        JSON.stringify(calendarData)
+    );
+
+    renderCalendar();
+}
+
+
+/* ============================================================
+   TRACKER
+   ============================================================ */
+
+function trackerKey(year, month, day) {
+
+    return "tracker-" +
+        year + "-" +
+        String(month + 1).padStart(2, "0") +
+        "-" +
+        String(day).padStart(2, "0");
+}
+
+
+function renderTracker() {
+
+    const year =
+        Number(document.getElementById("trackerYear").value);
+
+    const month =
+        Number(document.getElementById("trackerMonth").value);
+
+    const container =
+        document.getElementById("trackerContainer");
+
+    container.innerHTML = "";
+
+    const table =
+        document.createElement("table");
+
+    table.className = "tracker-table";
+
+    table.innerHTML = `
+        <thead>
+            <tr>
+                <th>DAY</th>
+                <th>WHO</th>
+                <th>SIGNING STATUS</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    `;
+
+    const tbody =
+        table.querySelector("tbody");
+
+    for (let day = 1; day <= 31; day++) {
+
+        const tr =
+            document.createElement("tr");
+
+        const dayCell =
+            document.createElement("td");
+
+        dayCell.textContent =
+            day;
+
+        tr.appendChild(dayCell);
+
+        const personCell =
+            document.createElement("td");
+
+        const personSelect =
+            document.createElement("select");
+
+        personSelect.innerHTML = `
+            <option value="">Choose</option>
+            <option value="Angelo">Angelo</option>
+            <option value="Matthew">Matthew</option>
+        `;
+
+        const key =
+            trackerKey(year, month, day);
+
+        const stored =
+            trackerData[key] || {};
+
+        personSelect.value =
+            stored.person || "";
+
+        personSelect.onchange = function() {
+
+            if (!editMode) {
+                return;
+            }
+
+            if (!trackerData[key]) {
+                trackerData[key] = {};
+            }
+
+            trackerData[key].person =
+                personSelect.value;
+
+            saveTracker();
+        };
+
+        personCell.appendChild(personSelect);
+
+        tr.appendChild(personCell);
+
+        const statusCell =
+            document.createElement("td");
+
+        const statusSelect =
+            document.createElement("select");
+
+        statusSelect.innerHTML = `
+            <option value="">Choose</option>
+            <option value="SIGNED">SIGNED</option>
+            <option value="MISSING">MISSING</option>
+        `;
+
+        statusSelect.value =
+            stored.status || "";
+
+        statusSelect.onchange = function() {
+
+            if (!editMode) {
+                return;
+            }
+
+            if (!trackerData[key]) {
+                trackerData[key] = {};
+            }
+
+            trackerData[key].status =
+                statusSelect.value;
+
+            saveTracker();
+        };
+
+        statusCell.appendChild(statusSelect);
+
+        tr.appendChild(statusCell);
+
+        tbody.appendChild(tr);
+    }
+
+    container.appendChild(table);
+}
+
+
+function saveTracker() {
+
+    localStorage.setItem(
+        "showerTrackerData",
+        JSON.stringify(trackerData)
+    );
+}
+
+
+/* ============================================================
+   DAILY PAPER
+   ============================================================ */
+
+function saveDailyPaper() {
+
+    if (!editMode) {
+        return;
+    }
+
+    const date =
         document.getElementById("paperDate").value;
 
+    const firstShowerer =
+        document.getElementById("firstShowerer").value;
 
-    var person =
-        document.getElementById("paperPerson").value;
+    const status =
+        document.getElementById("paperStatus").value;
 
-
-    var first =
-        document.getElementById("paperFirst").value;
-
-
-    var notes =
+    const notes =
         document.getElementById("paperNotes").value;
-
 
     if (!date) {
 
         alert("Please choose a date.");
 
         return;
-
     }
 
+    if (!firstShowerer) {
 
-    savedPapers.push({
+        alert("Please choose who showered first.");
 
-        date: date,
-
-        person: person,
-
-        first: first,
-
-        notes: notes,
-
-        savedAt: new Date().toLocaleString()
-
-    });
-
-
-    saveLocalBackup();
-
-    displaySavedData();
-
-    alert("Daily paper saved.");
-
-}
-
-
-function newDailyPaper() {
-
-    if (currentMode !== "edit") {
         return;
     }
 
+    const paper = {
 
-    document.getElementById("paperDate").value =
-        "";
+        id:
+            Date.now(),
 
-    document.getElementById("paperPerson").value =
-        "";
+        date:
+            date,
 
-    document.getElementById("paperFirst").value =
-        "";
+        firstShowerer:
+            firstShowerer,
 
-    document.getElementById("paperNotes").value =
-        "";
+        status:
+            status,
 
+        notes:
+            notes,
+
+        savedAt:
+            new Date().toLocaleString()
+    };
+
+    savedPapers.unshift(paper);
+
+    localStorage.setItem(
+        "showerSavedPapers",
+        JSON.stringify(savedPapers)
+    );
+
+    renderSavedData();
+
+    alert("Daily paper saved.");
 }
 
 
-/* SAVED DATA */
+/* ============================================================
+   NEW DAILY PAPER
+   ============================================================ */
 
-function displaySavedData() {
+function newDailyPaper() {
 
-    var container =
-        document.getElementById("savedData");
+    if (!editMode) {
+        return;
+    }
 
+    setToday();
+
+    document.getElementById("firstShowerer").value = "";
+
+    document.getElementById("paperStatus").value = "";
+
+    document.getElementById("paperNotes").value = "";
+}
+
+
+/* ============================================================
+   SAVED DATA
+   ============================================================ */
+
+function renderSavedData() {
+
+    renderSavedMonths();
+
+    renderSavedPapers();
+}
+
+
+/* ============================================================
+   SAVED MONTHS
+   ============================================================ */
+
+function renderSavedMonths() {
+
+    const container =
+        document.getElementById("savedMonthsContainer");
 
     container.innerHTML = "";
 
+    if (savedMonths.length === 0) {
+
+        container.innerHTML =
+            "<p>No saved months yet.</p>";
+
+        return;
+    }
+
+    savedMonths.forEach(function(savedMonth) {
+
+        const box =
+            document.createElement("div");
+
+        box.className = "saved-month";
+
+        const title =
+            document.createElement("h3");
+
+        title.textContent =
+            savedMonth.monthName +
+            " " +
+            savedMonth.year;
+
+        box.appendChild(title);
+
+        const savedTime =
+            document.createElement("p");
+
+        savedTime.textContent =
+            "Saved: " +
+            savedMonth.savedAt;
+
+        box.appendChild(savedTime);
+
+        const grid =
+            document.createElement("div");
+
+        grid.className =
+            "saved-month-grid";
+
+        for (
+            let day = 1;
+            day <= 31;
+            day++
+        ) {
+
+            const dayBox =
+                document.createElement("div");
+
+            dayBox.className =
+                "saved-month-day";
+
+            const dayNumber =
+                document.createElement("strong");
+
+            dayNumber.textContent =
+                "Day " + day;
+
+            dayBox.appendChild(dayNumber);
+
+            const person =
+                document.createElement("div");
+
+            person.textContent =
+                savedMonth.days[day] ||
+                "Not assigned";
+
+            dayBox.appendChild(person);
+
+            grid.appendChild(dayBox);
+        }
+
+        box.appendChild(grid);
+
+        if (editMode) {
+
+            const deleteButton =
+                document.createElement("button");
+
+            deleteButton.className =
+                "delete-button";
+
+            deleteButton.textContent =
+                "DELETE SAVED MONTH";
+
+            deleteButton.onclick =
+                function() {
+
+                    deleteSavedMonth(
+                        savedMonth.id
+                    );
+                };
+
+            box.appendChild(deleteButton);
+        }
+
+        container.appendChild(box);
+    });
+}
+
+
+/* ============================================================
+   DELETE SAVED MONTH
+   ============================================================ */
+
+function deleteSavedMonth(id) {
+
+    if (!editMode) {
+        return;
+    }
+
+    const answer =
+        confirm(
+            "Delete this saved month?"
+        );
+
+    if (!answer) {
+        return;
+    }
+
+    savedMonths =
+        savedMonths.filter(function(item) {
+            return item.id !== id;
+        });
+
+    localStorage.setItem(
+        "showerSavedMonths",
+        JSON.stringify(savedMonths)
+    );
+
+    renderSavedMonths();
+}
+
+
+/* ============================================================
+   SAVED PAPERS
+   ============================================================ */
+
+function renderSavedPapers() {
+
+    const container =
+        document.getElementById("savedPapersContainer");
+
+    container.innerHTML = "";
 
     if (savedPapers.length === 0) {
 
         container.innerHTML =
-            "<p>No saved papers yet.</p>";
+            "<p>No saved daily papers yet.</p>";
 
         return;
-
     }
 
+    savedPapers.forEach(function(paper) {
 
-    savedPapers.forEach(function(paper, index) {
-
-        var item =
+        const box =
             document.createElement("div");
 
+        box.className =
+            "saved-item";
 
-        item.className =
-            "savedItem";
+        const title =
+            document.createElement("h3");
 
+        title.textContent =
+            "Daily Paper - " +
+            paper.date;
 
-        item.innerHTML =
-            `
-            <strong>Date:</strong>
-            ${escapeHTML(paper.date)}
-            <br>
+        box.appendChild(title);
 
-            <strong>Who showered:</strong>
-            ${escapeHTML(paper.person || "Not entered")}
-            <br>
+        const details =
+            document.createElement("pre");
 
-            <strong>Who showered first:</strong>
-            ${escapeHTML(paper.first || "Not entered")}
-            <br>
+        details.textContent =
+            "Who showered first: " +
+            paper.firstShowerer +
+            "\n\n" +
 
-            <strong>Notes:</strong>
-            ${escapeHTML(paper.notes || "None")}
-            <br>
+            "Signing status: " +
+            (paper.status || "Not selected") +
+            "\n\n" +
 
-            <strong>Saved:</strong>
-            ${escapeHTML(paper.savedAt || "Unknown")}
-            `;
+            "Notes:\n" +
+            (paper.notes || "No notes") +
+            "\n\n" +
 
+            "Saved: " +
+            paper.savedAt;
 
-        if (currentMode === "edit") {
+        box.appendChild(details);
 
-            var deleteButton =
+        if (editMode) {
+
+            const deleteButton =
                 document.createElement("button");
 
+            deleteButton.className =
+                "delete-button";
 
             deleteButton.textContent =
-                "DELETE";
+                "DELETE PAPER";
 
-
-            deleteButton.addEventListener(
-                "click",
+            deleteButton.onclick =
                 function() {
 
-                    if (
-                        !confirm(
-                            "Delete this saved paper?"
-                        )
-                    ) {
-                        return;
-                    }
+                    deletePaper(
+                        paper.id
+                    );
+                };
 
-
-                    savedPapers.splice(index, 1);
-
-                    saveLocalBackup();
-
-                    displaySavedData();
-
-                }
-            );
-
-
-            item.appendChild(deleteButton);
-
+            box.appendChild(deleteButton);
         }
 
-
-        container.appendChild(item);
-
+        container.appendChild(box);
     });
-
 }
 
 
-/* LOCAL BACKUP */
+/* ============================================================
+   DELETE PAPER
+   ============================================================ */
 
-function saveLocalBackup() {
+function deletePaper(id) {
+
+    if (!editMode) {
+        return;
+    }
+
+    const answer =
+        confirm(
+            "Delete this saved paper?"
+        );
+
+    if (!answer) {
+        return;
+    }
+
+    savedPapers =
+        savedPapers.filter(function(item) {
+            return item.id !== id;
+        });
 
     localStorage.setItem(
-        "calendarData",
-        JSON.stringify(calendarData)
-    );
-
-    localStorage.setItem(
-        "trackerData",
-        JSON.stringify(trackerData)
-    );
-
-    localStorage.setItem(
-        "savedPapers",
+        "showerSavedPapers",
         JSON.stringify(savedPapers)
     );
 
+    renderSavedPapers();
 }
 
 
-/* LOAD LOCAL BACKUP */
+/* ============================================================
+   ENTER KEY LOGIN
+   ============================================================ */
 
-function loadLocalBackup() {
+document.getElementById("passwordInput")
+    .addEventListener("keydown", function(event) {
 
-    try {
+        if (event.key === "Enter") {
+            login();
+        }
 
-        calendarData =
-            JSON.parse(
-                localStorage.getItem("calendarData") || "{}"
-            );
-
-    } catch {
-
-        calendarData = {};
-
-    }
-
-
-    try {
-
-        trackerData =
-            JSON.parse(
-                localStorage.getItem("trackerData") || "{}"
-            );
-
-    } catch {
-
-        trackerData = {};
-
-    }
-
-
-    try {
-
-        savedPapers =
-            JSON.parse(
-                localStorage.getItem("savedPapers") || "[]"
-            );
-
-    } catch {
-
-        savedPapers = [];
-
-    }
-
-}
-
-
-/* ESCAPE TEXT */
-
-function escapeHTML(value) {
-
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-}
-
-
-/* START */
-
-loadLocalBackup();
-
-document.getElementById("connectionStatus").textContent =
-    "Local mode — Firebase not connected yet.";
+    });
 
 </script>
 
