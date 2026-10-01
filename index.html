@@ -397,6 +397,63 @@ select {
     background: #eeeeee;
 }
 
+
+.points-box {
+    border: 3px solid black;
+    padding: 25px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.points-number {
+    font-size: 42px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.points-goal {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.points-progress {
+    width: 100%;
+    max-width: 700px;
+    height: 28px;
+    border: 2px solid black;
+    margin: 0 auto 20px;
+    background: white;
+}
+
+.points-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #0057b8;
+}
+
+.reward-history {
+    border: 3px solid black;
+    padding: 20px;
+}
+
+.reward-form {
+    border-bottom: 3px solid black;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.reward-entry {
+    border: 2px solid black;
+    padding: 18px;
+    margin-bottom: 15px;
+}
+
+.reward-entry h3 {
+    margin-top: 0;
+    color: #0057b8;
+}
+
 .hidden-for-view {
     display: none !important;
 }
@@ -489,6 +546,11 @@ select {
 
 <nav>
 
+    <!-- EVERYONE -->
+    <button onclick="showSection('points')">
+        ANGELO'S POINTS
+    </button>
+
     <!-- EDIT MODE ONLY -->
     <button
         id="navTracker"
@@ -523,6 +585,73 @@ select {
     </button>
 
 </nav>
+
+
+<!-- ANGELO'S POINTS -->
+
+<section id="points" class="section">
+
+    <div class="section-title">
+        ANGELO'S POINTS
+    </div>
+
+    <div class="points-box">
+        <div class="points-number" id="angeloPointsDisplay">0 POINTS</div>
+        <div class="points-goal">GOAL: 15 POINTS</div>
+
+        <div class="points-progress">
+            <div id="angeloPointsProgress" class="points-progress-fill"></div>
+        </div>
+
+        <div class="controls">
+            <button id="addPointButton" class="action-button blue-button" onclick="addAngeloPoint()">
+                ADD 1 POINT
+            </button>
+            <button id="removePointButton" class="action-button" onclick="removeAngeloPoint()">
+                REMOVE 1 POINT
+            </button>
+        </div>
+    </div>
+
+    <div class="section-title">
+        REWARD HISTORY
+    </div>
+
+    <div class="reward-history">
+
+        <div class="reward-form">
+
+            <div class="paper-row">
+                <label for="rewardDate">DATE</label>
+                <input type="date" id="rewardDate">
+            </div>
+
+            <div class="paper-row">
+                <label for="rewardName">REWARD</label>
+                <input type="text" id="rewardName" placeholder="Enter the reward">
+            </div>
+
+            <div class="paper-row">
+                <label for="rewardNotes">NOTES</label>
+                <textarea id="rewardNotes" placeholder="Optional notes..."></textarea>
+            </div>
+
+            <div class="controls">
+                <button id="saveRewardButton" class="action-button blue-button" onclick="saveReward()">
+                    SAVE REWARD
+                </button>
+                <button id="newRewardButton" class="action-button" onclick="newReward()">
+                    NEW REWARD
+                </button>
+            </div>
+
+        </div>
+
+        <div id="rewardHistoryContainer"></div>
+
+    </div>
+
+</section>
 
 
 <!-- SIGNING TRACKER -->
@@ -894,7 +1023,7 @@ let trackerData =
 let savedPapers =
     JSON.parse(
         localStorage.getItem("showerSavedPapers")
-    ) || {};
+    ) || [];
 
 let savedMonths =
     JSON.parse(
@@ -916,6 +1045,23 @@ let savedTrackers =
 
 if (!Array.isArray(savedTrackers)) {
     savedTrackers = [];
+}
+
+
+/* ============================================================
+   ANGELO'S POINTS AND REWARD HISTORY
+   ============================================================ */
+
+let angeloPoints =
+    Number(localStorage.getItem("angeloPoints")) || 0;
+
+let rewardHistory =
+    JSON.parse(
+        localStorage.getItem("angeloRewardHistory")
+    ) || [];
+
+if (!Array.isArray(rewardHistory)) {
+    rewardHistory = [];
 }
 
 
@@ -1183,6 +1329,10 @@ function initializePage() {
     renderTracker();
 
     renderSavedData();
+    setRewardToday();
+    renderAngeloPoints();
+    renderRewardHistory();
+    setupPointsMode();
 
 
     /*
@@ -2379,6 +2529,269 @@ function deleteSavedTracker(id) {
 
 
     renderSavedTrackers();
+}
+
+
+/* ============================================================
+   ANGELO'S POINTS
+   ============================================================ */
+
+function renderAngeloPoints() {
+
+    const display =
+        document.getElementById("angeloPointsDisplay");
+
+    const progress =
+        document.getElementById("angeloPointsProgress");
+
+    if (!display || !progress) {
+        return;
+    }
+
+    display.textContent =
+        angeloPoints +
+        (angeloPoints === 1 ? " POINT" : " POINTS");
+
+    const percentage =
+        Math.min((angeloPoints / 15) * 100, 100);
+
+    progress.style.width = percentage + "%";
+}
+
+
+function saveAngeloPoints() {
+
+    localStorage.setItem(
+        "angeloPoints",
+        String(angeloPoints)
+    );
+}
+
+
+function addAngeloPoint() {
+
+    if (!editMode) {
+        return;
+    }
+
+    angeloPoints++;
+    saveAngeloPoints();
+    renderAngeloPoints();
+}
+
+
+function removeAngeloPoint() {
+
+    if (!editMode) {
+        return;
+    }
+
+    if (angeloPoints <= 0) {
+        return;
+    }
+
+    angeloPoints--;
+    saveAngeloPoints();
+    renderAngeloPoints();
+}
+
+
+function setRewardToday() {
+
+    const input =
+        document.getElementById("rewardDate");
+
+    if (!input) {
+        return;
+    }
+
+    const today = new Date();
+
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
+    const dd = String(today.getDate()).padStart(2, "0");
+
+    input.value = yyyy + "-" + mm + "-" + dd;
+}
+
+
+function saveReward() {
+
+    if (!editMode) {
+        return;
+    }
+
+    const date =
+        document.getElementById("rewardDate").value;
+
+    const reward =
+        document.getElementById("rewardName").value.trim();
+
+    const notes =
+        document.getElementById("rewardNotes").value.trim();
+
+    if (!date) {
+        alert("Please choose a date.");
+        return;
+    }
+
+    if (!reward) {
+        alert("Please enter the reward.");
+        return;
+    }
+
+    const entry = {
+        id: Date.now(),
+        date: date,
+        reward: reward,
+        notes: notes,
+        savedAt: new Date().toLocaleString()
+    };
+
+    rewardHistory.unshift(entry);
+
+    localStorage.setItem(
+        "angeloRewardHistory",
+        JSON.stringify(rewardHistory)
+    );
+
+    renderRewardHistory();
+    newReward();
+
+    alert("Reward saved.");
+}
+
+
+function newReward() {
+
+    if (!editMode) {
+        return;
+    }
+
+    setRewardToday();
+
+    document.getElementById("rewardName").value = "";
+    document.getElementById("rewardNotes").value = "";
+}
+
+
+function renderRewardHistory() {
+
+    const container =
+        document.getElementById("rewardHistoryContainer");
+
+    if (!container) {
+        return;
+    }
+
+    container.innerHTML = "";
+
+    if (rewardHistory.length === 0) {
+        container.innerHTML = "<p>No rewards recorded yet.</p>";
+        return;
+    }
+
+    rewardHistory.forEach(function(entry) {
+
+        const box =
+            document.createElement("div");
+
+        box.className = "reward-entry";
+
+        const title =
+            document.createElement("h3");
+
+        title.textContent =
+            "Reward - " + entry.date;
+
+        box.appendChild(title);
+
+        const details =
+            document.createElement("pre");
+
+        details.textContent =
+            "Reward: " + entry.reward +
+            "\n\n" +
+            "Notes:\n" +
+            (entry.notes || "No notes") +
+            "\n\n" +
+            "Saved: " + entry.savedAt;
+
+        box.appendChild(details);
+
+        if (editMode) {
+
+            const deleteButton =
+                document.createElement("button");
+
+            deleteButton.className = "delete-button";
+            deleteButton.textContent = "DELETE REWARD";
+
+            deleteButton.onclick = function() {
+                deleteReward(entry.id);
+            };
+
+            box.appendChild(deleteButton);
+        }
+
+        container.appendChild(box);
+    });
+}
+
+
+function deleteReward(id) {
+
+    if (!editMode) {
+        return;
+    }
+
+    const answer =
+        confirm("Delete this saved reward?");
+
+    if (!answer) {
+        return;
+    }
+
+    rewardHistory = rewardHistory.filter(function(item) {
+        return item.id !== id;
+    });
+
+    localStorage.setItem(
+        "angeloRewardHistory",
+        JSON.stringify(rewardHistory)
+    );
+
+    renderRewardHistory();
+}
+
+
+function setupPointsMode() {
+
+    const addButton =
+        document.getElementById("addPointButton");
+
+    const removeButton =
+        document.getElementById("removePointButton");
+
+    const saveButton =
+        document.getElementById("saveRewardButton");
+
+    const newButton =
+        document.getElementById("newRewardButton");
+
+    if (!editMode) {
+
+        if (addButton) addButton.style.display = "none";
+        if (removeButton) removeButton.style.display = "none";
+        if (saveButton) saveButton.style.display = "none";
+        if (newButton) newButton.style.display = "none";
+    } else {
+
+        if (addButton) addButton.style.display = "";
+        if (removeButton) removeButton.style.display = "";
+        if (saveButton) saveButton.style.display = "";
+        if (newButton) newButton.style.display = "";
+    }
 }
 
 
