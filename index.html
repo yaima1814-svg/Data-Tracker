@@ -2553,7 +2553,7 @@ function renderAngeloPoints() {
         (angeloPoints === 1 ? " POINT" : " POINTS");
 
     const percentage =
-        Math.min((angeloPoints / 15) * 100, 100);
+        Math.max(0, Math.min((angeloPoints / 15) * 100, 100));
 
     progress.style.width = percentage + "%";
 }
@@ -2583,10 +2583,6 @@ function addAngeloPoint() {
 function removeAngeloPoint() {
 
     if (!editMode) {
-        return;
-    }
-
-    if (angeloPoints <= 0) {
         return;
     }
 
