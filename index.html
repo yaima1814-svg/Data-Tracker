@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Shower Schedule</title>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -21,42 +23,41 @@ header {
     background: black;
     color: white;
     text-align: center;
-    padding: 20px;
+    padding: 25px;
 }
 
 header h1 {
     margin: 0;
-    font-size: 30px;
+    font-size: 34px;
 }
 
 header p {
     margin: 8px 0 0;
-    font-size: 16px;
+    font-weight: bold;
 }
 
 nav {
-    background: white;
-    border-bottom: 3px solid black;
-    padding: 12px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
+    padding: 15px;
+    background: white;
+    border-bottom: 3px solid black;
 }
 
 nav button {
+    border: none;
     background: white;
-    border: 2px solid #0057b8;
     color: #0057b8;
+    font-size: 17px;
     font-weight: bold;
-    font-size: 16px;
-    padding: 10px 15px;
-    border-radius: 6px;
     cursor: pointer;
+    padding: 10px 14px;
 }
 
 nav button:hover {
-    background: #eef6ff;
+    text-decoration: underline;
 }
 
 .section {
@@ -72,54 +73,58 @@ nav button:hover {
 
 .section-title {
     color: #0057b8;
+    font-size: 28px;
     font-weight: bold;
-    font-size: 27px;
-    border-bottom: 3px solid black;
-    padding-bottom: 8px;
     margin-bottom: 20px;
 }
 
 .controls {
     display: flex;
     flex-wrap: wrap;
+    gap: 10px;
     align-items: center;
-    gap: 15px;
     margin-bottom: 20px;
 }
 
-label {
-    font-weight: bold;
-    font-size: 17px;
-}
-
+button,
 select,
 input,
 textarea {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-select {
-    min-width: 150px;
-    min-height: 52px;
-    padding: 8px 12px;
-    font-size: 18px;
-    font-weight: bold;
+select,
+input,
+textarea {
     border: 2px solid black;
-    border-radius: 6px;
     background: white;
     color: black;
-    cursor: pointer;
+    padding: 10px;
+    font-size: 17px;
+}
+
+select {
+    min-height: 45px;
+}
+
+input {
+    min-height: 45px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 120px;
+    resize: vertical;
 }
 
 .action-button {
-    min-height: 52px;
-    padding: 10px 20px;
-    font-size: 18px;
-    font-weight: bold;
+    min-height: 45px;
+    padding: 10px 18px;
     border: 2px solid black;
     background: white;
     color: black;
-    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
 }
 
@@ -128,183 +133,43 @@ select {
 }
 
 .blue-button {
+    color: white;
+    background: #0057b8;
     border-color: #0057b8;
-    color: #0057b8;
 }
 
-.calendar-wrapper {
-    width: 100%;
-    overflow-x: auto;
+.blue-button:hover {
+    background: #00458f;
 }
 
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, minmax(150px, 1fr));
-    gap: 6px;
-    min-width: 1080px;
-}
-
-.day-header {
-    background: black;
-    color: white;
-    text-align: center;
-    font-weight: bold;
-    padding: 12px;
-    font-size: 17px;
-}
-
-.calendar-day {
-    border: 2px solid black;
-    min-height: 145px;
-    padding: 10px;
-    background: white;
-}
-
-.calendar-day.invalid {
-    background: #eeeeee;
-}
-
-.day-number {
-    font-size: 21px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.calendar-day select {
-    width: 100%;
-    min-width: 0;
-    min-height: 58px;
-    font-size: 17px;
-}
-
-.month-title {
-    font-size: 24px;
-    font-weight: bold;
-    text-align: center;
-    margin: 30px 0 12px;
-    padding: 10px;
-    border: 3px solid black;
-    background: white;
-}
-
-.tracker-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-
-.tracker-table th,
-.tracker-table td {
-    border: 2px solid black;
-    padding: 10px;
-    text-align: center;
-}
-
-.tracker-table th {
-    background: black;
-    color: white;
-    font-size: 17px;
-}
-
-.tracker-table td {
-    font-size: 17px;
-}
-
-.tracker-table select {
-    width: 100%;
-    min-width: 180px;
-    min-height: 58px;
-}
-
-.contract {
-    border: 3px solid black;
-    padding: 25px;
-    line-height: 1.6;
-    font-size: 18px;
-}
-
-.contract h2 {
-    text-align: center;
-    margin-top: 0;
-}
-
-.contract h3 {
-    margin-bottom: 5px;
-}
-
-.agreed-rule {
-    border: 3px solid black;
-    padding: 15px;
-    font-weight: bold;
-    font-size: 20px;
-    margin: 15px 0;
-}
-
-.paper {
-    border: 3px solid black;
-    padding: 25px;
-    min-height: 600px;
-}
-
-.paper h2 {
-    text-align: center;
-    margin-top: 0;
-}
-
-.paper-row {
-    margin: 18px 0;
-}
-
-.paper-row label {
-    display: block;
-    margin-bottom: 8px;
-}
-
-.paper-row input,
-.paper-row select {
-    width: 100%;
-    max-width: 600px;
-}
-
-.paper-row textarea {
-    width: 100%;
-    min-height: 180px;
-    border: 2px solid black;
-    padding: 12px;
-    font-size: 18px;
-    resize: vertical;
-}
-
-.saved-item {
-    border: 2px solid black;
-    padding: 18px;
-    margin-bottom: 15px;
-}
-
-.saved-item h3 {
-    margin-top: 0;
-}
-
-.saved-item pre {
-    white-space: pre-wrap;
-    font-family: Arial, Helvetica, sans-serif;
+.delete-button {
+    margin-top: 10px;
+    min-height: 45px;
+    padding: 8px 15px;
     font-size: 16px;
+    font-weight: bold;
+    border: 2px solid black;
+    background: white;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background: #eeeeee;
 }
 
 .login-screen {
     position: fixed;
     inset: 0;
     background: white;
-    z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    z-index: 9999;
 }
 
 .login-box {
-    width: 100%;
-    max-width: 450px;
+    width: 90%;
+    max-width: 500px;
     border: 3px solid black;
     padding: 30px;
     text-align: center;
@@ -316,52 +181,106 @@ select {
 
 .login-box input {
     width: 100%;
-    height: 55px;
-    border: 2px solid black;
-    font-size: 20px;
-    padding: 10px;
     margin: 15px 0;
-    text-align: center;
 }
 
 .login-box button {
-    width: 100%;
-    height: 55px;
-    font-size: 19px;
-    font-weight: bold;
+    min-height: 45px;
+    padding: 10px 25px;
     border: 2px solid black;
-    background: white;
+    background: black;
+    color: white;
+    font-weight: bold;
     cursor: pointer;
 }
 
-.login-box button:hover {
-    background: #eeeeee;
-}
-
 #loginMessage {
-    color: black;
+    margin-top: 15px;
     font-weight: bold;
-    min-height: 25px;
-    margin-top: 10px;
 }
 
-.view-notice {
+.calendar-wrapper {
+    overflow-x: auto;
+    margin-bottom: 30px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(150px, 1fr));
+    gap: 4px;
+    min-width: 1050px;
+}
+
+.calendar-day-name {
     border: 2px solid black;
     padding: 12px;
-    margin-bottom: 20px;
     font-weight: bold;
     text-align: center;
 }
 
-.saved-month {
+.calendar-day {
+    border: 2px solid black;
+    min-height: 120px;
+    padding: 8px;
+}
+
+.calendar-day-number {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.calendar-day select {
+    width: 100%;
+}
+
+.calendar-empty {
+    border: 2px solid white;
+    min-height: 120px;
+}
+
+.month-title {
+    font-size: 25px;
+    font-weight: bold;
+    margin: 20px 0 10px;
+}
+
+.contract {
     border: 3px solid black;
-    padding: 18px;
+    padding: 25px;
+    white-space: pre-line;
+    line-height: 1.6;
+}
+
+.paper {
+    border: 3px solid black;
+    padding: 25px;
+}
+
+.paper-row {
     margin-bottom: 20px;
 }
 
-.saved-month h3 {
-    margin-top: 0;
+.paper-row label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+.paper-row input,
+.paper-row select {
+    width: 100%;
+    max-width: 700px;
+}
+
+.saved-item {
+    border: 3px solid black;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.saved-item h3 {
     color: #0057b8;
+    margin-top: 0;
 }
 
 .saved-month-grid {
@@ -382,33 +301,20 @@ select {
     margin-bottom: 8px;
 }
 
-.delete-button {
-    margin-top: 10px;
-    min-height: 45px;
-    padding: 8px 15px;
-    font-size: 16px;
-    font-weight: bold;
-    border: 2px solid black;
-    background: white;
-    cursor: pointer;
+.hidden-for-view {
+    display: none !important;
 }
-
-.delete-button:hover {
-    background: #eeeeee;
-}
-
 
 .points-box {
     border: 3px solid black;
     padding: 25px;
     margin-bottom: 25px;
-    text-align: center;
 }
 
 .points-number {
     font-size: 42px;
     font-weight: bold;
-    margin-bottom: 8px;
+    margin: 10px 0;
 }
 
 .points-goal {
@@ -454,8 +360,56 @@ select {
     color: #0057b8;
 }
 
-.hidden-for-view {
-    display: none !important;
+/* NEW DASHBOARD / SCHEDULE / AGREEMENTS / SETTINGS */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(250px, 1fr));
+    gap: 18px;
+}
+
+.dashboard-card,
+.schedule-tool-box,
+.agreement-box,
+.settings-box {
+    border: 3px solid black;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.dashboard-card h3,
+.agreement-box h3 {
+    margin-top: 0;
+    color: #0057b8;
+}
+
+.dashboard-value {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.schedule-result {
+    border: 2px solid black;
+    padding: 18px;
+    margin-top: 20px;
+}
+
+.schedule-result strong {
+    color: #0057b8;
+}
+
+.agreement-box {
+    white-space: pre-line;
+    line-height: 1.6;
+}
+
+.settings-row {
+    border-bottom: 2px solid black;
+    padding: 15px 0;
+}
+
+.settings-row:last-child {
+    border-bottom: none;
 }
 
 @media (max-width: 700px) {
@@ -488,6 +442,10 @@ select {
         font-size: 16px;
         padding: 15px;
     }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media print {
@@ -506,6 +464,7 @@ select {
         display: none !important;
     }
 }
+
 </style>
 </head>
 
@@ -517,7 +476,9 @@ select {
 
         <h1>SHOWER SCHEDULE</h1>
 
-        <p>Enter your password to continue.</p>
+        <p>
+            Enter your password to continue.
+        </p>
 
         <input
             type="password"
@@ -526,7 +487,9 @@ select {
             autocomplete="off"
         >
 
-        <button onclick="login()">ENTER</button>
+        <button onclick="login()">
+            ENTER
+        </button>
 
         <div id="loginMessage"></div>
 
@@ -537,117 +500,552 @@ select {
 
 <header>
 
-    <h1>SHOWER SCHEDULE</h1>
+    <h1>
+        SHOWER SCHEDULE
+    </h1>
 
-    <p id="modeText">Loading...</p>
+    <p id="modeText">
+        Loading...
+    </p>
 
 </header>
 
 
 <nav>
 
-    <!-- EVERYONE -->
+    <button onclick="showSection('dashboard')">
+        MAIN DASHBOARD
+    </button>
+
+    <button onclick="showSection('scheduleTool')">
+        SCHEDULE TOOL
+    </button>
+
+    <button onclick="showSection('agreements')">
+        AGREEMENTS
+    </button>
+
     <button onclick="showSection('points')">
         ANGELO'S POINTS
     </button>
 
-    <!-- EDIT MODE ONLY -->
     <button
         id="navTracker"
         onclick="showSection('tracker')">
         SIGNING TRACKER
     </button>
 
-    <!-- EVERYONE -->
-    <button
-        onclick="showSection('contract')">
+    <button onclick="showSection('contract')">
         RULES AND REGULATION
     </button>
 
-    <!-- EDIT MODE ONLY -->
     <button
         id="navCalendar"
         onclick="showSection('calendar')">
         CALENDAR
     </button>
 
-    <!-- EVERYONE -->
-    <button
-        onclick="showSection('saved')">
+    <button onclick="showSection('saved')">
         SAVED DATA
     </button>
 
-    <!-- EDIT MODE ONLY -->
     <button
         id="navPaper"
         onclick="showSection('paper')">
         DAILY PAPER
     </button>
 
+    <button
+        id="navSettings"
+        onclick="showSection('settings')">
+        SETTINGS
+    </button>
+
 </nav>
+
+
+<!-- MAIN DASHBOARD -->
+
+<section
+    id="dashboard"
+    class="section">
+
+    <div class="section-title">
+        MAIN DASHBOARD
+    </div>
+
+    <div class="dashboard-grid">
+
+        <div class="dashboard-card">
+
+            <h3>
+                TODAY
+            </h3>
+
+            <div
+                class="dashboard-value"
+                id="dashboardToday">
+                -
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <h3>
+                NEXT SCHEDULED SHOWER
+            </h3>
+
+            <div
+                class="dashboard-value"
+                id="dashboardNext">
+                -
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <h3>
+                ANGELO'S POINTS
+            </h3>
+
+            <div
+                class="dashboard-value"
+                id="dashboardPoints">
+                0
+            </div>
+
+            <p>
+                GOAL: 15 POINTS
+            </p>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <h3>
+                REWARD HISTORY
+            </h3>
+
+            <div
+                class="dashboard-value"
+                id="dashboardRewards">
+                0
+            </div>
+
+            <p>
+                REWARDS SAVED
+            </p>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <h3>
+                SAVED DAILY PAPERS
+            </h3>
+
+            <div
+                class="dashboard-value"
+                id="dashboardPapers">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <h3>
+                SAVED MONTHS
+            </h3>
+
+            <div
+                class="dashboard-value"
+                id="dashboardMonths">
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SCHEDULE TOOL -->
+
+<section
+    id="scheduleTool"
+    class="section">
+
+    <div class="section-title">
+        SCHEDULE TOOL
+    </div>
+
+    <div class="schedule-tool-box">
+
+        <div class="paper-row">
+
+            <label for="scheduleToolDate">
+                DATE
+            </label>
+
+            <input
+                type="date"
+                id="scheduleToolDate"
+                onchange="updateScheduleTool()">
+
+        </div>
+
+        <div
+            class="schedule-result"
+            id="scheduleToolResult">
+
+            Choose a date to see the scheduled person.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- AGREEMENTS -->
+
+<section
+    id="agreements"
+    class="section">
+
+    <div class="section-title">
+        AGREEMENTS
+    </div>
+
+
+    <div class="agreement-box">
+
+        <h3>
+            SHOWER SCHEDULE AGREEMENT
+        </h3>
+
+        <strong>
+            Between: Matt and Angelo
+        </strong>
+
+
+PURPOSE
+
+This agreement is made to keep the shower schedule clear, fair, and consistent.
+
+
+AGREED RULE
+
+NO MATTER WHAT DAY IT IS, WHAT TIME SOMEONE SHOWERS, OR WHO SHOWERS FIRST, THE SHOWER SCHEDULE WILL STILL BE FOLLOWED.
+
+
+RULES
+
+I. Showering earlier or later does NOT change the schedule.
+
+II. If someone showers before their scheduled day, it does NOT automatically give them the next shower day.
+
+III. The next person follows the schedule exactly as written.
+
+IV. The schedule can only be changed if BOTH Matt and Angelo agree to the change.
+
+V. Who ever showers first any day has to sign the paper witch is given at the end of each shower.
+
+    </div>
+
+
+    <div class="agreement-box">
+
+        <h3>
+            ROBLOX RULES AGREEMENT
+        </h3>
+
+        <strong>
+            Between: Matt and Angelo
+        </strong>
+
+
+PURPOSE
+
+This agreement is made to make sure the rules are clear, fair, and apply equally to everyone when Roblox is being used.
+
+
+MAIN RULE
+
+WHENEVER ROBLOX IS BEING USED, THESE RULES APPLY TO ALL PEOPLE.
+
+
+RULES
+
+I. Whenever Roblox is being used, everyone must follow the agreed rules.
+
+II. No person gets a different set of rules just because they are the person playing.
+
+III. The rules apply to both Matt and Angelo equally.
+
+IV. The rules remain in effect for the entire time Roblox is being used.
+
+V. If a rule needs to be changed, both Matt and Angelo must agree to the change.
+
+VI. Neither person can change the rules by themselves.
+
+
+Matt's Signature:
+______________________________
+
+Date:
+__________________
+
+
+Angelo's Signature:
+______________________________
+
+Date:
+__________________
+
+    </div>
+
+</section>
+
+
+<!-- SETTINGS -->
+
+<section
+    id="settings"
+    class="section">
+
+    <div class="section-title">
+        SETTINGS
+    </div>
+
+    <div class="settings-box">
+
+        <div class="settings-row">
+
+            <strong>
+                MODE
+            </strong>
+
+            <p id="settingsMode">
+                -
+            </p>
+
+        </div>
+
+
+        <div class="settings-row">
+
+            <strong>
+                DATA
+            </strong>
+
+            <p>
+                All current website data is stored in this browser.
+            </p>
+
+        </div>
+
+
+        <div class="settings-row">
+
+            <strong>
+                RESET OPTIONS
+            </strong>
+
+            <div class="controls">
+
+                <button
+                    class="action-button"
+                    onclick="resetPoints()">
+
+                    RESET ANGELO'S POINTS
+
+                </button>
+
+
+                <button
+                    class="action-button"
+                    onclick="resetRewards()">
+
+                    CLEAR REWARD HISTORY
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="settings-row">
+
+            <strong>
+                PRINT
+            </strong>
+
+            <p>
+                Use your browser's print option to print the current page.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
 
 
 <!-- ANGELO'S POINTS -->
 
-<section id="points" class="section">
+<section
+    id="points"
+    class="section">
 
     <div class="section-title">
         ANGELO'S POINTS
     </div>
 
+
     <div class="points-box">
-        <div class="points-number" id="angeloPointsDisplay">0 POINTS</div>
-        <div class="points-goal">GOAL: 15 POINTS</div>
+
+        <div
+            class="points-number"
+            id="angeloPointsDisplay">
+
+            0 POINTS
+
+        </div>
+
+
+        <div class="points-goal">
+
+            GOAL: 15 POINTS
+
+        </div>
+
 
         <div class="points-progress">
-            <div id="angeloPointsProgress" class="points-progress-fill"></div>
+
+            <div
+                id="angeloPointsProgress"
+                class="points-progress-fill">
+            </div>
+
         </div>
 
+
         <div class="controls">
-            <button id="addPointButton" class="action-button blue-button" onclick="addAngeloPoint()">
+
+            <button
+                id="addPointButton"
+                class="action-button blue-button"
+                onclick="addAngeloPoint()">
+
                 ADD 1 POINT
+
             </button>
-            <button id="removePointButton" class="action-button" onclick="removeAngeloPoint()">
+
+
+            <button
+                id="removePointButton"
+                class="action-button"
+                onclick="removeAngeloPoint()">
+
                 REMOVE 1 POINT
+
             </button>
+
         </div>
+
     </div>
+
 
     <div class="section-title">
         REWARD HISTORY
     </div>
+
 
     <div class="reward-history">
 
         <div class="reward-form">
 
             <div class="paper-row">
-                <label for="rewardDate">DATE</label>
-                <input type="date" id="rewardDate">
+
+                <label for="rewardDate">
+                    DATE
+                </label>
+
+                <input
+                    type="date"
+                    id="rewardDate">
+
             </div>
 
-            <div class="paper-row">
-                <label for="rewardName">REWARD</label>
-                <input type="text" id="rewardName" placeholder="Enter the reward">
-            </div>
 
             <div class="paper-row">
-                <label for="rewardNotes">NOTES</label>
-                <textarea id="rewardNotes" placeholder="Optional notes..."></textarea>
+
+                <label for="rewardName">
+                    REWARD
+                </label>
+
+                <input
+                    type="text"
+                    id="rewardName"
+                    placeholder="Enter the reward">
+
             </div>
+
+
+            <div class="paper-row">
+
+                <label for="rewardNotes">
+                    NOTES
+                </label>
+
+                <textarea
+                    id="rewardNotes"
+                    placeholder="Optional notes...">
+                </textarea>
+
+            </div>
+
 
             <div class="controls">
-                <button id="saveRewardButton" class="action-button blue-button" onclick="saveReward()">
+
+                <button
+                    id="saveRewardButton"
+                    class="action-button blue-button"
+                    onclick="saveReward()">
+
                     SAVE REWARD
+
                 </button>
-                <button id="newRewardButton" class="action-button" onclick="newReward()">
+
+
+                <button
+                    id="newRewardButton"
+                    class="action-button"
+                    onclick="newReward()">
+
                     NEW REWARD
+
                 </button>
+
             </div>
 
         </div>
 
-        <div id="rewardHistoryContainer"></div>
+
+        <div
+            id="rewardHistoryContainer">
+        </div>
 
     </div>
 
@@ -656,7 +1054,9 @@ select {
 
 <!-- SIGNING TRACKER -->
 
-<section id="tracker" class="section">
+<section
+    id="tracker"
+    class="section">
 
     <div class="section-title">
         SIGNING TRACKER
@@ -672,20 +1072,56 @@ select {
             id="trackerMonth"
             onchange="renderTracker()">
 
-            <option value="0">January</option>
-            <option value="1">February</option>
-            <option value="2">March</option>
-            <option value="3">April</option>
-            <option value="4">May</option>
-            <option value="5">June</option>
-            <option value="6">July</option>
-            <option value="7">August</option>
-            <option value="8" selected>September</option>
-            <option value="9">October</option>
-            <option value="10">November</option>
-            <option value="11">December</option>
+            <option value="0">
+                January
+            </option>
+
+            <option value="1">
+                February
+            </option>
+
+            <option value="2">
+                March
+            </option>
+
+            <option value="3">
+                April
+            </option>
+
+            <option value="4">
+                May
+            </option>
+
+            <option value="5">
+                June
+            </option>
+
+            <option value="6">
+                July
+            </option>
+
+            <option value="7">
+                August
+            </option>
+
+            <option value="8">
+                September
+            </option>
+
+            <option value="9">
+                October
+            </option>
+
+            <option value="10">
+                November
+            </option>
+
+            <option value="11">
+                December
+            </option>
 
         </select>
+
 
         <label for="trackerYear">
             Year:
@@ -695,24 +1131,40 @@ select {
             id="trackerYear"
             onchange="renderTracker()">
 
-            <option>2026</option>
-            <option>2027</option>
-            <option>2028</option>
-            <option>2029</option>
-            <option>2030</option>
+            <option>
+                2026
+            </option>
+
+            <option>
+                2027
+            </option>
+
+            <option>
+                2028
+            </option>
+
+            <option>
+                2029
+            </option>
+
+            <option>
+                2030
+            </option>
 
         </select>
 
     </div>
 
-    <div id="trackerContainer"></div>
 
-    <!-- ONLY NEW BUTTON -->
+    <div id="trackerContainer">
+    </div>
+
+
     <div class="controls">
 
         <button
             class="action-button blue-button"
-            onclick="saveCurrentTracker()">
+            onclick="saveTracker()">
 
             SAVE TRACKER
 
@@ -723,68 +1175,45 @@ select {
 </section>
 
 
-<!-- CONTRACT -->
+<!-- RULES AND REGULATION -->
 
-<section id="contract" class="section">
+<section
+    id="contract"
+    class="section">
 
     <div class="section-title">
         RULES AND REGULATION
     </div>
 
+
     <div class="contract">
 
-        <h2>SHOWER SCHEDULE AGREEMENT</h2>
+SHOWER SCHEDULE AGREEMENT
 
-        <p>
-            <strong>Between: Matt and Angelo</strong>
-        </p>
+Between: Matt and Angelo
 
-        <h3>PURPOSE</h3>
 
-        <p>
-            This agreement is made to keep the shower schedule clear,
-            fair, and consistent.
-        </p>
+PURPOSE
 
-        <h3>AGREED RULE</h3>
+This agreement is made to keep the shower schedule clear, fair, and consistent.
 
-        <div class="agreed-rule">
 
-            NO MATTER WHAT DAY IT IS, WHAT TIME SOMEONE SHOWERS,
-            OR WHO SHOWERS FIRST, THE SHOWER SCHEDULE WILL STILL
-            BE FOLLOWED.
+AGREED RULE
 
-        </div>
+NO MATTER WHAT DAY IT IS, WHAT TIME SOMEONE SHOWERS, OR WHO SHOWERS FIRST, THE SHOWER SCHEDULE WILL STILL BE FOLLOWED.
 
-        <h3>RULES</h3>
 
-        <p>
-            <strong>I.</strong>
-            Showering earlier or later does NOT change the schedule.
-        </p>
+RULES
 
-        <p>
-            <strong>II.</strong>
-            If someone showers before their scheduled day,
-            it does NOT automatically give them the next shower day.
-        </p>
+I. Showering earlier or later does NOT change the schedule.
 
-        <p>
-            <strong>III.</strong>
-            The next person follows the schedule exactly as written.
-        </p>
+II. If someone showers before their scheduled day, it does NOT automatically give them the next shower day.
 
-        <p>
-            <strong>IV.</strong>
-            The schedule can only be changed if BOTH Matt and Angelo
-            agree to the change.
-        </p>
+III. The next person follows the schedule exactly as written.
 
-        <p>
-            <strong>V.</strong>
-            Who ever showers first any day has to sign the paper
-            witch is given at the end of each shower.
-        </p>
+IV. The schedule can only be changed if BOTH Matt and Angelo agree to the change.
+
+V. Who ever showers first any day has to sign the paper witch is given at the end of each shower.
 
     </div>
 
@@ -793,11 +1222,14 @@ select {
 
 <!-- CALENDAR -->
 
-<section id="calendar" class="section">
+<section
+    id="calendar"
+    class="section">
 
     <div class="section-title">
         CALENDAR
     </div>
+
 
     <div class="controls">
 
@@ -809,85 +1241,79 @@ select {
             id="calendarYear"
             onchange="renderCalendar()">
 
-            <option selected>2026</option>
-            <option>2027</option>
-            <option>2028</option>
-            <option>2029</option>
-            <option>2030</option>
+            <option>
+                2026
+            </option>
+
+            <option>
+                2027
+            </option>
+
+            <option>
+                2028
+            </option>
+
+            <option>
+                2029
+            </option>
+
+            <option>
+                2030
+            </option>
 
         </select>
 
+    </div>
+
+
+    <div id="calendarContainer">
+    </div>
+
+
+    <div class="controls">
+
         <button
             class="action-button blue-button"
-            onclick="saveCurrentMonth()">
+            onclick="saveMonth()">
 
             SAVE MONTH
 
         </button>
 
-        <button
-            class="action-button"
-            onclick="resetCalendar()">
-
-            RESET CURRENT YEAR
-
-        </button>
-
     </div>
-
-    <div id="calendarContainer"></div>
 
 </section>
 
 
 <!-- SAVED DATA -->
 
-<section id="saved" class="section">
+<section
+    id="saved"
+    class="section">
 
     <div class="section-title">
         SAVED DATA
     </div>
 
-    <div class="view-notice" id="savedNotice">
-        Saved information is stored on this device.
+
+    <div id="savedDataContainer">
     </div>
-
-    <h2>
-        Saved Months
-    </h2>
-
-    <div id="savedMonthsContainer"></div>
-
-    <!-- ONLY NEW SAVED DATA SECTION -->
-
-    <h2>
-        Saved Signing Trackers
-    </h2>
-
-    <div id="savedTrackersContainer"></div>
-
-    <h2>
-        Saved Daily Papers
-    </h2>
-
-    <div id="savedPapersContainer"></div>
 
 </section>
 
 
 <!-- DAILY PAPER -->
 
-<section id="paper" class="section">
+<section
+    id="paper"
+    class="section">
 
     <div class="section-title">
         DAILY PAPER
     </div>
 
-    <div class="paper">
 
-        <h2>
-            DAILY SHOWER PAPER
-        </h2>
+    <div class="paper">
 
         <div class="paper-row">
 
@@ -897,27 +1323,22 @@ select {
 
             <input
                 type="date"
-                id="paperDate"
-                style="
-                    height:52px;
-                    border:2px solid black;
-                    padding:8px;
-                    font-size:18px;
-                "
-            >
+                id="paperDate">
 
         </div>
+
 
         <div class="paper-row">
 
             <label for="firstShowerer">
-                WHO SHOWERED FIRST?
+                WHO SHOWERED FIRST
             </label>
 
-            <select id="firstShowerer">
+            <select
+                id="firstShowerer">
 
                 <option value="">
-                    Choose one
+                    Select
                 </option>
 
                 <option value="Angelo">
@@ -932,16 +1353,18 @@ select {
 
         </div>
 
+
         <div class="paper-row">
 
             <label for="paperStatus">
                 SIGNING STATUS
             </label>
 
-            <select id="paperStatus">
+            <select
+                id="paperStatus">
 
                 <option value="">
-                    Choose one
+                    Select
                 </option>
 
                 <option value="SIGNED">
@@ -956,6 +1379,7 @@ select {
 
         </div>
 
+
         <div class="paper-row">
 
             <label for="paperNotes">
@@ -964,10 +1388,11 @@ select {
 
             <textarea
                 id="paperNotes"
-                placeholder="Write notes here..."
-            ></textarea>
+                placeholder="Notes...">
+            </textarea>
 
         </div>
+
 
         <div class="controls">
 
@@ -978,6 +1403,7 @@ select {
                 SAVE
 
             </button>
+
 
             <button
                 class="action-button"
@@ -1003,6 +1429,7 @@ select {
 const MINE_PASSWORD = "1014131814";
 const VIEW_PASSWORD = "1814";
 
+
 let editMode = false;
 
 
@@ -1015,15 +1442,18 @@ let calendarData =
         localStorage.getItem("showerCalendarData")
     ) || {};
 
+
 let trackerData =
     JSON.parse(
         localStorage.getItem("showerTrackerData")
     ) || {};
 
+
 let savedPapers =
     JSON.parse(
         localStorage.getItem("showerSavedPapers")
     ) || [];
+
 
 let savedMonths =
     JSON.parse(
@@ -1031,34 +1461,28 @@ let savedMonths =
     ) || [];
 
 
-/* ============================================================
-   NEW: SAVED SIGNING TRACKERS
-   ============================================================ */
-
 let savedTrackers =
     JSON.parse(
         localStorage.getItem("showerSavedTrackers")
     ) || [];
 
 
-/* Make sure it is an array */
-
 if (!Array.isArray(savedTrackers)) {
     savedTrackers = [];
 }
 
 
-/* ============================================================
-   ANGELO'S POINTS AND REWARD HISTORY
-   ============================================================ */
-
 let angeloPoints =
-    Number(localStorage.getItem("angeloPoints")) || 0;
+    Number(
+        localStorage.getItem("angeloPoints")
+    ) || 0;
+
 
 let rewardHistory =
     JSON.parse(
         localStorage.getItem("angeloRewardHistory")
     ) || [];
+
 
 if (!Array.isArray(rewardHistory)) {
     rewardHistory = [];
@@ -1072,23 +1496,31 @@ if (!Array.isArray(rewardHistory)) {
 function login() {
 
     const password =
-        document.getElementById("passwordInput").value;
+        document.getElementById(
+            "passwordInput"
+        ).value;
+
 
     const message =
-        document.getElementById("loginMessage");
+        document.getElementById(
+            "loginMessage"
+        );
 
-
-    /* EDIT MODE */
 
     if (password === MINE_PASSWORD) {
 
         editMode = true;
 
-        document.getElementById("loginScreen")
-            .style.display = "none";
+        document.getElementById(
+            "loginScreen"
+        ).style.display = "none";
 
-        document.getElementById("modeText")
-            .textContent = "EDIT MODE";
+
+        document.getElementById(
+            "modeText"
+        ).textContent =
+            "EDIT MODE";
+
 
         setupEditMode();
 
@@ -1098,17 +1530,20 @@ function login() {
     }
 
 
-    /* VIEW ONLY MODE */
-
     if (password === VIEW_PASSWORD) {
 
         editMode = false;
 
-        document.getElementById("loginScreen")
-            .style.display = "none";
+        document.getElementById(
+            "loginScreen"
+        ).style.display = "none";
 
-        document.getElementById("modeText")
-            .textContent = "VIEW ONLY";
+
+        document.getElementById(
+            "modeText"
+        ).textContent =
+            "VIEW ONLY";
+
 
         setupViewMode();
 
@@ -1120,6 +1555,7 @@ function login() {
 
     message.textContent =
         "Incorrect password.";
+
 }
 
 
@@ -1129,226 +1565,245 @@ function login() {
 
 function setupEditMode() {
 
-    document.getElementById("navTracker")
-        .style.display = "";
+    document.getElementById(
+        "navTracker"
+    ).style.display = "";
 
-    document.getElementById("navCalendar")
-        .style.display = "";
 
-    document.getElementById("navPaper")
-        .style.display = "";
+    document.getElementById(
+        "navCalendar"
+    ).style.display = "";
 
-    document.querySelectorAll("select")
-        .forEach(function(select) {
 
-            select.disabled = false;
+    document.getElementById(
+        "navPaper"
+    ).style.display = "";
 
-        });
 
-    document.querySelectorAll("input")
-        .forEach(function(input) {
+    document.getElementById(
+        "navSettings"
+    ).style.display = "";
 
-            if (input.id !== "passwordInput") {
-                input.disabled = false;
-            }
 
-        });
+    document.querySelectorAll(
+        "select"
+    ).forEach(function(select) {
 
-    document.querySelectorAll("textarea")
-        .forEach(function(textarea) {
+        select.disabled = false;
 
-            textarea.disabled = false;
+    });
 
-        });
 
-    document.querySelectorAll(".action-button")
-        .forEach(function(button) {
+    document.querySelectorAll(
+        "input"
+    ).forEach(function(input) {
 
-            button.style.display = "";
+        if (
+            input.id !==
+            "passwordInput"
+        ) {
 
-        });
+            input.disabled = false;
+
+        }
+
+    });
+
+
+    document.querySelectorAll(
+        "textarea"
+    ).forEach(function(textarea) {
+
+        textarea.disabled = false;
+
+    });
+
+
+    setupPointsMode();
+
 }
 
 
 /* ============================================================
-   VIEW ONLY MODE
+   VIEW MODE
    ============================================================ */
 
 function setupViewMode() {
 
-    /*
-       COMPLETELY HIDE THESE THREE SECTIONS
-    */
-
-    document.getElementById("navTracker")
-        .style.display = "none";
-
-    document.getElementById("navCalendar")
-        .style.display = "none";
-
-    document.getElementById("navPaper")
-        .style.display = "none";
+    document.getElementById(
+        "navTracker"
+    ).style.display = "none";
 
 
-    document.getElementById("tracker")
-        .classList.add("hidden-for-view");
-
-    document.getElementById("calendar")
-        .classList.add("hidden-for-view");
-
-    document.getElementById("paper")
-        .classList.add("hidden-for-view");
+    document.getElementById(
+        "navCalendar"
+    ).style.display = "none";
 
 
-    /*
-       DISABLE EVERYTHING THAT CAN EDIT
-    */
-
-    document.querySelectorAll("select")
-        .forEach(function(select) {
-
-            select.disabled = true;
-
-        });
-
-    document.querySelectorAll("input")
-        .forEach(function(input) {
-
-            if (input.id !== "passwordInput") {
-                input.disabled = true;
-            }
-
-        });
-
-    document.querySelectorAll("textarea")
-        .forEach(function(textarea) {
-
-            textarea.disabled = true;
-
-        });
+    document.getElementById(
+        "navPaper"
+    ).style.display = "none";
 
 
-    /*
-       HIDE ALL SAVE/RESET/DELETE BUTTONS
-    */
-
-    document.querySelectorAll(".action-button")
-        .forEach(function(button) {
-
-            button.style.display = "none";
-
-        });
-
-    document.querySelectorAll(".delete-button")
-        .forEach(function(button) {
-
-            button.style.display = "none";
-
-        });
+    document.getElementById(
+        "navSettings"
+    ).style.display = "none";
 
 
-    document.getElementById("savedNotice")
-        .textContent =
-        "VIEW ONLY MODE — saved information cannot be changed here.";
+    document.querySelectorAll(
+        "select"
+    ).forEach(function(select) {
+
+        select.disabled = true;
+
+    });
+
+
+    document.querySelectorAll(
+        "input"
+    ).forEach(function(input) {
+
+        if (
+            input.id !==
+            "passwordInput"
+        ) {
+
+            input.disabled = true;
+
+        }
+
+    });
+
+
+    document.querySelectorAll(
+        "textarea"
+    ).forEach(function(textarea) {
+
+        textarea.disabled = true;
+
+    });
+
+
+    document.querySelectorAll(
+        ".action-button"
+    ).forEach(function(button) {
+
+        button.style.display = "none";
+
+    });
+
+
+    setupPointsMode();
+
 }
 
 
 /* ============================================================
-   SECTIONS
+   SECTION NAVIGATION
    ============================================================ */
 
 function showSection(sectionId) {
-
-    /*
-       Prevent VIEW MODE from opening hidden sections
-    */
 
     if (
         !editMode &&
         (
             sectionId === "tracker" ||
             sectionId === "calendar" ||
-            sectionId === "paper"
+            sectionId === "paper" ||
+            sectionId === "settings"
         )
     ) {
 
         return;
+
     }
 
 
-    document.querySelectorAll(".section")
-        .forEach(function(section) {
+    document.querySelectorAll(
+        ".section"
+    ).forEach(function(section) {
 
-            section.classList.remove("active");
+        section.classList.remove(
+            "active"
+        );
 
-        });
+    });
 
 
     const section =
-        document.getElementById(sectionId);
+        document.getElementById(
+            sectionId
+        );
+
 
     if (section) {
 
-        section.classList.add("active");
+        section.classList.add(
+            "active"
+        );
 
     }
 
 
-    if (sectionId === "calendar") {
+    if (
+        sectionId ===
+        "calendar"
+    ) {
 
         renderCalendar();
 
     }
 
 
-    if (sectionId === "tracker") {
+    if (
+        sectionId ===
+        "tracker"
+    ) {
 
         renderTracker();
 
     }
 
 
-    if (sectionId === "saved") {
+    if (
+        sectionId ===
+        "saved"
+    ) {
 
         renderSavedData();
 
     }
-}
 
 
-/* ============================================================
-   INITIALIZE
-   ============================================================ */
+    if (
+        sectionId ===
+        "dashboard"
+    ) {
 
-function initializePage() {
-
-    setToday();
-
-    renderCalendar();
-
-    renderTracker();
-
-    renderSavedData();
-    setRewardToday();
-    renderAngeloPoints();
-    renderRewardHistory();
-    setupPointsMode();
-
-
-    /*
-       EDIT MODE opens Calendar
-       VIEW MODE opens Saved Data
-    */
-
-    if (editMode) {
-
-        showSection("calendar");
-
-    } else {
-
-        showSection("saved");
+        renderDashboard();
 
     }
+
+
+    if (
+        sectionId ===
+        "scheduleTool"
+    ) {
+
+        updateScheduleTool();
+
+    }
+
+
+    if (
+        sectionId ===
+        "settings"
+    ) {
+
+        updateSettings();
+
+    }
+
 }
 
 
@@ -1361,22 +1816,38 @@ function setToday() {
     const today =
         new Date();
 
+
     const yyyy =
         today.getFullYear();
+
 
     const mm =
         String(
             today.getMonth() + 1
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
+
 
     const dd =
         String(
             today.getDate()
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
-    document.getElementById("paperDate")
-        .value =
-        yyyy + "-" + mm + "-" + dd;
+
+    document.getElementById(
+        "paperDate"
+    ).value =
+        yyyy +
+        "-" +
+        mm +
+        "-" +
+        dd;
+
 }
 
 
@@ -1390,10 +1861,22 @@ function calendarKey(
     day
 ) {
 
-    return year + "-" +
-        String(month + 1).padStart(2, "0") +
+    return (
+        year +
         "-" +
-        String(day).padStart(2, "0");
+        String(
+            month + 1
+        ).padStart(
+            2,
+            "0"
+        ) +
+        "-" +
+        String(day).padStart(
+            2,
+            "0"
+        )
+    );
+
 }
 
 
@@ -1410,14 +1893,18 @@ function renderCalendar() {
             ).value
         );
 
+
     const container =
         document.getElementById(
             "calendarContainer"
         );
 
+
     container.innerHTML = "";
 
+
     const monthNames = [
+
         "January",
         "February",
         "March",
@@ -1430,6 +1917,20 @@ function renderCalendar() {
         "October",
         "November",
         "December"
+
+    ];
+
+
+    const dayNames = [
+
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+
     ];
 
 
@@ -1440,15 +1941,20 @@ function renderCalendar() {
     ) {
 
         const monthTitle =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
+
 
         monthTitle.className =
             "month-title";
+
 
         monthTitle.textContent =
             monthNames[month] +
             " " +
             year;
+
 
         container.appendChild(
             monthTitle
@@ -1456,46 +1962,44 @@ function renderCalendar() {
 
 
         const wrapper =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
+
 
         wrapper.className =
             "calendar-wrapper";
 
 
         const grid =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
+
 
         grid.className =
             "calendar-grid";
 
 
-        const weekdays = [
-            "Sunday",
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday"
-        ];
+        dayNames.forEach(
+            function(dayName) {
 
-
-        weekdays.forEach(
-            function(day) {
-
-                const header =
+                const heading =
                     document.createElement(
                         "div"
                     );
 
-                header.className =
-                    "day-header";
 
-                header.textContent =
-                    day;
+                heading.className =
+                    "calendar-day-name";
+
+
+                heading.textContent =
+                    dayName;
+
 
                 grid.appendChild(
-                    header
+                    heading
                 );
 
             }
@@ -1510,14 +2014,6 @@ function renderCalendar() {
             ).getDay();
 
 
-        const daysInMonth =
-            new Date(
-                year,
-                month + 1,
-                0
-            ).getDate();
-
-
         for (
             let i = 0;
             i < firstDay;
@@ -1529,12 +2025,15 @@ function renderCalendar() {
                     "div"
                 );
 
+
             empty.className =
-                "calendar-day invalid";
+                "calendar-empty";
+
 
             grid.appendChild(
                 empty
             );
+
         }
 
 
@@ -1544,27 +2043,47 @@ function renderCalendar() {
             day++
         ) {
 
+            const testDate =
+                new Date(
+                    year,
+                    month,
+                    day
+                );
+
+
+            if (
+                testDate.getMonth() !==
+                month
+            ) {
+
+                const invalid =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                invalid.className =
+                    "calendar-empty";
+
+
+                grid.appendChild(
+                    invalid
+                );
+
+
+                continue;
+
+            }
+
+
             const cell =
                 document.createElement(
                     "div"
                 );
 
+
             cell.className =
                 "calendar-day";
-
-
-            if (day > daysInMonth) {
-
-                cell.classList.add(
-                    "invalid"
-                );
-
-                grid.appendChild(
-                    cell
-                );
-
-                continue;
-            }
 
 
             const number =
@@ -1572,11 +2091,14 @@ function renderCalendar() {
                     "div"
                 );
 
+
             number.className =
-                "day-number";
+                "calendar-day-number";
+
 
             number.textContent =
                 day;
+
 
             cell.appendChild(
                 number
@@ -1588,15 +2110,54 @@ function renderCalendar() {
                     "select"
                 );
 
-            select.className =
-                "calendar-person-select";
+
+            const blank =
+                document.createElement(
+                    "option"
+                );
 
 
-            select.innerHTML = `
-                <option value="">Choose</option>
-                <option value="Angelo">Angelo</option>
-                <option value="Matthew">Matthew</option>
-            `;
+            blank.value = "";
+            blank.textContent = "Select";
+
+
+            select.appendChild(
+                blank
+            );
+
+
+            const angelo =
+                document.createElement(
+                    "option"
+                );
+
+
+            angelo.value = "Angelo";
+            angelo.textContent = "Angelo";
+
+
+            select.appendChild(
+                angelo
+            );
+
+
+            const matthew =
+                document.createElement(
+                    "option"
+                );
+
+
+            matthew.value =
+                "Matthew";
+
+
+            matthew.textContent =
+                "Matthew";
+
+
+            select.appendChild(
+                matthew
+            );
 
 
             const key =
@@ -1608,7 +2169,8 @@ function renderCalendar() {
 
 
             select.value =
-                calendarData[key] || "";
+                calendarData[key] ||
+                "";
 
 
             select.onchange =
@@ -1618,8 +2180,10 @@ function renderCalendar() {
                         return;
                     }
 
+
                     calendarData[key] =
                         select.value;
+
 
                     localStorage.setItem(
                         "showerCalendarData",
@@ -1627,6 +2191,10 @@ function renderCalendar() {
                             calendarData
                         )
                     );
+
+
+                    renderDashboard();
+
                 };
 
 
@@ -1634,20 +2202,25 @@ function renderCalendar() {
                 select
             );
 
+
             grid.appendChild(
                 cell
             );
+
         }
 
 
         const totalCells =
             firstDay + 31;
 
+
         const remainder =
             totalCells % 7;
 
 
-        if (remainder !== 0) {
+        if (
+            remainder !== 0
+        ) {
 
             const extra =
                 7 - remainder;
@@ -1664,13 +2237,17 @@ function renderCalendar() {
                         "div"
                     );
 
+
                 empty.className =
-                    "calendar-day invalid";
+                    "calendar-empty";
+
 
                 grid.appendChild(
                     empty
                 );
+
             }
+
         }
 
 
@@ -1678,10 +2255,13 @@ function renderCalendar() {
             grid
         );
 
+
         container.appendChild(
             wrapper
         );
+
     }
+
 }
 
 
@@ -1689,7 +2269,7 @@ function renderCalendar() {
    SAVE MONTH
    ============================================================ */
 
-function saveCurrentMonth() {
+function saveMonth() {
 
     if (!editMode) {
         return;
@@ -1704,44 +2284,24 @@ function saveCurrentMonth() {
         );
 
 
-    const monthNames = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December"
-    ];
-
-
-    const month =
+    const monthNumber =
         prompt(
-            "Which month do you want to save?\n\n" +
-            "Type 1 for January, 2 for February, 3 for March, etc."
+            "Enter the month number to save (1-12):"
         );
 
 
-    if (month === null) {
+    if (!monthNumber) {
         return;
     }
 
 
-    const monthNumber =
-        Number(month) - 1;
+    const month =
+        Number(monthNumber) - 1;
 
 
     if (
-        !Number.isInteger(
-            monthNumber
-        ) ||
-        monthNumber < 0 ||
-        monthNumber > 11
+        month < 0 ||
+        month > 11
     ) {
 
         alert(
@@ -1749,15 +2309,8 @@ function saveCurrentMonth() {
         );
 
         return;
+
     }
-
-
-    const daysInMonth =
-        new Date(
-            year,
-            monthNumber + 1,
-            0
-        ).getDate();
 
 
     const monthData = {};
@@ -1765,50 +2318,58 @@ function saveCurrentMonth() {
 
     for (
         let day = 1;
-        day <= daysInMonth;
+        day <= 31;
         day++
     ) {
+
+        const date =
+            new Date(
+                year,
+                month,
+                day
+            );
+
+
+        if (
+            date.getMonth() !==
+            month
+        ) {
+
+            continue;
+
+        }
+
 
         const key =
             calendarKey(
                 year,
-                monthNumber,
+                month,
                 day
             );
 
+
         monthData[day] =
-            calendarData[key] || "";
+            calendarData[key] ||
+            "";
+
     }
 
 
-    const savedMonth = {
+    savedMonths.unshift({
 
-        id:
-            Date.now(),
+        id: Date.now(),
 
-        year:
-            year,
+        year: year,
 
-        month:
-            monthNumber,
+        month: month,
 
-        monthName:
-            monthNames[
-                monthNumber
-            ],
+        data: monthData,
 
         savedAt:
             new Date()
-                .toLocaleString(),
+                .toLocaleString()
 
-        days:
-            monthData
-    };
-
-
-    savedMonths.unshift(
-        savedMonth
-    );
+    });
 
 
     localStorage.setItem(
@@ -1820,88 +2381,13 @@ function saveCurrentMonth() {
 
 
     renderSavedData();
+    renderDashboard();
 
 
     alert(
-        monthNames[monthNumber] +
-        " " +
-        year +
-        " was saved."
-    );
-}
-
-
-/* ============================================================
-   RESET
-   ============================================================ */
-
-function resetCalendar() {
-
-    if (!editMode) {
-        return;
-    }
-
-
-    const year =
-        Number(
-            document.getElementById(
-                "calendarYear"
-            ).value
-        );
-
-
-    const answer =
-        confirm(
-            "Are you sure you want to clear the current year's calendar?"
-        );
-
-
-    if (!answer) {
-        return;
-    }
-
-
-    for (
-        let month = 0;
-        month < 12;
-        month++
-    ) {
-
-        const daysInMonth =
-            new Date(
-                year,
-                month + 1,
-                0
-            ).getDate();
-
-
-        for (
-            let day = 1;
-            day <= daysInMonth;
-            day++
-        ) {
-
-            const key =
-                calendarKey(
-                    year,
-                    month,
-                    day
-                );
-
-            delete calendarData[key];
-        }
-    }
-
-
-    localStorage.setItem(
-        "showerCalendarData",
-        JSON.stringify(
-            calendarData
-        )
+        "Month saved."
     );
 
-
-    renderCalendar();
 }
 
 
@@ -1909,36 +2395,20 @@ function resetCalendar() {
    TRACKER
    ============================================================ */
 
-function trackerKey(
-    year,
-    month,
-    day
-) {
-
-    return "tracker-" +
-        year + "-" +
-        String(month + 1)
-            .padStart(2, "0") +
-        "-" +
-        String(day)
-            .padStart(2, "0");
-}
-
-
 function renderTracker() {
-
-    const year =
-        Number(
-            document.getElementById(
-                "trackerYear"
-            ).value
-        );
-
 
     const month =
         Number(
             document.getElementById(
                 "trackerMonth"
+            ).value
+        );
+
+
+    const year =
+        Number(
+            document.getElementById(
+                "trackerYear"
             ).value
         );
 
@@ -1952,31 +2422,14 @@ function renderTracker() {
     container.innerHTML = "";
 
 
-    const table =
+    const grid =
         document.createElement(
-            "table"
+            "div"
         );
 
-    table.className =
-        "tracker-table";
 
-
-    table.innerHTML = `
-        <thead>
-            <tr>
-                <th>DAY</th>
-                <th>WHO</th>
-                <th>SIGNING STATUS</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    `;
-
-
-    const tbody =
-        table.querySelector(
-            "tbody"
-        );
+    grid.className =
+        "calendar-grid";
 
 
     for (
@@ -1985,114 +2438,98 @@ function renderTracker() {
         day++
     ) {
 
-        const tr =
-            document.createElement(
-                "tr"
-            );
-
-
-        const dayCell =
-            document.createElement(
-                "td"
-            );
-
-        dayCell.textContent =
-            day;
-
-        tr.appendChild(
-            dayCell
-        );
-
-
-        const personCell =
-            document.createElement(
-                "td"
-            );
-
-
-        const personSelect =
-            document.createElement(
-                "select"
-            );
-
-
-        personSelect.innerHTML = `
-            <option value="">Choose</option>
-            <option value="Angelo">Angelo</option>
-            <option value="Matthew">Matthew</option>
-        `;
-
-
-        const key =
-            trackerKey(
+        const date =
+            new Date(
                 year,
                 month,
                 day
             );
 
 
-        const stored =
-            trackerData[key] || {};
+        if (
+            date.getMonth() !==
+            month
+        ) {
+
+            continue;
+
+        }
 
 
-        personSelect.value =
-            stored.person || "";
-
-
-        personSelect.onchange =
-            function() {
-
-                if (!editMode) {
-                    return;
-                }
-
-
-                if (!trackerData[key]) {
-                    trackerData[key] = {};
-                }
-
-
-                trackerData[key].person =
-                    personSelect.value;
-
-
-                saveTracker();
-            };
-
-
-        personCell.appendChild(
-            personSelect
-        );
-
-        tr.appendChild(
-            personCell
-        );
-
-
-        const statusCell =
+        const box =
             document.createElement(
-                "td"
+                "div"
             );
 
 
-        const statusSelect =
+        box.className =
+            "calendar-day";
+
+
+        const number =
+            document.createElement(
+                "div"
+            );
+
+
+        number.className =
+            "calendar-day-number";
+
+
+        number.textContent =
+            day;
+
+
+        box.appendChild(
+            number
+        );
+
+
+        const key =
+            year +
+            "-" +
+            String(
+                month + 1
+            ).padStart(
+                2,
+                "0"
+            ) +
+            "-" +
+            String(day).padStart(
+                2,
+                "0"
+            );
+
+
+        const who =
             document.createElement(
                 "select"
             );
 
 
-        statusSelect.innerHTML = `
-            <option value="">Choose</option>
-            <option value="SIGNED">SIGNED</option>
-            <option value="MISSING">MISSING</option>
+        who.innerHTML = `
+
+            <option value="">
+                Who?
+            </option>
+
+            <option value="Angelo">
+                Angelo
+            </option>
+
+            <option value="Matthew">
+                Matthew
+            </option>
+
         `;
 
 
-        statusSelect.value =
-            stored.status || "";
+        who.value =
+            trackerData[key]?.who ||
+            "";
 
 
-        statusSelect.onchange =
+        who.onchange =
             function() {
 
                 if (!editMode) {
@@ -2101,40 +2538,101 @@ function renderTracker() {
 
 
                 if (!trackerData[key]) {
+
                     trackerData[key] = {};
+
+                }
+
+
+                trackerData[key].who =
+                    who.value;
+
+            };
+
+
+        const status =
+            document.createElement(
+                "select"
+            );
+
+
+        status.innerHTML = `
+
+            <option value="">
+                Status?
+            </option>
+
+            <option value="SIGNED">
+                SIGNED
+            </option>
+
+            <option value="MISSING">
+                MISSING
+            </option>
+
+        `;
+
+
+        status.value =
+            trackerData[key]?.status ||
+            "";
+
+
+        status.onchange =
+            function() {
+
+                if (!editMode) {
+                    return;
+                }
+
+
+                if (!trackerData[key]) {
+
+                    trackerData[key] = {};
+
                 }
 
 
                 trackerData[key].status =
-                    statusSelect.value;
+                    status.value;
 
-
-                saveTracker();
             };
 
 
-        statusCell.appendChild(
-            statusSelect
-        );
-
-        tr.appendChild(
-            statusCell
+        box.appendChild(
+            who
         );
 
 
-        tbody.appendChild(
-            tr
+        box.appendChild(
+            status
         );
+
+
+        grid.appendChild(
+            box
+        );
+
     }
 
 
     container.appendChild(
-        table
+        grid
     );
+
 }
 
 
+/* ============================================================
+   SAVE TRACKER
+   ============================================================ */
+
 function saveTracker() {
+
+    if (!editMode) {
+        return;
+    }
+
 
     localStorage.setItem(
         "showerTrackerData",
@@ -2142,26 +2640,6 @@ function saveTracker() {
             trackerData
         )
     );
-}
-
-
-/* ============================================================
-   NEW: SAVE CURRENT SIGNING TRACKER
-   ============================================================ */
-
-function saveCurrentTracker() {
-
-    if (!editMode) {
-        return;
-    }
-
-
-    const year =
-        Number(
-            document.getElementById(
-                "trackerYear"
-            ).value
-        );
 
 
     const month =
@@ -2172,82 +2650,33 @@ function saveCurrentTracker() {
         );
 
 
-    const monthNames = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December"
-    ];
+    const year =
+        Number(
+            document.getElementById(
+                "trackerYear"
+            ).value
+        );
 
 
-    const days = {};
+    savedTrackers.unshift({
 
+        id: Date.now(),
 
-    for (
-        let day = 1;
-        day <= 31;
-        day++
-    ) {
+        month: month,
 
-        const key =
-            trackerKey(
-                year,
-                month,
-                day
-            );
+        year: year,
 
-
-        const stored =
-            trackerData[key] || {};
-
-
-        days[day] = {
-
-            person:
-                stored.person || "",
-
-            status:
-                stored.status || ""
-
-        };
-    }
-
-
-    const savedTracker = {
-
-        id:
-            Date.now(),
-
-        year:
-            year,
-
-        month:
-            month,
-
-        monthName:
-            monthNames[month],
+        data: JSON.parse(
+            JSON.stringify(
+                trackerData
+            )
+        ),
 
         savedAt:
             new Date()
-                .toLocaleString(),
+                .toLocaleString()
 
-        days:
-            days
-
-    };
-
-
-    savedTrackers.unshift(
-        savedTracker
-    );
+    });
 
 
     localStorage.setItem(
@@ -2260,534 +2689,10 @@ function saveCurrentTracker() {
 
     renderSavedData();
 
-
     alert(
-        monthNames[month] +
-        " " +
-        year +
-        " Signing Tracker was saved."
-    );
-}
-
-
-/* ============================================================
-   NEW: SAVED SIGNING TRACKERS
-   ============================================================ */
-
-function renderSavedTrackers() {
-
-    const container =
-        document.getElementById(
-            "savedTrackersContainer"
-        );
-
-
-    if (!container) {
-        return;
-    }
-
-
-    container.innerHTML = "";
-
-
-    if (
-        !Array.isArray(savedTrackers) ||
-        savedTrackers.length === 0
-    ) {
-
-        container.innerHTML =
-            "<p>No saved signing trackers yet.</p>";
-
-        return;
-    }
-
-
-    savedTrackers.forEach(
-        function(savedTracker) {
-
-            const box =
-                document.createElement(
-                    "div"
-                );
-
-
-            box.className =
-                "saved-month";
-
-
-            const title =
-                document.createElement(
-                    "h3"
-                );
-
-
-            title.textContent =
-                savedTracker.monthName +
-                " " +
-                savedTracker.year +
-                " — Signing Tracker";
-
-
-            box.appendChild(
-                title
-            );
-
-
-            const savedTime =
-                document.createElement(
-                    "p"
-                );
-
-
-            savedTime.textContent =
-                "Saved: " +
-                savedTracker.savedAt;
-
-
-            box.appendChild(
-                savedTime
-            );
-
-
-            const table =
-                document.createElement(
-                    "table"
-                );
-
-
-            table.className =
-                "tracker-table";
-
-
-            table.innerHTML = `
-                <thead>
-                    <tr>
-                        <th>DAY</th>
-                        <th>WHO</th>
-                        <th>SIGNING STATUS</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            `;
-
-
-            const tbody =
-                table.querySelector(
-                    "tbody"
-                );
-
-
-            for (
-                let day = 1;
-                day <= 31;
-                day++
-            ) {
-
-                const tr =
-                    document.createElement(
-                        "tr"
-                    );
-
-
-                const dayCell =
-                    document.createElement(
-                        "td"
-                    );
-
-
-                dayCell.textContent =
-                    day;
-
-
-                tr.appendChild(
-                    dayCell
-                );
-
-
-                const personCell =
-                    document.createElement(
-                        "td"
-                    );
-
-
-                personCell.textContent =
-                    savedTracker.days[day]?.person ||
-                    "Not assigned";
-
-
-                tr.appendChild(
-                    personCell
-                );
-
-
-                const statusCell =
-                    document.createElement(
-                        "td"
-                    );
-
-
-                statusCell.textContent =
-                    savedTracker.days[day]?.status ||
-                    "Not selected";
-
-
-                tr.appendChild(
-                    statusCell
-                );
-
-
-                tbody.appendChild(
-                    tr
-                );
-            }
-
-
-            box.appendChild(
-                table
-            );
-
-
-            if (editMode) {
-
-                const deleteButton =
-                    document.createElement(
-                        "button"
-                    );
-
-
-                deleteButton.className =
-                    "delete-button";
-
-
-                deleteButton.textContent =
-                    "DELETE SAVED TRACKER";
-
-
-                deleteButton.onclick =
-                    function() {
-
-                        deleteSavedTracker(
-                            savedTracker.id
-                        );
-
-                    };
-
-
-                box.appendChild(
-                    deleteButton
-                );
-            }
-
-
-            container.appendChild(
-                box
-            );
-
-        }
-    );
-}
-
-
-/* ============================================================
-   NEW: DELETE SAVED SIGNING TRACKER
-   ============================================================ */
-
-function deleteSavedTracker(id) {
-
-    if (!editMode) {
-        return;
-    }
-
-
-    const answer =
-        confirm(
-            "Delete this saved signing tracker?"
-        );
-
-
-    if (!answer) {
-        return;
-    }
-
-
-    savedTrackers =
-        savedTrackers.filter(
-            function(item) {
-
-                return item.id !== id;
-
-            }
-        );
-
-
-    localStorage.setItem(
-        "showerSavedTrackers",
-        JSON.stringify(
-            savedTrackers
-        )
+        "Tracker saved."
     );
 
-
-    renderSavedTrackers();
-}
-
-
-/* ============================================================
-   ANGELO'S POINTS
-   ============================================================ */
-
-function renderAngeloPoints() {
-
-    const display =
-        document.getElementById("angeloPointsDisplay");
-
-    const progress =
-        document.getElementById("angeloPointsProgress");
-
-    if (!display || !progress) {
-        return;
-    }
-
-    display.textContent =
-        angeloPoints +
-        (angeloPoints === 1 ? " POINT" : " POINTS");
-
-    const percentage =
-        Math.max(0, Math.min((angeloPoints / 15) * 100, 100));
-
-    progress.style.width = percentage + "%";
-}
-
-
-function saveAngeloPoints() {
-
-    localStorage.setItem(
-        "angeloPoints",
-        String(angeloPoints)
-    );
-}
-
-
-function addAngeloPoint() {
-
-    if (!editMode) {
-        return;
-    }
-
-    angeloPoints++;
-    saveAngeloPoints();
-    renderAngeloPoints();
-}
-
-
-function removeAngeloPoint() {
-
-    if (!editMode) {
-        return;
-    }
-
-    angeloPoints--;
-    saveAngeloPoints();
-    renderAngeloPoints();
-}
-
-
-function setRewardToday() {
-
-    const input =
-        document.getElementById("rewardDate");
-
-    if (!input) {
-        return;
-    }
-
-    const today = new Date();
-
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, "0");
-    const dd = String(today.getDate()).padStart(2, "0");
-
-    input.value = yyyy + "-" + mm + "-" + dd;
-}
-
-
-function saveReward() {
-
-    if (!editMode) {
-        return;
-    }
-
-    const date =
-        document.getElementById("rewardDate").value;
-
-    const reward =
-        document.getElementById("rewardName").value.trim();
-
-    const notes =
-        document.getElementById("rewardNotes").value.trim();
-
-    if (!date) {
-        alert("Please choose a date.");
-        return;
-    }
-
-    if (!reward) {
-        alert("Please enter the reward.");
-        return;
-    }
-
-    const entry = {
-        id: Date.now(),
-        date: date,
-        reward: reward,
-        notes: notes,
-        savedAt: new Date().toLocaleString()
-    };
-
-    rewardHistory.unshift(entry);
-
-    localStorage.setItem(
-        "angeloRewardHistory",
-        JSON.stringify(rewardHistory)
-    );
-
-    renderRewardHistory();
-    newReward();
-
-    alert("Reward saved.");
-}
-
-
-function newReward() {
-
-    if (!editMode) {
-        return;
-    }
-
-    setRewardToday();
-
-    document.getElementById("rewardName").value = "";
-    document.getElementById("rewardNotes").value = "";
-}
-
-
-function renderRewardHistory() {
-
-    const container =
-        document.getElementById("rewardHistoryContainer");
-
-    if (!container) {
-        return;
-    }
-
-    container.innerHTML = "";
-
-    if (rewardHistory.length === 0) {
-        container.innerHTML = "<p>No rewards recorded yet.</p>";
-        return;
-    }
-
-    rewardHistory.forEach(function(entry) {
-
-        const box =
-            document.createElement("div");
-
-        box.className = "reward-entry";
-
-        const title =
-            document.createElement("h3");
-
-        title.textContent =
-            "Reward - " + entry.date;
-
-        box.appendChild(title);
-
-        const details =
-            document.createElement("pre");
-
-        details.textContent =
-            "Reward: " + entry.reward +
-            "\n\n" +
-            "Notes:\n" +
-            (entry.notes || "No notes") +
-            "\n\n" +
-            "Saved: " + entry.savedAt;
-
-        box.appendChild(details);
-
-        if (editMode) {
-
-            const deleteButton =
-                document.createElement("button");
-
-            deleteButton.className = "delete-button";
-            deleteButton.textContent = "DELETE REWARD";
-
-            deleteButton.onclick = function() {
-                deleteReward(entry.id);
-            };
-
-            box.appendChild(deleteButton);
-        }
-
-        container.appendChild(box);
-    });
-}
-
-
-function deleteReward(id) {
-
-    if (!editMode) {
-        return;
-    }
-
-    const answer =
-        confirm("Delete this saved reward?");
-
-    if (!answer) {
-        return;
-    }
-
-    rewardHistory = rewardHistory.filter(function(item) {
-        return item.id !== id;
-    });
-
-    localStorage.setItem(
-        "angeloRewardHistory",
-        JSON.stringify(rewardHistory)
-    );
-
-    renderRewardHistory();
-}
-
-
-function setupPointsMode() {
-
-    const addButton =
-        document.getElementById("addPointButton");
-
-    const removeButton =
-        document.getElementById("removePointButton");
-
-    const saveButton =
-        document.getElementById("saveRewardButton");
-
-    const newButton =
-        document.getElementById("newRewardButton");
-
-    if (!editMode) {
-
-        if (addButton) addButton.style.display = "none";
-        if (removeButton) removeButton.style.display = "none";
-        if (saveButton) saveButton.style.display = "none";
-        if (newButton) newButton.style.display = "none";
-    } else {
-
-        if (addButton) addButton.style.display = "";
-        if (removeButton) removeButton.style.display = "";
-        if (saveButton) saveButton.style.display = "";
-        if (newButton) newButton.style.display = "";
-    }
 }
 
 
@@ -2833,6 +2738,7 @@ function saveDailyPaper() {
         );
 
         return;
+
     }
 
 
@@ -2843,35 +2749,28 @@ function saveDailyPaper() {
         );
 
         return;
+
     }
 
 
     const paper = {
 
-        id:
-            Date.now(),
+        id: Date.now(),
 
-        date:
-            date,
+        date: date,
 
         firstShowerer:
             firstShowerer,
 
-        status:
-            status,
+        status: status,
 
-        notes:
-            notes,
+        notes: notes,
 
         savedAt:
             new Date()
                 .toLocaleString()
+
     };
-
-
-    if (!Array.isArray(savedPapers)) {
-        savedPapers = [];
-    }
 
 
     savedPapers.unshift(
@@ -2888,17 +2787,15 @@ function saveDailyPaper() {
 
 
     renderSavedData();
+    renderDashboard();
 
 
     alert(
         "Daily paper saved."
     );
+
 }
 
-
-/* ============================================================
-   NEW DAILY PAPER
-   ============================================================ */
 
 function newDailyPaper() {
 
@@ -2923,6 +2820,7 @@ function newDailyPaper() {
     document.getElementById(
         "paperNotes"
     ).value = "";
+
 }
 
 
@@ -2932,53 +2830,64 @@ function newDailyPaper() {
 
 function renderSavedData() {
 
-    renderSavedMonths();
-
-    /*
-       NEW
-       Saved Signing Trackers
-    */
-
-    renderSavedTrackers();
-
-    renderSavedPapers();
-}
-
-
-/* ============================================================
-   SAVED MONTHS
-   ============================================================ */
-
-function renderSavedMonths() {
-
     const container =
         document.getElementById(
-            "savedMonthsContainer"
+            "savedDataContainer"
         );
 
 
     container.innerHTML = "";
 
 
-    if (savedMonths.length === 0) {
+    /* SAVED MONTHS */
 
-        container.innerHTML =
-            "<p>No saved months yet.</p>";
+    const monthsTitle =
+        document.createElement(
+            "h2"
+        );
 
-        return;
+
+    monthsTitle.textContent =
+        "SAVED MONTHS";
+
+
+    container.appendChild(
+        monthsTitle
+    );
+
+
+    if (
+        savedMonths.length === 0
+    ) {
+
+        const empty =
+            document.createElement(
+                "p"
+            );
+
+
+        empty.textContent =
+            "No saved months.";
+
+
+        container.appendChild(
+            empty
+        );
+
     }
 
 
     savedMonths.forEach(
-        function(savedMonth) {
+        function(item) {
 
             const box =
                 document.createElement(
                     "div"
                 );
 
+
             box.className =
-                "saved-month";
+                "saved-item";
 
 
             const title =
@@ -2986,10 +2895,12 @@ function renderSavedMonths() {
                     "h3"
                 );
 
+
             title.textContent =
-                savedMonth.monthName +
-                " " +
-                savedMonth.year;
+                "Month " +
+                (item.month + 1) +
+                " / " +
+                item.year;
 
 
             box.appendChild(
@@ -2997,25 +2908,11 @@ function renderSavedMonths() {
             );
 
 
-            const savedTime =
-                document.createElement(
-                    "p"
-                );
-
-            savedTime.textContent =
-                "Saved: " +
-                savedMonth.savedAt;
-
-
-            box.appendChild(
-                savedTime
-            );
-
-
             const grid =
                 document.createElement(
                     "div"
                 );
+
 
             grid.className =
                 "saved-month-grid";
@@ -3027,48 +2924,48 @@ function renderSavedMonths() {
                 day++
             ) {
 
+                const date =
+                    new Date(
+                        item.year,
+                        item.month,
+                        day
+                    );
+
+
+                if (
+                    date.getMonth() !==
+                    item.month
+                ) {
+
+                    continue;
+
+                }
+
+
                 const dayBox =
                     document.createElement(
                         "div"
                     );
 
+
                 dayBox.className =
                     "saved-month-day";
 
 
-                const dayNumber =
-                    document.createElement(
-                        "strong"
+                dayBox.innerHTML =
+                    "<strong>Day " +
+                    day +
+                    "</strong>" +
+                    (
+                        item.data[day] ||
+                        "Not set"
                     );
-
-                dayNumber.textContent =
-                    "Day " + day;
-
-
-                dayBox.appendChild(
-                    dayNumber
-                );
-
-
-                const person =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                person.textContent =
-                    savedMonth.days[day] ||
-                    "Not assigned";
-
-
-                dayBox.appendChild(
-                    person
-                );
 
 
                 grid.appendChild(
                     dayBox
                 );
+
             }
 
 
@@ -3096,9 +2993,40 @@ function renderSavedMonths() {
                 deleteButton.onclick =
                     function() {
 
-                        deleteSavedMonth(
-                            savedMonth.id
+                        if (
+                            !confirm(
+                                "Delete this saved month?"
+                            )
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        savedMonths =
+                            savedMonths.filter(
+                                function(saved) {
+
+                                    return (
+                                        saved.id !==
+                                        item.id
+                                    );
+
+                                }
+                            );
+
+
+                        localStorage.setItem(
+                            "showerSavedMonths",
+                            JSON.stringify(
+                                savedMonths
+                            )
                         );
+
+
+                        renderSavedData();
+                        renderDashboard();
 
                     };
 
@@ -3106,6 +3034,7 @@ function renderSavedMonths() {
                 box.appendChild(
                     deleteButton
                 );
+
             }
 
 
@@ -3115,82 +3044,48 @@ function renderSavedMonths() {
 
         }
     );
-}
 
 
-/* ============================================================
-   DELETE SAVED MONTH
-   ============================================================ */
+    /* SAVED TRACKERS */
 
-function deleteSavedMonth(id) {
-
-    if (!editMode) {
-        return;
-    }
-
-
-    const answer =
-        confirm(
-            "Delete this saved month?"
+    const trackersTitle =
+        document.createElement(
+            "h2"
         );
 
 
-    if (!answer) {
-        return;
-    }
+    trackersTitle.textContent =
+        "SAVED SIGNING TRACKERS";
 
 
-    savedMonths =
-        savedMonths.filter(
-            function(item) {
-
-                return item.id !== id;
-
-            }
-        );
-
-
-    localStorage.setItem(
-        "showerSavedMonths",
-        JSON.stringify(
-            savedMonths
-        )
+    container.appendChild(
+        trackersTitle
     );
 
 
-    renderSavedMonths();
-}
-
-
-/* ============================================================
-   SAVED PAPERS
-   ============================================================ */
-
-function renderSavedPapers() {
-
-    const container =
-        document.getElementById(
-            "savedPapersContainer"
-        );
-
-
-    container.innerHTML = "";
-
-
     if (
-        !Array.isArray(savedPapers) ||
-        savedPapers.length === 0
+        savedTrackers.length === 0
     ) {
 
-        container.innerHTML =
-            "<p>No saved daily papers yet.</p>";
+        const empty =
+            document.createElement(
+                "p"
+            );
 
-        return;
+
+        empty.textContent =
+            "No saved signing trackers.";
+
+
+        container.appendChild(
+            empty
+        );
+
     }
 
 
-    savedPapers.forEach(
-        function(paper) {
+    savedTrackers.forEach(
+        function(item) {
 
             const box =
                 document.createElement(
@@ -3209,8 +3104,600 @@ function renderSavedPapers() {
 
 
             title.textContent =
-                "Daily Paper - " +
-                paper.date;
+                "Tracker — " +
+                (item.month + 1) +
+                "/" +
+                item.year;
+
+
+            box.appendChild(
+                title
+            );
+
+
+            const pre =
+                document.createElement(
+                    "pre"
+                );
+
+
+            pre.textContent =
+                JSON.stringify(
+                    item.data,
+                    null,
+                    2
+                );
+
+
+            box.appendChild(
+                pre
+            );
+
+
+            if (editMode) {
+
+                const deleteButton =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                deleteButton.className =
+                    "delete-button";
+
+
+                deleteButton.textContent =
+                    "DELETE TRACKER";
+
+
+                deleteButton.onclick =
+                    function() {
+
+                        if (
+                            !confirm(
+                                "Delete this saved tracker?"
+                            )
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        savedTrackers =
+                            savedTrackers.filter(
+                                function(saved) {
+
+                                    return (
+                                        saved.id !==
+                                        item.id
+                                    );
+
+                                }
+                            );
+
+
+                        localStorage.setItem(
+                            "showerSavedTrackers",
+                            JSON.stringify(
+                                savedTrackers
+                            )
+                        );
+
+
+                        renderSavedData();
+
+                    };
+
+
+                box.appendChild(
+                    deleteButton
+                );
+
+            }
+
+
+            container.appendChild(
+                box
+            );
+
+        }
+    );
+
+
+    /* SAVED PAPERS */
+
+    const papersTitle =
+        document.createElement(
+            "h2"
+        );
+
+
+    papersTitle.textContent =
+        "SAVED DAILY PAPERS";
+
+
+    container.appendChild(
+        papersTitle
+    );
+
+
+    if (
+        savedPapers.length === 0
+    ) {
+
+        const empty =
+            document.createElement(
+                "p"
+            );
+
+
+        empty.textContent =
+            "No saved daily papers.";
+
+
+        container.appendChild(
+            empty
+        );
+
+    }
+
+
+    savedPapers.forEach(
+        function(item) {
+
+            const box =
+                document.createElement(
+                    "div"
+                );
+
+
+            box.className =
+                "saved-item";
+
+
+            const title =
+                document.createElement(
+                    "h3"
+                );
+
+
+            title.textContent =
+                "Daily Paper — " +
+                item.date;
+
+
+            box.appendChild(
+                title
+            );
+
+
+            const pre =
+                document.createElement(
+                    "pre"
+                );
+
+
+            pre.textContent =
+
+                "Date: " +
+                item.date +
+
+                "\n\nWho showered first: " +
+                item.firstShowerer +
+
+                "\n\nSigning status: " +
+                item.status +
+
+                "\n\nNotes:\n" +
+                (
+                    item.notes ||
+                    "No notes"
+                ) +
+
+                "\n\nSaved: " +
+                item.savedAt;
+
+
+            box.appendChild(
+                pre
+            );
+
+
+            if (editMode) {
+
+                const deleteButton =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                deleteButton.className =
+                    "delete-button";
+
+
+                deleteButton.textContent =
+                    "DELETE DAILY PAPER";
+
+
+                deleteButton.onclick =
+                    function() {
+
+                        if (
+                            !confirm(
+                                "Delete this daily paper?"
+                            )
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        savedPapers =
+                            savedPapers.filter(
+                                function(saved) {
+
+                                    return (
+                                        saved.id !==
+                                        item.id
+                                    );
+
+                                }
+                            );
+
+
+                        localStorage.setItem(
+                            "showerSavedPapers",
+                            JSON.stringify(
+                                savedPapers
+                            )
+                        );
+
+
+                        renderSavedData();
+                        renderDashboard();
+
+                    };
+
+
+                box.appendChild(
+                    deleteButton
+                );
+
+            }
+
+
+            container.appendChild(
+                box
+            );
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   ANGELO'S POINTS
+   ============================================================ */
+
+function renderAngeloPoints() {
+
+    const display =
+        document.getElementById(
+            "angeloPointsDisplay"
+        );
+
+
+    const progress =
+        document.getElementById(
+            "angeloPointsProgress"
+        );
+
+
+    if (
+        !display ||
+        !progress
+    ) {
+
+        return;
+
+    }
+
+
+    display.textContent =
+        angeloPoints +
+        " POINTS";
+
+
+    const percent =
+        Math.min(
+            100,
+            Math.max(
+                0,
+                (
+                    angeloPoints /
+                    15
+                ) *
+                100
+            )
+        );
+
+
+    progress.style.width =
+        percent +
+        "%";
+
+}
+
+
+function saveAngeloPoints() {
+
+    localStorage.setItem(
+        "angeloPoints",
+        String(
+            angeloPoints
+        )
+    );
+
+}
+
+
+function addAngeloPoint() {
+
+    if (!editMode) {
+        return;
+    }
+
+
+    angeloPoints++;
+
+
+    saveAngeloPoints();
+
+    renderAngeloPoints();
+
+    renderDashboard();
+
+}
+
+
+function removeAngeloPoint() {
+
+    if (!editMode) {
+        return;
+    }
+
+
+    angeloPoints--;
+
+
+    saveAngeloPoints();
+
+    renderAngeloPoints();
+
+    renderDashboard();
+
+}
+
+
+/* ============================================================
+   REWARDS
+   ============================================================ */
+
+function setRewardToday() {
+
+    const input =
+        document.getElementById(
+            "rewardDate"
+        );
+
+
+    if (!input) {
+        return;
+    }
+
+
+    const today =
+        new Date();
+
+
+    const yyyy =
+        today.getFullYear();
+
+
+    const mm =
+        String(
+            today.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const dd =
+        String(
+            today.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    input.value =
+        yyyy +
+        "-" +
+        mm +
+        "-" +
+        dd;
+
+}
+
+
+function saveReward() {
+
+    if (!editMode) {
+        return;
+    }
+
+
+    const date =
+        document.getElementById(
+            "rewardDate"
+        ).value;
+
+
+    const reward =
+        document.getElementById(
+            "rewardName"
+        ).value.trim();
+
+
+    const notes =
+        document.getElementById(
+            "rewardNotes"
+        ).value.trim();
+
+
+    if (!date) {
+
+        alert(
+            "Please choose a date."
+        );
+
+        return;
+
+    }
+
+
+    if (!reward) {
+
+        alert(
+            "Please enter the reward."
+        );
+
+        return;
+
+    }
+
+
+    const entry = {
+
+        id: Date.now(),
+
+        date: date,
+
+        reward: reward,
+
+        notes: notes,
+
+        savedAt:
+            new Date()
+                .toLocaleString()
+
+    };
+
+
+    rewardHistory.unshift(
+        entry
+    );
+
+
+    localStorage.setItem(
+        "angeloRewardHistory",
+        JSON.stringify(
+            rewardHistory
+        )
+    );
+
+
+    renderRewardHistory();
+
+    renderDashboard();
+
+    newReward();
+
+
+    alert(
+        "Reward saved."
+    );
+
+}
+
+
+function newReward() {
+
+    if (!editMode) {
+        return;
+    }
+
+
+    setRewardToday();
+
+
+    document.getElementById(
+        "rewardName"
+    ).value = "";
+
+
+    document.getElementById(
+        "rewardNotes"
+    ).value = "";
+
+}
+
+
+function renderRewardHistory() {
+
+    const container =
+        document.getElementById(
+            "rewardHistoryContainer"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    container.innerHTML = "";
+
+
+    if (
+        rewardHistory.length === 0
+    ) {
+
+        container.innerHTML =
+            "<p>No rewards recorded yet.</p>";
+
+        return;
+
+    }
+
+
+    rewardHistory.forEach(
+        function(item) {
+
+            const box =
+                document.createElement(
+                    "div"
+                );
+
+
+            box.className =
+                "reward-entry";
+
+
+            const title =
+                document.createElement(
+                    "h3"
+                );
+
+
+            title.textContent =
+                "Reward — " +
+                item.date;
 
 
             box.appendChild(
@@ -3225,26 +3712,18 @@ function renderSavedPapers() {
 
 
             details.textContent =
-                "Who showered first: " +
-                paper.firstShowerer +
-                "\n\n" +
 
-                "Signing status: " +
-                (
-                    paper.status ||
-                    "Not selected"
-                ) +
-                "\n\n" +
+                "Reward: " +
+                item.reward +
 
-                "Notes:\n" +
+                "\n\nNotes:\n" +
                 (
-                    paper.notes ||
+                    item.notes ||
                     "No notes"
                 ) +
-                "\n\n" +
 
-                "Saved: " +
-                paper.savedAt;
+                "\n\nSaved: " +
+                item.savedAt;
 
 
             box.appendChild(
@@ -3265,14 +3744,14 @@ function renderSavedPapers() {
 
 
                 deleteButton.textContent =
-                    "DELETE PAPER";
+                    "DELETE REWARD";
 
 
                 deleteButton.onclick =
                     function() {
 
-                        deletePaper(
-                            paper.id
+                        deleteReward(
+                            item.id
                         );
 
                     };
@@ -3281,6 +3760,7 @@ function renderSavedPapers() {
                 box.appendChild(
                     deleteButton
                 );
+
             }
 
 
@@ -3290,71 +3770,632 @@ function renderSavedPapers() {
 
         }
     );
+
 }
 
 
-/* ============================================================
-   DELETE PAPER
-   ============================================================ */
-
-function deletePaper(id) {
+function deleteReward(id) {
 
     if (!editMode) {
         return;
     }
 
 
-    const answer =
-        confirm(
-            "Delete this saved paper?"
-        );
+    if (
+        !confirm(
+            "Delete this saved reward?"
+        )
+    ) {
 
-
-    if (!answer) {
         return;
+
     }
 
 
-    savedPapers =
-        savedPapers.filter(
+    rewardHistory =
+        rewardHistory.filter(
             function(item) {
 
-                return item.id !== id;
+                return (
+                    item.id !==
+                    id
+                );
 
             }
         );
 
 
     localStorage.setItem(
-        "showerSavedPapers",
+        "angeloRewardHistory",
         JSON.stringify(
-            savedPapers
+            rewardHistory
         )
     );
 
 
-    renderSavedPapers();
+    renderRewardHistory();
+
+    renderDashboard();
+
 }
 
 
 /* ============================================================
-   ENTER KEY
+   POINTS MODE
    ============================================================ */
 
-document.getElementById(
-    "passwordInput"
-).addEventListener(
-    "keydown",
-    function(event) {
+function setupPointsMode() {
 
-        if (event.key === "Enter") {
+    const addButton =
+        document.getElementById(
+            "addPointButton"
+        );
 
-            login();
+
+    const removeButton =
+        document.getElementById(
+            "removePointButton"
+        );
+
+
+    const saveButton =
+        document.getElementById(
+            "saveRewardButton"
+        );
+
+
+    const newButton =
+        document.getElementById(
+            "newRewardButton"
+        );
+
+
+    if (!editMode) {
+
+        if (addButton)
+            addButton.style.display =
+                "none";
+
+
+        if (removeButton)
+            removeButton.style.display =
+                "none";
+
+
+        if (saveButton)
+            saveButton.style.display =
+                "none";
+
+
+        if (newButton)
+            newButton.style.display =
+                "none";
+
+    } else {
+
+        if (addButton)
+            addButton.style.display =
+                "";
+
+
+        if (removeButton)
+            removeButton.style.display =
+                "";
+
+
+        if (saveButton)
+            saveButton.style.display =
+                "";
+
+
+        if (newButton)
+            newButton.style.display =
+                "";
+
+    }
+
+}
+
+
+/* ============================================================
+   DASHBOARD
+   ============================================================ */
+
+function formatToolDate(value) {
+
+    if (!value) {
+        return "";
+    }
+
+
+    const parts =
+        value.split("-");
+
+
+    const d =
+        new Date(
+            Number(parts[0]),
+            Number(parts[1]) - 1,
+            Number(parts[2])
+        );
+
+
+    return d.toLocaleDateString(
+        undefined,
+        {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        }
+    );
+
+}
+
+
+function getScheduledPerson(
+    dateString
+) {
+
+    if (!dateString) {
+        return "NOT SET";
+    }
+
+
+    const parts =
+        dateString.split("-");
+
+
+    const year =
+        Number(parts[0]);
+
+
+    const month =
+        Number(parts[1]) - 1;
+
+
+    const day =
+        Number(parts[2]);
+
+
+    const key =
+        calendarKey(
+            year,
+            month,
+            day
+        );
+
+
+    return (
+        calendarData[key] ||
+        "NOT SET"
+    );
+
+}
+
+
+function setScheduleToolToday() {
+
+    const input =
+        document.getElementById(
+            "scheduleToolDate"
+        );
+
+
+    if (!input) {
+        return;
+    }
+
+
+    const today =
+        new Date();
+
+
+    input.value =
+        today.getFullYear() +
+        "-" +
+        String(
+            today.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        ) +
+        "-" +
+        String(
+            today.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    updateScheduleTool();
+
+}
+
+
+function updateScheduleTool() {
+
+    const input =
+        document.getElementById(
+            "scheduleToolDate"
+        );
+
+
+    const result =
+        document.getElementById(
+            "scheduleToolResult"
+        );
+
+
+    if (
+        !input ||
+        !result
+    ) {
+
+        return;
+
+    }
+
+
+    const person =
+        getScheduledPerson(
+            input.value
+        );
+
+
+    result.innerHTML =
+
+        "DATE: <strong>" +
+        formatToolDate(
+            input.value
+        ) +
+        "</strong><br><br>" +
+
+        "SCHEDULED PERSON: <strong>" +
+        person +
+        "</strong>";
+
+}
+
+
+function renderDashboard() {
+
+    const today =
+        new Date();
+
+
+    const todayValue =
+        today.getFullYear() +
+        "-" +
+        String(
+            today.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        ) +
+        "-" +
+        String(
+            today.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const todayPerson =
+        getScheduledPerson(
+            todayValue
+        );
+
+
+    const todayEl =
+        document.getElementById(
+            "dashboardToday"
+        );
+
+
+    const pointsEl =
+        document.getElementById(
+            "dashboardPoints"
+        );
+
+
+    const rewardsEl =
+        document.getElementById(
+            "dashboardRewards"
+        );
+
+
+    const papersEl =
+        document.getElementById(
+            "dashboardPapers"
+        );
+
+
+    const monthsEl =
+        document.getElementById(
+            "dashboardMonths"
+        );
+
+
+    const nextEl =
+        document.getElementById(
+            "dashboardNext"
+        );
+
+
+    if (todayEl) {
+
+        todayEl.textContent =
+            todayPerson;
+
+    }
+
+
+    if (pointsEl) {
+
+        pointsEl.textContent =
+            angeloPoints +
+            " POINTS";
+
+    }
+
+
+    if (rewardsEl) {
+
+        rewardsEl.textContent =
+            rewardHistory.length;
+
+    }
+
+
+    if (papersEl) {
+
+        papersEl.textContent =
+            savedPapers.length;
+
+    }
+
+
+    if (monthsEl) {
+
+        monthsEl.textContent =
+            savedMonths.length;
+
+    }
+
+
+    if (nextEl) {
+
+        let found =
+            "NOT SET";
+
+
+        for (
+            let i = 1;
+            i <= 31;
+            i++
+        ) {
+
+            const d =
+                new Date(
+                    today.getFullYear(),
+                    today.getMonth(),
+                    today.getDate() + i
+                );
+
+
+            const value =
+                d.getFullYear() +
+                "-" +
+                String(
+                    d.getMonth() + 1
+                ).padStart(
+                    2,
+                    "0"
+                ) +
+                "-" +
+                String(
+                    d.getDate()
+                ).padStart(
+                    2,
+                    "0"
+                );
+
+
+            const person =
+                getScheduledPerson(
+                    value
+                );
+
+
+            if (
+                person !==
+                "NOT SET"
+            ) {
+
+                found =
+                    person +
+                    " — " +
+                    formatToolDate(
+                        value
+                    );
+
+                break;
+
+            }
 
         }
 
+
+        nextEl.textContent =
+            found;
+
     }
-);
+
+}
+
+
+/* ============================================================
+   SETTINGS
+   ============================================================ */
+
+function updateSettings() {
+
+    const mode =
+        document.getElementById(
+            "settingsMode"
+        );
+
+
+    if (mode) {
+
+        mode.textContent =
+            editMode
+                ? "EDIT MODE"
+                : "VIEW ONLY";
+
+    }
+
+}
+
+
+function resetPoints() {
+
+    if (!editMode) {
+        return;
+    }
+
+
+    if (
+        !confirm(
+            "Reset Angelo's points to 0?"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    angeloPoints = 0;
+
+
+    saveAngeloPoints();
+
+    renderAngeloPoints();
+
+    renderDashboard();
+
+}
+
+
+function resetRewards() {
+
+    if (!editMode) {
+        return;
+    }
+
+
+    if (
+        !confirm(
+            "Clear all reward history?"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    rewardHistory = [];
+
+
+    localStorage.setItem(
+        "angeloRewardHistory",
+        JSON.stringify(
+            rewardHistory
+        )
+    );
+
+
+    renderRewardHistory();
+
+    renderDashboard();
+
+}
+
+
+/* ============================================================
+   INITIALIZE
+   ============================================================ */
+
+function initializePage() {
+
+    setToday();
+
+    renderCalendar();
+
+    renderTracker();
+
+    renderSavedData();
+
+    setRewardToday();
+
+    renderAngeloPoints();
+
+    renderRewardHistory();
+
+    setupPointsMode();
+
+    setScheduleToolToday();
+
+    renderDashboard();
+
+    updateSettings();
+
+
+    if (editMode) {
+
+        showSection(
+            "calendar"
+        );
+
+    } else {
+
+        showSection(
+            "dashboard"
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   START
+   ============================================================ */
+
+document
+    .getElementById(
+        "passwordInput"
+    )
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key ===
+                "Enter"
+            ) {
+
+                login();
+
+            }
+
+        }
+    );
+
 
 </script>
 
