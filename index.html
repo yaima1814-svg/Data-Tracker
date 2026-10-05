@@ -458,6 +458,51 @@ select {
     display: none !important;
 }
 
+
+.request-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 9999;
+    padding: 20px;
+    overflow-y: auto;
+}
+.request-modal-box {
+    background: white;
+    border: 3px solid black;
+    max-width: 850px;
+    margin: 40px auto;
+    padding: 20px;
+}
+.request-modal-box input,
+.request-modal-box textarea {
+    width: 100%;
+    border: 2px solid black;
+    padding: 12px;
+    font-size: 17px;
+    border-radius: 6px;
+}
+.request-card {
+    border: 2px solid black;
+    padding: 18px;
+    margin-bottom: 15px;
+    background: white;
+}
+.request-card h3 { margin-top: 0; color: #0057b8; }
+.request-card pre {
+    white-space: pre-wrap;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+}
+.request-status {
+    margin-top: 10px;
+    font-weight: bold;
+}
+.request-pending { border-left: 8px solid #0057b8; }
+.request-approved { border-left: 8px solid black; }
+.request-denied { border-left: 8px solid #777; }
+
 @media (max-width: 700px) {
 
     .section {
@@ -611,6 +656,7 @@ select {
     <button onclick="showSection('agreements')">AGREEMENTS</button>
     <button onclick="showSection('countdowns')">COUNTDOWNS</button>
     <button onclick="showSection('fairness')">FAIRNESS CHECKER</button>
+    <button id="navChangeRequests" onclick="showSection('changeRequests')">CHANGE REQUESTS</button>
     <button onclick="showSection('changeLog')">CHANGE LOG</button>
     <button onclick="showSection('points')">ANGELO'S POINTS</button>
 
@@ -654,8 +700,43 @@ select {
             <strong>• The schedule can only be changed if BOTH Matt and Angelo agree.</strong><br><br>
             <strong>• Roblox rules apply to all people.</strong>
         </div>
-        <button onclick="showSection('agreements')">VIEW ALL AGREEMENTS</button>
+        <button id="viewAgreementsButton" onclick="showSection('agreements')">VIEW ALL AGREEMENTS</button>
     </div>
+    <div class="dashboard-card" id="viewRequestCard">
+        <h3>REQUEST A CHANGE</h3>
+        <p>View Mode cannot change the schedule or saved information. You can send a request to the person using Edit Mode.</p>
+        <button class="action-button blue-button" onclick="openChangeRequestForm()">REQUEST A CHANGE</button>
+        <div id="requestStatus" class="request-status"></div>
+    </div>
+    <div class="dashboard-card" id="myRequestStatusCard">
+        <h3>MY CHANGE REQUESTS</h3>
+        <div id="myRequestStatus">No requests yet.</div>
+    </div>
+</section>
+
+<!-- CHANGE REQUEST FORM -->
+<div id="changeRequestModal" class="request-modal" style="display:none;">
+    <div class="request-modal-box">
+        <div class="section-title">REQUEST A CHANGE</div>
+        <div class="paper-row"><label for="requestName">YOUR NAME</label><input type="text" id="requestName" placeholder="Matt or Angelo"></div>
+        <div class="paper-row"><label for="requestChange">WHAT WOULD YOU LIKE CHANGED?</label><textarea id="requestChange" rows="5" placeholder="Explain what you want changed."></textarea></div>
+        <div class="paper-row"><label for="requestReason">WHY?</label><textarea id="requestReason" rows="4" placeholder="Explain why you are requesting the change."></textarea></div>
+        <div class="controls">
+            <button class="action-button blue-button" onclick="submitChangeRequest()">SUBMIT REQUEST</button>
+            <button class="action-button" onclick="closeChangeRequestForm()">CANCEL</button>
+        </div>
+        <div id="requestFormMessage"></div>
+    </div>
+</div>
+
+<!-- CHANGE REQUESTS -->
+<section id="changeRequests" class="section">
+    <div class="section-title">CHANGE REQUESTS</div>
+    <div class="schedule-tool-box">
+        <p>Requests submitted from View Mode appear here. You decide whether each request is approved or denied.</p>
+        <div id="changeRequestConnection" class="request-status"></div>
+    </div>
+    <div id="changeRequestsContainer"><p>No change requests yet.</p></div>
 </section>
 
 <!-- SCHEDULE TOOL -->
@@ -1180,6 +1261,14 @@ Date: __________________
 const MINE_PASSWORD = "1014131814";
 const VIEW_PASSWORD = "1814";
 
+/* SHARED CHANGE REQUEST DATABASE
+   This uses the Firebase Realtime Database created for this project.
+   If your Firebase database URL is different, replace only the URL below. */
+const SHARED_DATABASE_URL = "https://shower-schedul-default-rtdb.firebaseio.com";
+const SHARED_REQUESTS_PATH = "changeRequests";
+let sharedRequests = [];
+let requestSyncTimer = null;
+
 let editMode = false;
 
 
@@ -1276,6 +1365,7 @@ function login() {
         setupEditMode();
 
         initializePage();
+        startSharedRequestSync();
 
         return;
     }
@@ -1296,6 +1386,7 @@ function login() {
         setupViewMode();
 
         initializePage();
+        startSharedRequestSync();
 
         return;
     }
@@ -1311,6 +1402,16 @@ function login() {
    ============================================================ */
 
 function setupEditMode() {
+
+    document.querySelectorAll("nav button").forEach(function(button) {
+        button.style.display = "";
+    });
+
+    document.querySelectorAll(".section").forEach(function(section) {
+        section.classList.remove("hidden-for-view");
+    });
+    const agreementsButton = document.getElementById("viewAgreementsButton");
+    if (agreementsButton) agreementsButton.style.display = "";
 
     document.getElementById("navTracker")
         .style.display = "";
@@ -1362,83 +1463,43 @@ function setupEditMode() {
 
 function setupViewMode() {
 
-    /*
-       COMPLETELY HIDE THESE THREE SECTIONS
-    */
+    /* VIEW MODE: ONLY THE MAIN DASHBOARD IS AVAILABLE. */
+    document.querySelectorAll("nav button").forEach(function(button) {
+        button.style.display = "none";
+    });
+    const dashboardButton = document.querySelector("nav button[onclick=\"showSection('dashboard')\"]");
+    if (dashboardButton) dashboardButton.style.display = "";
 
-    document.getElementById("navTracker")
-        .style.display = "none";
+    document.querySelectorAll(".section").forEach(function(section) {
+        if (section.id !== "dashboard") {
+            section.classList.remove("active");
+            section.classList.add("hidden-for-view");
+        }
+    });
 
-    document.getElementById("navCalendar")
-        .style.display = "none";
+    document.querySelectorAll("select").forEach(function(select) {
+        select.disabled = true;
+    });
+    document.querySelectorAll("input, textarea").forEach(function(input) {
+        if (input.id !== "passwordInput") input.disabled = true;
+    });
 
-    document.getElementById("navPaper")
-        .style.display = "none";
+    /* Hide every normal editing button. The request button is handled separately. */
+    document.querySelectorAll(".action-button, .delete-button").forEach(function(button) {
+        button.style.display = "none";
+    });
+    const requestCard = document.getElementById("viewRequestCard");
+    if (requestCard) requestCard.style.display = "block";
+    const requestButton = requestCard ? requestCard.querySelector("button") : null;
+    if (requestButton) requestButton.style.display = "";
+    document.querySelectorAll("#changeRequestModal .action-button").forEach(function(button) {
+        button.style.display = "";
+    });
+    const agreementsButton = document.getElementById("viewAgreementsButton");
+    if (agreementsButton) agreementsButton.style.display = "none";
 
-    document.getElementById("navSettings")
-        .style.display = "none";
-
-
-    document.getElementById("tracker")
-        .classList.add("hidden-for-view");
-
-    document.getElementById("calendar")
-        .classList.add("hidden-for-view");
-
-    document.getElementById("paper")
-        .classList.add("hidden-for-view");
-
-
-    /*
-       DISABLE EVERYTHING THAT CAN EDIT
-    */
-
-    document.querySelectorAll("select")
-        .forEach(function(select) {
-
-            select.disabled = true;
-
-        });
-
-    document.querySelectorAll("input")
-        .forEach(function(input) {
-
-            if (input.id !== "passwordInput") {
-                input.disabled = true;
-            }
-
-        });
-
-    document.querySelectorAll("textarea")
-        .forEach(function(textarea) {
-
-            textarea.disabled = true;
-
-        });
-
-
-    /*
-       HIDE ALL SAVE/RESET/DELETE BUTTONS
-    */
-
-    document.querySelectorAll(".action-button")
-        .forEach(function(button) {
-
-            button.style.display = "none";
-
-        });
-
-    document.querySelectorAll(".delete-button")
-        .forEach(function(button) {
-
-            button.style.display = "none";
-
-        });
-
-
-    document.getElementById("savedNotice")
-        .textContent =
-        "VIEW ONLY MODE — saved information cannot be changed here.";
+    document.getElementById("savedNotice").textContent =
+        "VIEW ONLY MODE — saved information cannot be changed here. You can submit a change request.";
 }
 
 
@@ -1448,20 +1509,8 @@ function setupViewMode() {
 
 function showSection(sectionId) {
 
-    /*
-       Prevent VIEW MODE from opening hidden sections
-    */
-
-    if (
-        !editMode &&
-        (
-            sectionId === "tracker" ||
-            sectionId === "calendar" ||
-            sectionId === "paper" ||
-            sectionId === "settings"
-        )
-    ) {
-
+    /* VIEW MODE can ONLY open the Main Dashboard. */
+    if (!editMode && sectionId !== "dashboard") {
         return;
     }
 
@@ -1617,6 +1666,191 @@ function resetRewards() {
 }
 
 /* ============================================================
+   SHARED CHANGE REQUESTS
+   ============================================================ */
+function sharedDatabaseUrl(path) {
+    return SHARED_DATABASE_URL.replace(/\/$/, "") + "/" + path + ".json";
+}
+
+async function loadSharedRequests() {
+    try {
+        const response = await fetch(sharedDatabaseUrl(SHARED_REQUESTS_PATH), { cache: "no-store" });
+        if (!response.ok) throw new Error("Database request failed: " + response.status);
+        const data = await response.json();
+        sharedRequests = data ? Object.keys(data).map(function(key) {
+            return Object.assign({ id: key }, data[key]);
+        }) : [];
+        sharedRequests.sort(function(a,b) { return Number(b.createdAt || 0) - Number(a.createdAt || 0); });
+        renderChangeRequests();
+        const status = document.getElementById("changeRequestConnection");
+        if (status) status.textContent = "SHARED REQUEST DATABASE: CONNECTED";
+        return true;
+    } catch (error) {
+        const status = document.getElementById("changeRequestConnection");
+        if (status) status.textContent = "SHARED REQUEST DATABASE: NOT CONNECTED — CHECK THE FIREBASE DATABASE URL AND RULES.";
+        renderChangeRequests();
+        return false;
+    }
+}
+
+async function writeSharedRequest(request) {
+    const response = await fetch(sharedDatabaseUrl(SHARED_REQUESTS_PATH + "/" + encodeURIComponent(request.id)), {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(request)
+    });
+    if (!response.ok) throw new Error("Database write failed: " + response.status);
+}
+
+function openChangeRequestForm() {
+    const modal = document.getElementById("changeRequestModal");
+    if (!modal) return;
+    document.getElementById("requestName").value = "";
+    document.getElementById("requestChange").value = "";
+    document.getElementById("requestReason").value = "";
+    document.getElementById("requestFormMessage").textContent = "";
+    modal.style.display = "block";
+}
+
+function closeChangeRequestForm() {
+    const modal = document.getElementById("changeRequestModal");
+    if (modal) modal.style.display = "none";
+}
+
+async function submitChangeRequest() {
+    if (editMode) return;
+    const name = document.getElementById("requestName").value.trim();
+    const change = document.getElementById("requestChange").value.trim();
+    const reason = document.getElementById("requestReason").value.trim();
+    const message = document.getElementById("requestFormMessage");
+    if (!name || !change || !reason) {
+        message.textContent = "Please fill in your name, requested change, and reason.";
+        return;
+    }
+    const request = {
+        id: String(Date.now()) + "-" + Math.random().toString(36).slice(2, 8),
+        requestedBy: name,
+        change: change,
+        reason: reason,
+        status: "PENDING",
+        createdAt: Date.now(),
+        createdDate: new Date().toLocaleString()
+    };
+    try {
+        message.textContent = "Sending request...";
+        await writeSharedRequest(request);
+        sharedRequests.unshift(request);
+        renderChangeRequests();
+        message.textContent = "REQUEST SENT. It will appear in Edit Mode.";
+        setTimeout(closeChangeRequestForm, 800);
+    } catch (error) {
+        message.textContent = "The request could not be sent. Make sure the shared database is connected.";
+    }
+}
+
+async function decideChangeRequest(id, decision) {
+    if (!editMode) return;
+    const request = sharedRequests.find(function(item) { return item.id === id; });
+    if (!request) return;
+    const reason = prompt("Why are you " + decision.toLowerCase() + "ing this request?");
+    if (reason === null || !reason.trim()) return;
+    request.status = decision;
+    request.decidedAt = Date.now();
+    request.decidedDate = new Date().toLocaleString();
+    request.decisionReason = reason.trim();
+    request.decidedBy = "Matt";
+    try {
+        await writeSharedRequest(request);
+        renderChangeRequests();
+        recordChange("Change Request", decision + " request from " + request.requestedBy + ": " + request.change, reason.trim());
+    } catch (error) {
+        alert("The decision could not be saved to the shared database.");
+    }
+}
+
+async function deleteChangeRequest(id) {
+    if (!editMode) return;
+    const request = sharedRequests.find(function(item) { return item.id === id; });
+    if (!request) return;
+    const reason = prompt("Why are you deleting this change request?");
+    if (reason === null || !reason.trim()) return;
+    try {
+        const response = await fetch(sharedDatabaseUrl(SHARED_REQUESTS_PATH + "/" + encodeURIComponent(id)), { method: "DELETE" });
+        if (!response.ok) throw new Error("delete failed");
+        sharedRequests = sharedRequests.filter(function(item) { return item.id !== id; });
+        renderChangeRequests();
+        recordChange("Change Request", "Deleted request from " + request.requestedBy, reason.trim());
+    } catch (error) {
+        alert("The request could not be deleted from the shared database.");
+    }
+}
+
+function renderChangeRequests() {
+    const container = document.getElementById("changeRequestsContainer");
+    if (!container) return;
+    container.innerHTML = "";
+    if (!sharedRequests.length) {
+        container.innerHTML = "<p>No change requests yet.</p>";
+        const emptyStatus = document.getElementById("myRequestStatus");
+        if (emptyStatus) emptyStatus.textContent = "No requests yet.";
+        return;
+    }
+    sharedRequests.forEach(function(request) {
+        const card = document.createElement("div");
+        card.className = "request-card request-" + String(request.status || "PENDING").toLowerCase();
+        const h = document.createElement("h3");
+        h.textContent = "REQUEST — " + (request.status || "PENDING");
+        card.appendChild(h);
+        const pre = document.createElement("pre");
+        pre.textContent =
+            "Requested by: " + request.requestedBy + "\n" +
+            "Date: " + request.createdDate + "\n\n" +
+            "Requested change:\n" + request.change + "\n\n" +
+            "Reason:\n" + request.reason +
+            (request.decidedDate ? "\n\nDecision date: " + request.decidedDate + "\nDecision by: " + (request.decidedBy || "Matt") + "\nDecision reason:\n" + (request.decisionReason || "") : "");
+        card.appendChild(pre);
+        if (editMode && request.status === "PENDING") {
+            const approve = document.createElement("button");
+            approve.className = "action-button blue-button";
+            approve.textContent = "APPROVE";
+            approve.onclick = function() { decideChangeRequest(request.id, "APPROVED"); };
+            card.appendChild(approve);
+            const deny = document.createElement("button");
+            deny.className = "action-button";
+            deny.textContent = "DENY";
+            deny.onclick = function() { decideChangeRequest(request.id, "DENIED"); };
+            card.appendChild(deny);
+        }
+        if (editMode) {
+            const del = document.createElement("button");
+            del.className = "delete-button";
+            del.textContent = "DELETE REQUEST";
+            del.onclick = function() { deleteChangeRequest(request.id); };
+            card.appendChild(del);
+        }
+        container.appendChild(card);
+    });
+
+    const statusBox = document.getElementById("myRequestStatus");
+    if (statusBox) {
+        if (!sharedRequests.length) {
+            statusBox.textContent = "No requests yet.";
+        } else {
+            statusBox.innerHTML = sharedRequests.slice(0, 5).map(function(request) {
+                const status = escapeHTML(request.status || "PENDING");
+                return "<div class=\"request-status\"><strong>" + status + "</strong> — " + escapeHTML(request.requestedBy || "Unknown") + " — " + escapeHTML(request.change || "") + "</div>";
+            }).join("<br>");
+        }
+    }
+}
+
+function startSharedRequestSync() {
+    if (requestSyncTimer) clearInterval(requestSyncTimer);
+    loadSharedRequests();
+    requestSyncTimer = setInterval(loadSharedRequests, 3000);
+}
+
+/* ============================================================
    CHANGE LOG / COUNTDOWNS / FAIRNESS CHECKER
    ============================================================ */
 function recordChange(type, change, reason) {
@@ -1673,6 +1907,7 @@ function initializePage() {
     renderCountdowns();
     startCountdownTimer();
     runFairnessChecker();
+    renderChangeRequests();
 
     /*
        EDIT MODE opens Calendar
