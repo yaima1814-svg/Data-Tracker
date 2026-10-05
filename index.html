@@ -3,11 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Shower Schedule</title>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
@@ -23,41 +21,42 @@ header {
     background: black;
     color: white;
     text-align: center;
-    padding: 25px;
+    padding: 20px;
 }
 
 header h1 {
     margin: 0;
-    font-size: 34px;
+    font-size: 30px;
 }
 
 header p {
     margin: 8px 0 0;
-    font-weight: bold;
+    font-size: 16px;
 }
 
 nav {
+    background: white;
+    border-bottom: 3px solid black;
+    padding: 12px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 8px;
-    padding: 15px;
-    background: white;
-    border-bottom: 3px solid black;
+    gap: 10px;
 }
 
 nav button {
-    border: none;
     background: white;
+    border: 2px solid #0057b8;
     color: #0057b8;
-    font-size: 17px;
     font-weight: bold;
+    font-size: 16px;
+    padding: 10px 15px;
+    border-radius: 6px;
     cursor: pointer;
-    padding: 10px 14px;
 }
 
 nav button:hover {
-    text-decoration: underline;
+    background: #eef6ff;
 }
 
 .section {
@@ -73,58 +72,54 @@ nav button:hover {
 
 .section-title {
     color: #0057b8;
-    font-size: 28px;
     font-weight: bold;
+    font-size: 27px;
+    border-bottom: 3px solid black;
+    padding-bottom: 8px;
     margin-bottom: 20px;
 }
 
 .controls {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
     align-items: center;
+    gap: 15px;
     margin-bottom: 20px;
 }
 
-button,
+label {
+    font-weight: bold;
+    font-size: 17px;
+}
+
 select,
 input,
 textarea {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-select,
-input,
-textarea {
+select {
+    min-width: 150px;
+    min-height: 52px;
+    padding: 8px 12px;
+    font-size: 18px;
+    font-weight: bold;
     border: 2px solid black;
+    border-radius: 6px;
     background: white;
     color: black;
-    padding: 10px;
-    font-size: 17px;
-}
-
-select {
-    min-height: 45px;
-}
-
-input {
-    min-height: 45px;
-}
-
-textarea {
-    width: 100%;
-    min-height: 120px;
-    resize: vertical;
+    cursor: pointer;
 }
 
 .action-button {
-    min-height: 45px;
-    padding: 10px 18px;
+    min-height: 52px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
     border: 2px solid black;
     background: white;
     color: black;
-    font-size: 16px;
-    font-weight: bold;
+    border-radius: 6px;
     cursor: pointer;
 }
 
@@ -133,43 +128,183 @@ textarea {
 }
 
 .blue-button {
-    color: white;
-    background: #0057b8;
     border-color: #0057b8;
+    color: #0057b8;
 }
 
-.blue-button:hover {
-    background: #00458f;
+.calendar-wrapper {
+    width: 100%;
+    overflow-x: auto;
 }
 
-.delete-button {
-    margin-top: 10px;
-    min-height: 45px;
-    padding: 8px 15px;
-    font-size: 16px;
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(150px, 1fr));
+    gap: 6px;
+    min-width: 1080px;
+}
+
+.day-header {
+    background: black;
+    color: white;
+    text-align: center;
     font-weight: bold;
-    border: 2px solid black;
-    background: white;
-    cursor: pointer;
+    padding: 12px;
+    font-size: 17px;
 }
 
-.delete-button:hover {
+.calendar-day {
+    border: 2px solid black;
+    min-height: 145px;
+    padding: 10px;
+    background: white;
+}
+
+.calendar-day.invalid {
     background: #eeeeee;
+}
+
+.day-number {
+    font-size: 21px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.calendar-day select {
+    width: 100%;
+    min-width: 0;
+    min-height: 58px;
+    font-size: 17px;
+}
+
+.month-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin: 30px 0 12px;
+    padding: 10px;
+    border: 3px solid black;
+    background: white;
+}
+
+.tracker-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.tracker-table th,
+.tracker-table td {
+    border: 2px solid black;
+    padding: 10px;
+    text-align: center;
+}
+
+.tracker-table th {
+    background: black;
+    color: white;
+    font-size: 17px;
+}
+
+.tracker-table td {
+    font-size: 17px;
+}
+
+.tracker-table select {
+    width: 100%;
+    min-width: 180px;
+    min-height: 58px;
+}
+
+.contract {
+    border: 3px solid black;
+    padding: 25px;
+    line-height: 1.6;
+    font-size: 18px;
+}
+
+.contract h2 {
+    text-align: center;
+    margin-top: 0;
+}
+
+.contract h3 {
+    margin-bottom: 5px;
+}
+
+.agreed-rule {
+    border: 3px solid black;
+    padding: 15px;
+    font-weight: bold;
+    font-size: 20px;
+    margin: 15px 0;
+}
+
+.paper {
+    border: 3px solid black;
+    padding: 25px;
+    min-height: 600px;
+}
+
+.paper h2 {
+    text-align: center;
+    margin-top: 0;
+}
+
+.paper-row {
+    margin: 18px 0;
+}
+
+.paper-row label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.paper-row input,
+.paper-row select {
+    width: 100%;
+    max-width: 600px;
+}
+
+.paper-row textarea {
+    width: 100%;
+    min-height: 180px;
+    border: 2px solid black;
+    padding: 12px;
+    font-size: 18px;
+    resize: vertical;
+}
+
+.saved-item {
+    border: 2px solid black;
+    padding: 18px;
+    margin-bottom: 15px;
+}
+
+.saved-item h3 {
+    margin-top: 0;
+}
+
+.saved-item pre {
+    white-space: pre-wrap;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
 }
 
 .login-screen {
     position: fixed;
     inset: 0;
     background: white;
+    z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 9999;
+    padding: 20px;
 }
 
 .login-box {
-    width: 90%;
-    max-width: 500px;
+    width: 100%;
+    max-width: 450px;
     border: 3px solid black;
     padding: 30px;
     text-align: center;
@@ -181,106 +316,52 @@ textarea {
 
 .login-box input {
     width: 100%;
+    height: 55px;
+    border: 2px solid black;
+    font-size: 20px;
+    padding: 10px;
     margin: 15px 0;
+    text-align: center;
 }
 
 .login-box button {
-    min-height: 45px;
-    padding: 10px 25px;
-    border: 2px solid black;
-    background: black;
-    color: white;
+    width: 100%;
+    height: 55px;
+    font-size: 19px;
     font-weight: bold;
+    border: 2px solid black;
+    background: white;
     cursor: pointer;
 }
 
+.login-box button:hover {
+    background: #eeeeee;
+}
+
 #loginMessage {
-    margin-top: 15px;
+    color: black;
     font-weight: bold;
+    min-height: 25px;
+    margin-top: 10px;
 }
 
-.calendar-wrapper {
-    overflow-x: auto;
-    margin-bottom: 30px;
-}
-
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, minmax(150px, 1fr));
-    gap: 4px;
-    min-width: 1050px;
-}
-
-.calendar-day-name {
+.view-notice {
     border: 2px solid black;
     padding: 12px;
+    margin-bottom: 20px;
     font-weight: bold;
     text-align: center;
 }
 
-.calendar-day {
-    border: 2px solid black;
-    min-height: 120px;
-    padding: 8px;
-}
-
-.calendar-day-number {
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-
-.calendar-day select {
-    width: 100%;
-}
-
-.calendar-empty {
-    border: 2px solid white;
-    min-height: 120px;
-}
-
-.month-title {
-    font-size: 25px;
-    font-weight: bold;
-    margin: 20px 0 10px;
-}
-
-.contract {
+.saved-month {
     border: 3px solid black;
-    padding: 25px;
-    white-space: pre-line;
-    line-height: 1.6;
-}
-
-.paper {
-    border: 3px solid black;
-    padding: 25px;
-}
-
-.paper-row {
+    padding: 18px;
     margin-bottom: 20px;
 }
 
-.paper-row label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 7px;
-}
-
-.paper-row input,
-.paper-row select {
-    width: 100%;
-    max-width: 700px;
-}
-
-.saved-item {
-    border: 3px solid black;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.saved-item h3 {
-    color: #0057b8;
+.saved-month h3 {
     margin-top: 0;
+    color: #0057b8;
 }
 
 .saved-month-grid {
@@ -301,20 +382,33 @@ textarea {
     margin-bottom: 8px;
 }
 
-.hidden-for-view {
-    display: none !important;
+.delete-button {
+    margin-top: 10px;
+    min-height: 45px;
+    padding: 8px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border: 2px solid black;
+    background: white;
+    cursor: pointer;
 }
+
+.delete-button:hover {
+    background: #eeeeee;
+}
+
 
 .points-box {
     border: 3px solid black;
     padding: 25px;
     margin-bottom: 25px;
+    text-align: center;
 }
 
 .points-number {
     font-size: 42px;
     font-weight: bold;
-    margin: 10px 0;
+    margin-bottom: 8px;
 }
 
 .points-goal {
@@ -360,56 +454,8 @@ textarea {
     color: #0057b8;
 }
 
-/* NEW DASHBOARD / SCHEDULE / AGREEMENTS / SETTINGS */
-
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(250px, 1fr));
-    gap: 18px;
-}
-
-.dashboard-card,
-.schedule-tool-box,
-.agreement-box,
-.settings-box {
-    border: 3px solid black;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.dashboard-card h3,
-.agreement-box h3 {
-    margin-top: 0;
-    color: #0057b8;
-}
-
-.dashboard-value {
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.schedule-result {
-    border: 2px solid black;
-    padding: 18px;
-    margin-top: 20px;
-}
-
-.schedule-result strong {
-    color: #0057b8;
-}
-
-.agreement-box {
-    white-space: pre-line;
-    line-height: 1.6;
-}
-
-.settings-row {
-    border-bottom: 2px solid black;
-    padding: 15px 0;
-}
-
-.settings-row:last-child {
-    border-bottom: none;
+.hidden-for-view {
+    display: none !important;
 }
 
 @media (max-width: 700px) {
@@ -442,10 +488,6 @@ textarea {
         font-size: 16px;
         padding: 15px;
     }
-
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-    }
 }
 
 @media print {
@@ -465,6 +507,64 @@ textarea {
     }
 }
 
+/* NEW DASHBOARD / SCHEDULE / AGREEMENTS / SETTINGS */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(250px, 1fr));
+    gap: 18px;
+}
+
+.dashboard-card, .schedule-tool-box, .agreement-box, .settings-box {
+    border: 3px solid black;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.dashboard-card h3, .agreement-box h3 {
+    margin-top: 0;
+    color: #0057b8;
+}
+
+.dashboard-value {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.schedule-result {
+    border: 2px solid black;
+    padding: 18px;
+    margin-top: 20px;
+}
+
+.schedule-result strong {
+    color: #0057b8;
+}
+
+.agreement-box {
+    white-space: pre-line;
+}
+
+.settings-row {
+    border-bottom: 2px solid black;
+    padding: 15px 0;
+}
+
+.settings-row:last-child {
+    border-bottom: none;
+}
+
+.change-log-entry, .countdown-entry, .fairness-result, .rules-box { border: 2px solid black; padding: 16px; margin-top: 14px; }
+.change-log-entry h3, .countdown-entry h3 { margin-top: 0; color: #0057b8; }
+.countdown-grid { display: grid; grid-template-columns: repeat(3, minmax(120px, 1fr)); gap: 12px; margin-top: 18px; }
+.countdown-number { border: 2px solid black; padding: 14px; text-align: center; }
+.countdown-number strong { display: block; font-size: 26px; }
+.fairness-ok, .fairness-warning { font-weight: bold; }
+@media (max-width: 700px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 </style>
 </head>
 
@@ -476,9 +576,7 @@ textarea {
 
         <h1>SHOWER SCHEDULE</h1>
 
-        <p>
-            Enter your password to continue.
-        </p>
+        <p>Enter your password to continue.</p>
 
         <input
             type="password"
@@ -487,9 +585,7 @@ textarea {
             autocomplete="off"
         >
 
-        <button onclick="login()">
-            ENTER
-        </button>
+        <button onclick="login()">ENTER</button>
 
         <div id="loginMessage"></div>
 
@@ -500,552 +596,235 @@ textarea {
 
 <header>
 
-    <h1>
-        SHOWER SCHEDULE
-    </h1>
+    <h1>SHOWER SCHEDULE</h1>
 
-    <p id="modeText">
-        Loading...
-    </p>
+    <p id="modeText">Loading...</p>
 
 </header>
 
 
 <nav>
 
-    <button onclick="showSection('dashboard')">
-        MAIN DASHBOARD
-    </button>
+    <!-- EVERYONE -->
+    <button onclick="showSection('dashboard')">MAIN DASHBOARD</button>
+    <button onclick="showSection('scheduleTool')">SCHEDULE TOOL</button>
+    <button onclick="showSection('agreements')">AGREEMENTS</button>
+    <button onclick="showSection('countdowns')">COUNTDOWNS</button>
+    <button onclick="showSection('fairness')">FAIRNESS CHECKER</button>
+    <button onclick="showSection('changeLog')">CHANGE LOG</button>
+    <button onclick="showSection('points')">ANGELO'S POINTS</button>
 
-    <button onclick="showSection('scheduleTool')">
-        SCHEDULE TOOL
-    </button>
+    <!-- EDIT MODE ONLY -->
+    <button id="navTracker" onclick="showSection('tracker')">SIGNING TRACKER</button>
 
-    <button onclick="showSection('agreements')">
-        AGREEMENTS
-    </button>
+    <!-- EVERYONE -->
+    <button onclick="showSection('contract')">RULES AND REGULATION</button>
 
-    <button onclick="showSection('points')">
-        ANGELO'S POINTS
-    </button>
+    <!-- EDIT MODE ONLY -->
+    <button id="navCalendar" onclick="showSection('calendar')">CALENDAR</button>
 
-    <button
-        id="navTracker"
-        onclick="showSection('tracker')">
-        SIGNING TRACKER
-    </button>
+    <!-- EVERYONE -->
+    <button onclick="showSection('saved')">SAVED DATA</button>
 
-    <button onclick="showSection('contract')">
-        RULES AND REGULATION
-    </button>
-
-    <button
-        id="navCalendar"
-        onclick="showSection('calendar')">
-        CALENDAR
-    </button>
-
-    <button onclick="showSection('saved')">
-        SAVED DATA
-    </button>
-
-    <button
-        id="navPaper"
-        onclick="showSection('paper')">
-        DAILY PAPER
-    </button>
-
-    <button
-        id="navSettings"
-        onclick="showSection('settings')">
-        SETTINGS
-    </button>
+    <!-- EDIT MODE ONLY -->
+    <button id="navPaper" onclick="showSection('paper')">DAILY PAPER</button>
+    <button id="navSettings" onclick="showSection('settings')">SETTINGS</button>
 
 </nav>
 
 
+
+
 <!-- MAIN DASHBOARD -->
-
-<section
-    id="dashboard"
-    class="section">
-
-    <div class="section-title">
-        MAIN DASHBOARD
-    </div>
-
+<section id="dashboard" class="section">
+    <div class="section-title">MAIN DASHBOARD</div>
     <div class="dashboard-grid">
-
-        <div class="dashboard-card">
-
-            <h3>
-                TODAY
-            </h3>
-
-            <div
-                class="dashboard-value"
-                id="dashboardToday">
-                -
-            </div>
-
-        </div>
-
-
-        <div class="dashboard-card">
-
-            <h3>
-                NEXT SCHEDULED SHOWER
-            </h3>
-
-            <div
-                class="dashboard-value"
-                id="dashboardNext">
-                -
-            </div>
-
-        </div>
-
-
-        <div class="dashboard-card">
-
-            <h3>
-                ANGELO'S POINTS
-            </h3>
-
-            <div
-                class="dashboard-value"
-                id="dashboardPoints">
-                0
-            </div>
-
-            <p>
-                GOAL: 15 POINTS
-            </p>
-
-        </div>
-
-
-        <div class="dashboard-card">
-
-            <h3>
-                REWARD HISTORY
-            </h3>
-
-            <div
-                class="dashboard-value"
-                id="dashboardRewards">
-                0
-            </div>
-
-            <p>
-                REWARDS SAVED
-            </p>
-
-        </div>
-
-
-        <div class="dashboard-card">
-
-            <h3>
-                SAVED DAILY PAPERS
-            </h3>
-
-            <div
-                class="dashboard-value"
-                id="dashboardPapers">
-                0
-            </div>
-
-        </div>
-
-
-        <div class="dashboard-card">
-
-            <h3>
-                SAVED MONTHS
-            </h3>
-
-            <div
-                class="dashboard-value"
-                id="dashboardMonths">
-                0
-            </div>
-
-        </div>
-
+        <div class="dashboard-card"><h3>TODAY</h3><div class="dashboard-value" id="dashboardToday">-</div></div>
+        <div class="dashboard-card"><h3>WHO'S NEXT?</h3><div class="dashboard-value" id="dashboardNextPerson">-</div><p id="dashboardNextDate">-</p></div>
+        <div class="dashboard-card"><h3>ANGELO'S POINTS</h3><div class="dashboard-value" id="dashboardPoints">0</div><p>GOAL: 15 POINTS</p></div>
+        <div class="dashboard-card"><h3>REWARD HISTORY</h3><div class="dashboard-value" id="dashboardRewards">0</div><p>REWARDS SAVED</p></div>
+        <div class="dashboard-card"><h3>SAVED DAILY PAPERS</h3><div class="dashboard-value" id="dashboardPapers">0</div></div>
+        <div class="dashboard-card"><h3>SAVED MONTHS</h3><div class="dashboard-value" id="dashboardMonths">0</div></div>
     </div>
-
+    <div class="dashboard-card">
+        <h3>IMPORTANT RULES</h3>
+        <div class="rules-box">
+            <strong>• The shower schedule must always be followed.</strong><br><br>
+            <strong>• Whoever showers first must sign the paper.</strong><br><br>
+            <strong>• The schedule can only be changed if BOTH Matt and Angelo agree.</strong><br><br>
+            <strong>• Roblox rules apply to all people.</strong>
+        </div>
+        <button onclick="showSection('agreements')">VIEW ALL AGREEMENTS</button>
+    </div>
 </section>
-
 
 <!-- SCHEDULE TOOL -->
-
-<section
-    id="scheduleTool"
-    class="section">
-
-    <div class="section-title">
-        SCHEDULE TOOL
-    </div>
-
+<section id="scheduleTool" class="section">
+    <div class="section-title">SCHEDULE TOOL</div>
     <div class="schedule-tool-box">
-
-        <div class="paper-row">
-
-            <label for="scheduleToolDate">
-                DATE
-            </label>
-
-            <input
-                type="date"
-                id="scheduleToolDate"
-                onchange="updateScheduleTool()">
-
-        </div>
-
-        <div
-            class="schedule-result"
-            id="scheduleToolResult">
-
-            Choose a date to see the scheduled person.
-
-        </div>
-
+        <div class="paper-row"><label for="scheduleToolDate">DATE</label><input type="date" id="scheduleToolDate" onchange="updateScheduleTool()"></div>
+        <div class="schedule-result" id="scheduleToolResult">Choose a date to see the scheduled person.</div>
     </div>
-
 </section>
 
+<!-- COUNTDOWNS -->
+<section id="countdowns" class="section">
+    <div class="section-title">COUNTDOWNS</div>
+    <div class="schedule-tool-box">
+        <div class="paper-row"><label for="countdownName">NAME</label><input type="text" id="countdownName" placeholder="Example: Christmas"></div>
+        <div class="paper-row"><label for="countdownDate">DATE</label><input type="date" id="countdownDate" onchange="updateCountdownLive()"></div>
+        <div class="paper-row"><label for="countdownTime">TIME</label><input type="time" id="countdownTime" value="00:00" onchange="updateCountdownLive()"></div>
+        <div class="controls"><button class="action-button blue-button" onclick="saveCountdown()">SAVE COUNTDOWN</button><button class="action-button" onclick="newCountdown()">NEW COUNTDOWN</button></div>
+    </div>
+    <div class="dashboard-card"><h3>COUNTDOWN</h3><div id="countdownLiveContent">Choose a date and time.</div></div>
+    <div class="dashboard-card"><h3>SAVED COUNTDOWNS</h3><div id="savedCountdownsContainer"><p>No countdowns saved yet.</p></div></div>
+</section>
+
+<!-- FAIRNESS CHECKER -->
+<section id="fairness" class="section">
+    <div class="section-title">FAIRNESS CHECKER</div>
+    <div class="schedule-tool-box">
+        <p>Checks saved calendar entries for repeated people and missing days in the schedule.</p>
+        <button class="action-button blue-button" onclick="runFairnessChecker()">CHECK SCHEDULE</button>
+    </div>
+    <div id="fairnessResult" class="fairness-result">Press CHECK SCHEDULE to check the calendar.</div>
+</section>
+
+<!-- CHANGE LOG -->
+<section id="changeLog" class="section">
+    <div class="section-title">CHANGE LOG</div>
+    <div class="schedule-tool-box">
+        <p>Important changes are recorded with the reason you entered for making the change.</p>
+        <div class="controls"><button class="action-button blue-button" onclick="addManualChangeLog()">ADD LOG ENTRY</button><button class="action-button" onclick="clearChangeLog()">CLEAR CHANGE LOG</button></div>
+    </div>
+    <div id="changeLogContainer"><p>No changes recorded yet.</p></div>
+</section>
 
 <!-- AGREEMENTS -->
-
-<section
-    id="agreements"
-    class="section">
-
-    <div class="section-title">
-        AGREEMENTS
-    </div>
-
-
+<section id="agreements" class="section">
+    <div class="section-title">AGREEMENTS</div>
     <div class="agreement-box">
-
-        <h3>
-            SHOWER SCHEDULE AGREEMENT
-        </h3>
-
-        <strong>
-            Between: Matt and Angelo
-        </strong>
-
+        <h3>SHOWER SCHEDULE AGREEMENT</h3>
+        <strong>Between: Matt and Angelo</strong>
 
 PURPOSE
 
 This agreement is made to keep the shower schedule clear, fair, and consistent.
 
-
 AGREED RULE
 
 NO MATTER WHAT DAY IT IS, WHAT TIME SOMEONE SHOWERS, OR WHO SHOWERS FIRST, THE SHOWER SCHEDULE WILL STILL BE FOLLOWED.
 
-
 RULES
 
 I. Showering earlier or later does NOT change the schedule.
-
 II. If someone showers before their scheduled day, it does NOT automatically give them the next shower day.
-
 III. The next person follows the schedule exactly as written.
-
 IV. The schedule can only be changed if BOTH Matt and Angelo agree to the change.
-
 V. Who ever showers first any day has to sign the paper witch is given at the end of each shower.
-
     </div>
 
-
     <div class="agreement-box">
-
-        <h3>
-            ROBLOX RULES AGREEMENT
-        </h3>
-
-        <strong>
-            Between: Matt and Angelo
-        </strong>
-
+        <h3>ROBLOX RULES AGREEMENT</h3>
+        <strong>Between: Matt and Angelo</strong>
 
 PURPOSE
 
 This agreement is made to make sure the rules are clear, fair, and apply equally to everyone when Roblox is being used.
 
-
 MAIN RULE
 
 WHENEVER ROBLOX IS BEING USED, THESE RULES APPLY TO ALL PEOPLE.
 
-
 RULES
 
 I. Whenever Roblox is being used, everyone must follow the agreed rules.
-
 II. No person gets a different set of rules just because they are the person playing.
-
 III. The rules apply to both Matt and Angelo equally.
-
 IV. The rules remain in effect for the entire time Roblox is being used.
-
 V. If a rule needs to be changed, both Matt and Angelo must agree to the change.
-
 VI. Neither person can change the rules by themselves.
 
+Matt's Signature: ______________________________
+Date: __________________
 
-Matt's Signature:
-______________________________
-
-Date:
-__________________
-
-
-Angelo's Signature:
-______________________________
-
-Date:
-__________________
-
+Angelo's Signature: ____________________________
+Date: __________________
     </div>
-
 </section>
-
 
 <!-- SETTINGS -->
-
-<section
-    id="settings"
-    class="section">
-
-    <div class="section-title">
-        SETTINGS
-    </div>
-
+<section id="settings" class="section">
+    <div class="section-title">SETTINGS</div>
     <div class="settings-box">
-
-        <div class="settings-row">
-
-            <strong>
-                MODE
-            </strong>
-
-            <p id="settingsMode">
-                -
-            </p>
-
-        </div>
-
-
-        <div class="settings-row">
-
-            <strong>
-                DATA
-            </strong>
-
-            <p>
-                All current website data is stored in this browser.
-            </p>
-
-        </div>
-
-
-        <div class="settings-row">
-
-            <strong>
-                RESET OPTIONS
-            </strong>
-
-            <div class="controls">
-
-                <button
-                    class="action-button"
-                    onclick="resetPoints()">
-
-                    RESET ANGELO'S POINTS
-
-                </button>
-
-
-                <button
-                    class="action-button"
-                    onclick="resetRewards()">
-
-                    CLEAR REWARD HISTORY
-
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <div class="settings-row">
-
-            <strong>
-                PRINT
-            </strong>
-
-            <p>
-                Use your browser's print option to print the current page.
-            </p>
-
-        </div>
-
+        <div class="settings-row"><strong>MODE</strong><p id="settingsMode">-</p></div>
+        <div class="settings-row"><strong>DATA</strong><p>All current website data is stored in this browser.</p></div>
+        <div class="settings-row"><strong>RESET OPTIONS</strong><div class="controls"><button class="action-button" onclick="resetPoints()">RESET ANGELO'S POINTS</button><button class="action-button" onclick="resetRewards()">CLEAR REWARD HISTORY</button></div></div>
+        <div class="settings-row"><strong>PRINT</strong><p>Use your browser's print option to print the current page.</p></div>
     </div>
-
 </section>
-
 
 <!-- ANGELO'S POINTS -->
 
-<section
-    id="points"
-    class="section">
+<section id="points" class="section">
 
     <div class="section-title">
         ANGELO'S POINTS
     </div>
 
-
     <div class="points-box">
-
-        <div
-            class="points-number"
-            id="angeloPointsDisplay">
-
-            0 POINTS
-
-        </div>
-
-
-        <div class="points-goal">
-
-            GOAL: 15 POINTS
-
-        </div>
-
+        <div class="points-number" id="angeloPointsDisplay">0 POINTS</div>
+        <div class="points-goal">GOAL: 15 POINTS</div>
 
         <div class="points-progress">
-
-            <div
-                id="angeloPointsProgress"
-                class="points-progress-fill">
-            </div>
-
+            <div id="angeloPointsProgress" class="points-progress-fill"></div>
         </div>
-
 
         <div class="controls">
-
-            <button
-                id="addPointButton"
-                class="action-button blue-button"
-                onclick="addAngeloPoint()">
-
+            <button id="addPointButton" class="action-button blue-button" onclick="addAngeloPoint()">
                 ADD 1 POINT
-
             </button>
-
-
-            <button
-                id="removePointButton"
-                class="action-button"
-                onclick="removeAngeloPoint()">
-
+            <button id="removePointButton" class="action-button" onclick="removeAngeloPoint()">
                 REMOVE 1 POINT
-
             </button>
-
         </div>
-
     </div>
-
 
     <div class="section-title">
         REWARD HISTORY
     </div>
-
 
     <div class="reward-history">
 
         <div class="reward-form">
 
             <div class="paper-row">
-
-                <label for="rewardDate">
-                    DATE
-                </label>
-
-                <input
-                    type="date"
-                    id="rewardDate">
-
+                <label for="rewardDate">DATE</label>
+                <input type="date" id="rewardDate">
             </div>
-
 
             <div class="paper-row">
-
-                <label for="rewardName">
-                    REWARD
-                </label>
-
-                <input
-                    type="text"
-                    id="rewardName"
-                    placeholder="Enter the reward">
-
+                <label for="rewardName">REWARD</label>
+                <input type="text" id="rewardName" placeholder="Enter the reward">
             </div>
-
 
             <div class="paper-row">
-
-                <label for="rewardNotes">
-                    NOTES
-                </label>
-
-                <textarea
-                    id="rewardNotes"
-                    placeholder="Optional notes...">
-                </textarea>
-
+                <label for="rewardNotes">NOTES</label>
+                <textarea id="rewardNotes" placeholder="Optional notes..."></textarea>
             </div>
-
 
             <div class="controls">
-
-                <button
-                    id="saveRewardButton"
-                    class="action-button blue-button"
-                    onclick="saveReward()">
-
+                <button id="saveRewardButton" class="action-button blue-button" onclick="saveReward()">
                     SAVE REWARD
-
                 </button>
-
-
-                <button
-                    id="newRewardButton"
-                    class="action-button"
-                    onclick="newReward()">
-
+                <button id="newRewardButton" class="action-button" onclick="newReward()">
                     NEW REWARD
-
                 </button>
-
             </div>
 
         </div>
 
-
-        <div
-            id="rewardHistoryContainer">
-        </div>
+        <div id="rewardHistoryContainer"></div>
 
     </div>
 
@@ -1054,9 +833,7 @@ __________________
 
 <!-- SIGNING TRACKER -->
 
-<section
-    id="tracker"
-    class="section">
+<section id="tracker" class="section">
 
     <div class="section-title">
         SIGNING TRACKER
@@ -1072,56 +849,20 @@ __________________
             id="trackerMonth"
             onchange="renderTracker()">
 
-            <option value="0">
-                January
-            </option>
-
-            <option value="1">
-                February
-            </option>
-
-            <option value="2">
-                March
-            </option>
-
-            <option value="3">
-                April
-            </option>
-
-            <option value="4">
-                May
-            </option>
-
-            <option value="5">
-                June
-            </option>
-
-            <option value="6">
-                July
-            </option>
-
-            <option value="7">
-                August
-            </option>
-
-            <option value="8">
-                September
-            </option>
-
-            <option value="9">
-                October
-            </option>
-
-            <option value="10">
-                November
-            </option>
-
-            <option value="11">
-                December
-            </option>
+            <option value="0">January</option>
+            <option value="1">February</option>
+            <option value="2">March</option>
+            <option value="3">April</option>
+            <option value="4">May</option>
+            <option value="5">June</option>
+            <option value="6">July</option>
+            <option value="7">August</option>
+            <option value="8" selected>September</option>
+            <option value="9">October</option>
+            <option value="10">November</option>
+            <option value="11">December</option>
 
         </select>
-
 
         <label for="trackerYear">
             Year:
@@ -1131,40 +872,24 @@ __________________
             id="trackerYear"
             onchange="renderTracker()">
 
-            <option>
-                2026
-            </option>
-
-            <option>
-                2027
-            </option>
-
-            <option>
-                2028
-            </option>
-
-            <option>
-                2029
-            </option>
-
-            <option>
-                2030
-            </option>
+            <option>2026</option>
+            <option>2027</option>
+            <option>2028</option>
+            <option>2029</option>
+            <option>2030</option>
 
         </select>
 
     </div>
 
+    <div id="trackerContainer"></div>
 
-    <div id="trackerContainer">
-    </div>
-
-
+    <!-- ONLY NEW BUTTON -->
     <div class="controls">
 
         <button
             class="action-button blue-button"
-            onclick="saveTracker()">
+            onclick="saveCurrentTracker()">
 
             SAVE TRACKER
 
@@ -1175,45 +900,68 @@ __________________
 </section>
 
 
-<!-- RULES AND REGULATION -->
+<!-- CONTRACT -->
 
-<section
-    id="contract"
-    class="section">
+<section id="contract" class="section">
 
     <div class="section-title">
         RULES AND REGULATION
     </div>
 
-
     <div class="contract">
 
-SHOWER SCHEDULE AGREEMENT
+        <h2>SHOWER SCHEDULE AGREEMENT</h2>
 
-Between: Matt and Angelo
+        <p>
+            <strong>Between: Matt and Angelo</strong>
+        </p>
 
+        <h3>PURPOSE</h3>
 
-PURPOSE
+        <p>
+            This agreement is made to keep the shower schedule clear,
+            fair, and consistent.
+        </p>
 
-This agreement is made to keep the shower schedule clear, fair, and consistent.
+        <h3>AGREED RULE</h3>
 
+        <div class="agreed-rule">
 
-AGREED RULE
+            NO MATTER WHAT DAY IT IS, WHAT TIME SOMEONE SHOWERS,
+            OR WHO SHOWERS FIRST, THE SHOWER SCHEDULE WILL STILL
+            BE FOLLOWED.
 
-NO MATTER WHAT DAY IT IS, WHAT TIME SOMEONE SHOWERS, OR WHO SHOWERS FIRST, THE SHOWER SCHEDULE WILL STILL BE FOLLOWED.
+        </div>
 
+        <h3>RULES</h3>
 
-RULES
+        <p>
+            <strong>I.</strong>
+            Showering earlier or later does NOT change the schedule.
+        </p>
 
-I. Showering earlier or later does NOT change the schedule.
+        <p>
+            <strong>II.</strong>
+            If someone showers before their scheduled day,
+            it does NOT automatically give them the next shower day.
+        </p>
 
-II. If someone showers before their scheduled day, it does NOT automatically give them the next shower day.
+        <p>
+            <strong>III.</strong>
+            The next person follows the schedule exactly as written.
+        </p>
 
-III. The next person follows the schedule exactly as written.
+        <p>
+            <strong>IV.</strong>
+            The schedule can only be changed if BOTH Matt and Angelo
+            agree to the change.
+        </p>
 
-IV. The schedule can only be changed if BOTH Matt and Angelo agree to the change.
-
-V. Who ever showers first any day has to sign the paper witch is given at the end of each shower.
+        <p>
+            <strong>V.</strong>
+            Who ever showers first any day has to sign the paper
+            witch is given at the end of each shower.
+        </p>
 
     </div>
 
@@ -1222,14 +970,11 @@ V. Who ever showers first any day has to sign the paper witch is given at the en
 
 <!-- CALENDAR -->
 
-<section
-    id="calendar"
-    class="section">
+<section id="calendar" class="section">
 
     <div class="section-title">
         CALENDAR
     </div>
-
 
     <div class="controls">
 
@@ -1241,79 +986,85 @@ V. Who ever showers first any day has to sign the paper witch is given at the en
             id="calendarYear"
             onchange="renderCalendar()">
 
-            <option>
-                2026
-            </option>
-
-            <option>
-                2027
-            </option>
-
-            <option>
-                2028
-            </option>
-
-            <option>
-                2029
-            </option>
-
-            <option>
-                2030
-            </option>
+            <option selected>2026</option>
+            <option>2027</option>
+            <option>2028</option>
+            <option>2029</option>
+            <option>2030</option>
 
         </select>
 
-    </div>
-
-
-    <div id="calendarContainer">
-    </div>
-
-
-    <div class="controls">
-
         <button
             class="action-button blue-button"
-            onclick="saveMonth()">
+            onclick="saveCurrentMonth()">
 
             SAVE MONTH
 
         </button>
 
+        <button
+            class="action-button"
+            onclick="resetCalendar()">
+
+            RESET CURRENT YEAR
+
+        </button>
+
     </div>
+
+    <div id="calendarContainer"></div>
 
 </section>
 
 
 <!-- SAVED DATA -->
 
-<section
-    id="saved"
-    class="section">
+<section id="saved" class="section">
 
     <div class="section-title">
         SAVED DATA
     </div>
 
-
-    <div id="savedDataContainer">
+    <div class="view-notice" id="savedNotice">
+        Saved information is stored on this device.
     </div>
+
+    <h2>
+        Saved Months
+    </h2>
+
+    <div id="savedMonthsContainer"></div>
+
+    <!-- ONLY NEW SAVED DATA SECTION -->
+
+    <h2>
+        Saved Signing Trackers
+    </h2>
+
+    <div id="savedTrackersContainer"></div>
+
+    <h2>
+        Saved Daily Papers
+    </h2>
+
+    <div id="savedPapersContainer"></div>
 
 </section>
 
 
 <!-- DAILY PAPER -->
 
-<section
-    id="paper"
-    class="section">
+<section id="paper" class="section">
 
     <div class="section-title">
         DAILY PAPER
     </div>
 
-
     <div class="paper">
+
+        <h2>
+            DAILY SHOWER PAPER
+        </h2>
 
         <div class="paper-row">
 
@@ -1323,22 +1074,27 @@ V. Who ever showers first any day has to sign the paper witch is given at the en
 
             <input
                 type="date"
-                id="paperDate">
+                id="paperDate"
+                style="
+                    height:52px;
+                    border:2px solid black;
+                    padding:8px;
+                    font-size:18px;
+                "
+            >
 
         </div>
-
 
         <div class="paper-row">
 
             <label for="firstShowerer">
-                WHO SHOWERED FIRST
+                WHO SHOWERED FIRST?
             </label>
 
-            <select
-                id="firstShowerer">
+            <select id="firstShowerer">
 
                 <option value="">
-                    Select
+                    Choose one
                 </option>
 
                 <option value="Angelo">
@@ -1353,18 +1109,16 @@ V. Who ever showers first any day has to sign the paper witch is given at the en
 
         </div>
 
-
         <div class="paper-row">
 
             <label for="paperStatus">
                 SIGNING STATUS
             </label>
 
-            <select
-                id="paperStatus">
+            <select id="paperStatus">
 
                 <option value="">
-                    Select
+                    Choose one
                 </option>
 
                 <option value="SIGNED">
@@ -1379,7 +1133,6 @@ V. Who ever showers first any day has to sign the paper witch is given at the en
 
         </div>
 
-
         <div class="paper-row">
 
             <label for="paperNotes">
@@ -1388,11 +1141,10 @@ V. Who ever showers first any day has to sign the paper witch is given at the en
 
             <textarea
                 id="paperNotes"
-                placeholder="Notes...">
-            </textarea>
+                placeholder="Write notes here..."
+            ></textarea>
 
         </div>
-
 
         <div class="controls">
 
@@ -1403,7 +1155,6 @@ V. Who ever showers first any day has to sign the paper witch is given at the en
                 SAVE
 
             </button>
-
 
             <button
                 class="action-button"
@@ -1429,7 +1180,6 @@ V. Who ever showers first any day has to sign the paper witch is given at the en
 const MINE_PASSWORD = "1014131814";
 const VIEW_PASSWORD = "1814";
 
-
 let editMode = false;
 
 
@@ -1442,18 +1192,15 @@ let calendarData =
         localStorage.getItem("showerCalendarData")
     ) || {};
 
-
 let trackerData =
     JSON.parse(
         localStorage.getItem("showerTrackerData")
     ) || {};
 
-
 let savedPapers =
     JSON.parse(
         localStorage.getItem("showerSavedPapers")
     ) || [];
-
 
 let savedMonths =
     JSON.parse(
@@ -1461,32 +1208,44 @@ let savedMonths =
     ) || [];
 
 
+/* ============================================================
+   NEW: SAVED SIGNING TRACKERS
+   ============================================================ */
+
 let savedTrackers =
     JSON.parse(
         localStorage.getItem("showerSavedTrackers")
     ) || [];
 
 
+/* Make sure it is an array */
+
 if (!Array.isArray(savedTrackers)) {
     savedTrackers = [];
 }
 
 
-let angeloPoints =
-    Number(
-        localStorage.getItem("angeloPoints")
-    ) || 0;
+/* ============================================================
+   ANGELO'S POINTS AND REWARD HISTORY
+   ============================================================ */
 
+let angeloPoints =
+    Number(localStorage.getItem("angeloPoints")) || 0;
 
 let rewardHistory =
     JSON.parse(
         localStorage.getItem("angeloRewardHistory")
     ) || [];
 
-
 if (!Array.isArray(rewardHistory)) {
     rewardHistory = [];
 }
+
+let changeLog = JSON.parse(localStorage.getItem("showerChangeLog")) || [];
+if (!Array.isArray(changeLog)) changeLog = [];
+let countdowns = JSON.parse(localStorage.getItem("showerCountdowns")) || [];
+if (!Array.isArray(countdowns)) countdowns = [];
+let countdownTimer = null;
 
 
 /* ============================================================
@@ -1496,31 +1255,23 @@ if (!Array.isArray(rewardHistory)) {
 function login() {
 
     const password =
-        document.getElementById(
-            "passwordInput"
-        ).value;
-
+        document.getElementById("passwordInput").value;
 
     const message =
-        document.getElementById(
-            "loginMessage"
-        );
+        document.getElementById("loginMessage");
 
+
+    /* EDIT MODE */
 
     if (password === MINE_PASSWORD) {
 
         editMode = true;
 
-        document.getElementById(
-            "loginScreen"
-        ).style.display = "none";
+        document.getElementById("loginScreen")
+            .style.display = "none";
 
-
-        document.getElementById(
-            "modeText"
-        ).textContent =
-            "EDIT MODE";
-
+        document.getElementById("modeText")
+            .textContent = "EDIT MODE";
 
         setupEditMode();
 
@@ -1530,20 +1281,17 @@ function login() {
     }
 
 
+    /* VIEW ONLY MODE */
+
     if (password === VIEW_PASSWORD) {
 
         editMode = false;
 
-        document.getElementById(
-            "loginScreen"
-        ).style.display = "none";
+        document.getElementById("loginScreen")
+            .style.display = "none";
 
-
-        document.getElementById(
-            "modeText"
-        ).textContent =
-            "VIEW ONLY";
-
+        document.getElementById("modeText")
+            .textContent = "VIEW ONLY";
 
         setupViewMode();
 
@@ -1555,7 +1303,6 @@ function login() {
 
     message.textContent =
         "Incorrect password.";
-
 }
 
 
@@ -1565,144 +1312,145 @@ function login() {
 
 function setupEditMode() {
 
-    document.getElementById(
-        "navTracker"
-    ).style.display = "";
+    document.getElementById("navTracker")
+        .style.display = "";
 
+    document.getElementById("navCalendar")
+        .style.display = "";
 
-    document.getElementById(
-        "navCalendar"
-    ).style.display = "";
+    document.getElementById("navPaper")
+        .style.display = "";
 
+    document.getElementById("navSettings")
+        .style.display = "";
 
-    document.getElementById(
-        "navPaper"
-    ).style.display = "";
+    document.querySelectorAll("select")
+        .forEach(function(select) {
 
+            select.disabled = false;
 
-    document.getElementById(
-        "navSettings"
-    ).style.display = "";
+        });
 
+    document.querySelectorAll("input")
+        .forEach(function(input) {
 
-    document.querySelectorAll(
-        "select"
-    ).forEach(function(select) {
+            if (input.id !== "passwordInput") {
+                input.disabled = false;
+            }
 
-        select.disabled = false;
+        });
 
-    });
+    document.querySelectorAll("textarea")
+        .forEach(function(textarea) {
 
+            textarea.disabled = false;
 
-    document.querySelectorAll(
-        "input"
-    ).forEach(function(input) {
+        });
 
-        if (
-            input.id !==
-            "passwordInput"
-        ) {
+    document.querySelectorAll(".action-button")
+        .forEach(function(button) {
 
-            input.disabled = false;
+            button.style.display = "";
 
-        }
-
-    });
-
-
-    document.querySelectorAll(
-        "textarea"
-    ).forEach(function(textarea) {
-
-        textarea.disabled = false;
-
-    });
-
-
-    setupPointsMode();
-
+        });
 }
 
 
 /* ============================================================
-   VIEW MODE
+   VIEW ONLY MODE
    ============================================================ */
 
 function setupViewMode() {
 
-    document.getElementById(
-        "navTracker"
-    ).style.display = "none";
+    /*
+       COMPLETELY HIDE THESE THREE SECTIONS
+    */
+
+    document.getElementById("navTracker")
+        .style.display = "none";
+
+    document.getElementById("navCalendar")
+        .style.display = "none";
+
+    document.getElementById("navPaper")
+        .style.display = "none";
+
+    document.getElementById("navSettings")
+        .style.display = "none";
 
 
-    document.getElementById(
-        "navCalendar"
-    ).style.display = "none";
+    document.getElementById("tracker")
+        .classList.add("hidden-for-view");
+
+    document.getElementById("calendar")
+        .classList.add("hidden-for-view");
+
+    document.getElementById("paper")
+        .classList.add("hidden-for-view");
 
 
-    document.getElementById(
-        "navPaper"
-    ).style.display = "none";
+    /*
+       DISABLE EVERYTHING THAT CAN EDIT
+    */
+
+    document.querySelectorAll("select")
+        .forEach(function(select) {
+
+            select.disabled = true;
+
+        });
+
+    document.querySelectorAll("input")
+        .forEach(function(input) {
+
+            if (input.id !== "passwordInput") {
+                input.disabled = true;
+            }
+
+        });
+
+    document.querySelectorAll("textarea")
+        .forEach(function(textarea) {
+
+            textarea.disabled = true;
+
+        });
 
 
-    document.getElementById(
-        "navSettings"
-    ).style.display = "none";
+    /*
+       HIDE ALL SAVE/RESET/DELETE BUTTONS
+    */
+
+    document.querySelectorAll(".action-button")
+        .forEach(function(button) {
+
+            button.style.display = "none";
+
+        });
+
+    document.querySelectorAll(".delete-button")
+        .forEach(function(button) {
+
+            button.style.display = "none";
+
+        });
 
 
-    document.querySelectorAll(
-        "select"
-    ).forEach(function(select) {
-
-        select.disabled = true;
-
-    });
-
-
-    document.querySelectorAll(
-        "input"
-    ).forEach(function(input) {
-
-        if (
-            input.id !==
-            "passwordInput"
-        ) {
-
-            input.disabled = true;
-
-        }
-
-    });
-
-
-    document.querySelectorAll(
-        "textarea"
-    ).forEach(function(textarea) {
-
-        textarea.disabled = true;
-
-    });
-
-
-    document.querySelectorAll(
-        ".action-button"
-    ).forEach(function(button) {
-
-        button.style.display = "none";
-
-    });
-
-
-    setupPointsMode();
-
+    document.getElementById("savedNotice")
+        .textContent =
+        "VIEW ONLY MODE — saved information cannot be changed here.";
 }
 
 
 /* ============================================================
-   SECTION NAVIGATION
+   SECTIONS
    ============================================================ */
 
 function showSection(sectionId) {
+
+    /*
+       Prevent VIEW MODE from opening hidden sections
+    */
 
     if (
         !editMode &&
@@ -1715,95 +1463,227 @@ function showSection(sectionId) {
     ) {
 
         return;
-
     }
 
 
-    document.querySelectorAll(
-        ".section"
-    ).forEach(function(section) {
+    document.querySelectorAll(".section")
+        .forEach(function(section) {
 
-        section.classList.remove(
-            "active"
-        );
+            section.classList.remove("active");
 
-    });
+        });
 
 
     const section =
-        document.getElementById(
-            sectionId
-        );
-
+        document.getElementById(sectionId);
 
     if (section) {
 
-        section.classList.add(
-            "active"
-        );
+        section.classList.add("active");
 
     }
 
 
-    if (
-        sectionId ===
-        "calendar"
-    ) {
+    if (sectionId === "calendar") {
 
         renderCalendar();
 
     }
 
 
-    if (
-        sectionId ===
-        "tracker"
-    ) {
+    if (sectionId === "tracker") {
 
         renderTracker();
 
     }
 
 
-    if (
-        sectionId ===
-        "saved"
-    ) {
+    if (sectionId === "saved") {
 
         renderSavedData();
 
     }
 
-
-    if (
-        sectionId ===
-        "dashboard"
-    ) {
-
+    if (sectionId === "dashboard") {
         renderDashboard();
-
     }
 
-
-    if (
-        sectionId ===
-        "scheduleTool"
-    ) {
-
+    if (sectionId === "scheduleTool") {
         updateScheduleTool();
-
     }
 
-
-    if (
-        sectionId ===
-        "settings"
-    ) {
-
+    if (sectionId === "settings") {
         updateSettings();
-
     }
+    if (sectionId === "changeLog") renderChangeLog();
+    if (sectionId === "countdowns") { renderCountdowns(); startCountdownTimer(); }
+    if (sectionId === "fairness") runFairnessChecker();
+}
 
+
+/* ============================================================
+   NEW DASHBOARD / SCHEDULE TOOL / SETTINGS
+   ============================================================ */
+
+function formatToolDate(value) {
+    if (!value) return "";
+    const parts = value.split("-");
+    const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+    return d.toLocaleDateString(undefined, {year:"numeric", month:"long", day:"numeric"});
+}
+
+function getScheduledPerson(dateString) {
+    if (!dateString) return "NOT SET";
+    const parts = dateString.split("-");
+    const year = Number(parts[0]);
+    const month = Number(parts[1]) - 1;
+    const day = Number(parts[2]);
+    const key = calendarKey(year, month, day);
+    return calendarData[key] || "NOT SET";
+}
+
+function setScheduleToolToday() {
+    const input = document.getElementById("scheduleToolDate");
+    if (!input) return;
+    const today = new Date();
+    input.value = today.getFullYear() + "-" + String(today.getMonth()+1).padStart(2,"0") + "-" + String(today.getDate()).padStart(2,"0");
+    updateScheduleTool();
+}
+
+function updateScheduleTool() {
+    const input = document.getElementById("scheduleToolDate");
+    const result = document.getElementById("scheduleToolResult");
+    if (!input || !result) return;
+    const person = getScheduledPerson(input.value);
+    result.innerHTML = "DATE: <strong>" + formatToolDate(input.value) + "</strong><br><br>SCHEDULED PERSON: <strong>" + person + "</strong>";
+}
+
+function renderDashboard() {
+    const today = new Date();
+    const todayValue = today.getFullYear()+"-"+String(today.getMonth()+1).padStart(2,"0")+"-"+String(today.getDate()).padStart(2,"0");
+    const todayPerson = getScheduledPerson(todayValue);
+    const todayEl = document.getElementById("dashboardToday");
+    const pointsEl = document.getElementById("dashboardPoints");
+    const rewardsEl = document.getElementById("dashboardRewards");
+    const papersEl = document.getElementById("dashboardPapers");
+    const monthsEl = document.getElementById("dashboardMonths");
+    const nextPersonEl = document.getElementById("dashboardNextPerson");
+    const nextDateEl = document.getElementById("dashboardNextDate");
+    if (todayEl) todayEl.textContent = todayPerson;
+    if (pointsEl) pointsEl.textContent = angeloPoints + " POINTS";
+    if (rewardsEl) rewardsEl.textContent = rewardHistory.length;
+    if (papersEl) papersEl.textContent = savedPapers.length;
+    if (monthsEl) monthsEl.textContent = savedMonths.length;
+    let foundPerson="NOT SET", foundDate="No future scheduled shower found.";
+    for (let i=0;i<=366;i++) {
+        const d=new Date(today.getFullYear(),today.getMonth(),today.getDate()+i);
+        const value=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+        const person=getScheduledPerson(value);
+        if(person!=="NOT SET"){ foundPerson=person; foundDate=(i===0?"Today — ":"")+formatToolDate(value); break; }
+    }
+    if(nextPersonEl) nextPersonEl.textContent=foundPerson;
+    if(nextDateEl) nextDateEl.textContent=foundDate;
+}
+
+function updateSettings() {
+    const mode = document.getElementById("settingsMode");
+    if (mode) mode.textContent = editMode ? "EDIT MODE" : "VIEW ONLY";
+}
+
+function resetPoints() {
+    if (!editMode) return;
+    if (!confirm("Reset Angelo's points to 0?")) return;
+    const reason = prompt("Why are you resetting Angelo's points?");
+    if (reason === null || !reason.trim()) return;
+    const oldPoints = angeloPoints;
+    angeloPoints = 0;
+    saveAngeloPoints();
+    renderAngeloPoints();
+    renderDashboard();
+    recordChange("Angelo's points", "Reset from " + oldPoints + " to 0", reason.trim());
+}
+
+function resetRewards() {
+    if (!editMode) return;
+    if (!confirm("Clear all reward history?")) return;
+    const reason = prompt("Why are you clearing the reward history?");
+    if (reason === null || !reason.trim()) return;
+    const oldCount = rewardHistory.length;
+    rewardHistory = [];
+    localStorage.setItem("angeloRewardHistory", JSON.stringify(rewardHistory));
+    renderRewardHistory();
+    renderDashboard();
+    recordChange("Reward history", "Cleared " + oldCount + " reward(s)", reason.trim());
+}
+
+/* ============================================================
+   CHANGE LOG / COUNTDOWNS / FAIRNESS CHECKER
+   ============================================================ */
+function recordChange(type, change, reason) {
+    changeLog.unshift({id:Date.now()+Math.random(),date:new Date().toLocaleString(),type:type,change:change,reason:reason});
+    localStorage.setItem("showerChangeLog",JSON.stringify(changeLog));
+    renderChangeLog();
+}
+function addManualChangeLog(){
+    if(!editMode)return;
+    const change=prompt("What changed?"); if(change===null||!change.trim())return;
+    const reason=prompt("Why did you make this change?"); if(reason===null||!reason.trim())return;
+    recordChange("Manual entry",change.trim(),reason.trim());
+}
+function renderChangeLog(){
+    const c=document.getElementById("changeLogContainer"); if(!c)return; c.innerHTML="";
+    if(!changeLog.length){c.innerHTML="<p>No changes recorded yet.</p>";return;}
+    changeLog.forEach(function(e){const b=document.createElement("div");b.className="change-log-entry";const h=document.createElement("h3");h.textContent=e.type;b.appendChild(h);const d=document.createElement("pre");d.textContent="Date: "+e.date+"\n\nChange: "+e.change+"\n\nReason: "+e.reason;b.appendChild(d);if(editMode){const x=document.createElement("button");x.className="delete-button";x.textContent="DELETE LOG";x.onclick=function(){changeLog=changeLog.filter(function(i){return i.id!==e.id});localStorage.setItem("showerChangeLog",JSON.stringify(changeLog));renderChangeLog()};b.appendChild(x)}c.appendChild(b)});
+}
+function clearChangeLog(){if(!editMode||!changeLog.length)return;if(!confirm("Clear the entire change log?"))return;const r=prompt("Why are you clearing the change log?");if(r===null||!r.trim())return;changeLog=[];localStorage.setItem("showerChangeLog",JSON.stringify(changeLog));renderChangeLog();}
+function newCountdown(){if(!editMode)return;document.getElementById("countdownName").value="";document.getElementById("countdownDate").value="";document.getElementById("countdownTime").value="00:00";updateCountdownLive()}
+function saveCountdown(){if(!editMode)return;const n=document.getElementById("countdownName").value.trim(),d=document.getElementById("countdownDate").value,t=document.getElementById("countdownTime").value||"00:00";if(!n||!d){alert("Please enter a name and date.");return}const r=prompt("Why are you saving this countdown?");if(r===null||!r.trim())return;const e={id:Date.now(),name:n,date:d,time:t};countdowns.unshift(e);localStorage.setItem("showerCountdowns",JSON.stringify(countdowns));recordChange("Countdown","Saved countdown: "+n+" for "+d+" "+t,r.trim());renderCountdowns();updateCountdownLive()}
+function countdownTarget(e){return new Date(e.date+"T"+(e.time||"00:00")+":00")}
+function getCountdownParts(target){let ms=target.getTime()-Date.now();if(ms<=0)return{expired:true,months:0,days:0,weeks:0,hours:0,minutes:0,seconds:0,totalDays:0,totalHours:0,totalMinutes:0,totalSeconds:0};const ts=Math.floor(ms/1000),tm=Math.floor(ms/60000),th=Math.floor(ms/3600000),td=Math.floor(ms/86400000),weeks=Math.floor(td/7);let cursor=new Date();let months=0;while(true){const next=new Date(cursor);next.setMonth(next.getMonth()+1);if(next<=target){months++;cursor=next}else break;if(months>120000)break}const days=Math.floor((target-cursor)/86400000),rem=target-(cursor.getTime()+days*86400000),hours=Math.floor(rem/3600000),minutes=Math.floor((rem%3600000)/60000),seconds=Math.floor((rem%60000)/1000);return{expired:false,months,days,weeks,hours,minutes,seconds,totalDays:td,totalHours:th,totalMinutes:tm,totalSeconds:ts}}
+function countdownHTML(e){const p=getCountdownParts(countdownTarget(e));if(p.expired)return"<strong>TIME REACHED</strong>";return '<div class="countdown-grid"><div class="countdown-number"><strong>'+p.months+'</strong>MONTHS</div><div class="countdown-number"><strong>'+p.days+'</strong>DAYS</div><div class="countdown-number"><strong>'+p.weeks+'</strong>WEEKS</div><div class="countdown-number"><strong>'+p.hours+'</strong>HOURS</div><div class="countdown-number"><strong>'+p.minutes+'</strong>MINUTES</div><div class="countdown-number"><strong>'+p.seconds+'</strong>SECONDS</div></div><p>Total: '+p.totalDays+' days / '+p.totalHours+' hours / '+p.totalMinutes+' minutes / '+p.totalSeconds+' seconds</p>'}
+function formatCountdownDate(e){return countdownTarget(e).toLocaleString(undefined,{year:"numeric",month:"long",day:"numeric",hour:"numeric",minute:"2-digit"})}
+function escapeHTML(v){return String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
+function updateCountdownLive(){const b=document.getElementById("countdownLiveContent");if(!b)return;const d=document.getElementById("countdownDate").value;if(!d){b.textContent="Choose a date and time.";return}const e={name:document.getElementById("countdownName").value||"Selected countdown",date:d,time:document.getElementById("countdownTime").value||"00:00"};b.innerHTML="<h3>"+escapeHTML(e.name)+"</h3><p>Target: "+escapeHTML(formatCountdownDate(e))+"</p>"+countdownHTML(e)}
+function startCountdownTimer(){if(countdownTimer)clearInterval(countdownTimer);countdownTimer=setInterval(function(){updateCountdownLive();renderCountdowns(false)},1000)}
+function renderCountdowns(){const c=document.getElementById("savedCountdownsContainer");if(!c)return;c.innerHTML="";if(!countdowns.length){c.innerHTML="<p>No countdowns saved yet.</p>";return}countdowns.forEach(function(e){const b=document.createElement("div");b.className="countdown-entry";const h=document.createElement("h3");h.textContent=e.name;b.appendChild(h);const p=document.createElement("p");p.textContent="Target: "+formatCountdownDate(e);b.appendChild(p);const l=document.createElement("div");l.innerHTML=countdownHTML(e);b.appendChild(l);if(editMode){const x=document.createElement("button");x.className="delete-button";x.textContent="DELETE COUNTDOWN";x.onclick=function(){deleteCountdown(e.id)};b.appendChild(x)}c.appendChild(b)})}
+function deleteCountdown(id){if(!editMode)return;const e=countdowns.find(function(i){return i.id===id}),r=prompt("Why are you deleting this countdown?");if(r===null||!r.trim())return;countdowns=countdowns.filter(function(i){return i.id!==id});localStorage.setItem("showerCountdowns",JSON.stringify(countdowns));recordChange("Countdown","Deleted countdown: "+(e?e.name:"Unknown"),r.trim());renderCountdowns()}
+function runFairnessChecker(){const r=document.getElementById("fairnessResult");if(!r)return;const keys=Object.keys(calendarData).filter(function(k){return calendarData[k]==="Angelo"||calendarData[k]==="Matthew"}).sort();if(!keys.length){r.innerHTML="<strong>NOT ENOUGH DATA</strong><br><br>No saved calendar assignments were found.";return}const problems=[];for(let i=1;i<keys.length;i++){const prev=calendarData[keys[i-1]],cur=calendarData[keys[i]];if(prev===cur)problems.push(keys[i]+": "+cur+" is scheduled after "+cur+".");const a=new Date(keys[i-1]+"T00:00:00"),b=new Date(keys[i]+"T00:00:00"),gap=Math.round((b-a)/86400000);if(gap>1)problems.push(keys[i-1]+" to "+keys[i]+": there are "+(gap-1)+" unscheduled day(s) between saved assignments.")}if(!problems.length)r.innerHTML="<span class=\"fairness-ok\">SCHEDULE LOOKS FAIR</span><br><br>Saved assignments alternate correctly and there are no missing days between them.";else r.innerHTML="<span class=\"fairness-warning\">POSSIBLE SCHEDULE PROBLEMS</span><br><br>"+problems.map(escapeHTML).join("<br><br>")}
+
+/* ============================================================
+   INITIALIZE
+   ============================================================ */
+
+function initializePage() {
+
+    setToday();
+
+    renderCalendar();
+
+    renderTracker();
+
+    renderSavedData();
+    setRewardToday();
+    renderAngeloPoints();
+    renderRewardHistory();
+    setupPointsMode();
+    setScheduleToolToday();
+    renderDashboard();
+    updateSettings();
+    renderChangeLog();
+    renderCountdowns();
+    startCountdownTimer();
+    runFairnessChecker();
+
+    /*
+       EDIT MODE opens Calendar
+       VIEW MODE opens Main Dashboard
+    */
+
+    if (editMode) {
+        showSection("calendar");
+    } else {
+        showSection("dashboard");
+    }
 }
 
 
@@ -1816,38 +1696,22 @@ function setToday() {
     const today =
         new Date();
 
-
     const yyyy =
         today.getFullYear();
-
 
     const mm =
         String(
             today.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        );
-
+        ).padStart(2, "0");
 
     const dd =
         String(
             today.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
+        ).padStart(2, "0");
 
-
-    document.getElementById(
-        "paperDate"
-    ).value =
-        yyyy +
-        "-" +
-        mm +
-        "-" +
-        dd;
-
+    document.getElementById("paperDate")
+        .value =
+        yyyy + "-" + mm + "-" + dd;
 }
 
 
@@ -1861,22 +1725,10 @@ function calendarKey(
     day
 ) {
 
-    return (
-        year +
+    return year + "-" +
+        String(month + 1).padStart(2, "0") +
         "-" +
-        String(
-            month + 1
-        ).padStart(
-            2,
-            "0"
-        ) +
-        "-" +
-        String(day).padStart(
-            2,
-            "0"
-        )
-    );
-
+        String(day).padStart(2, "0");
 }
 
 
@@ -1893,18 +1745,14 @@ function renderCalendar() {
             ).value
         );
 
-
     const container =
         document.getElementById(
             "calendarContainer"
         );
 
-
     container.innerHTML = "";
 
-
     const monthNames = [
-
         "January",
         "February",
         "March",
@@ -1917,20 +1765,6 @@ function renderCalendar() {
         "October",
         "November",
         "December"
-
-    ];
-
-
-    const dayNames = [
-
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday"
-
     ];
 
 
@@ -1941,20 +1775,15 @@ function renderCalendar() {
     ) {
 
         const monthTitle =
-            document.createElement(
-                "div"
-            );
-
+            document.createElement("div");
 
         monthTitle.className =
             "month-title";
-
 
         monthTitle.textContent =
             monthNames[month] +
             " " +
             year;
-
 
         container.appendChild(
             monthTitle
@@ -1962,44 +1791,46 @@ function renderCalendar() {
 
 
         const wrapper =
-            document.createElement(
-                "div"
-            );
-
+            document.createElement("div");
 
         wrapper.className =
             "calendar-wrapper";
 
 
         const grid =
-            document.createElement(
-                "div"
-            );
-
+            document.createElement("div");
 
         grid.className =
             "calendar-grid";
 
 
-        dayNames.forEach(
-            function(dayName) {
+        const weekdays = [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"
+        ];
 
-                const heading =
+
+        weekdays.forEach(
+            function(day) {
+
+                const header =
                     document.createElement(
                         "div"
                     );
 
+                header.className =
+                    "day-header";
 
-                heading.className =
-                    "calendar-day-name";
-
-
-                heading.textContent =
-                    dayName;
-
+                header.textContent =
+                    day;
 
                 grid.appendChild(
-                    heading
+                    header
                 );
 
             }
@@ -2014,6 +1845,14 @@ function renderCalendar() {
             ).getDay();
 
 
+        const daysInMonth =
+            new Date(
+                year,
+                month + 1,
+                0
+            ).getDate();
+
+
         for (
             let i = 0;
             i < firstDay;
@@ -2025,15 +1864,12 @@ function renderCalendar() {
                     "div"
                 );
 
-
             empty.className =
-                "calendar-empty";
-
+                "calendar-day invalid";
 
             grid.appendChild(
                 empty
             );
-
         }
 
 
@@ -2043,47 +1879,27 @@ function renderCalendar() {
             day++
         ) {
 
-            const testDate =
-                new Date(
-                    year,
-                    month,
-                    day
-                );
-
-
-            if (
-                testDate.getMonth() !==
-                month
-            ) {
-
-                const invalid =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                invalid.className =
-                    "calendar-empty";
-
-
-                grid.appendChild(
-                    invalid
-                );
-
-
-                continue;
-
-            }
-
-
             const cell =
                 document.createElement(
                     "div"
                 );
 
-
             cell.className =
                 "calendar-day";
+
+
+            if (day > daysInMonth) {
+
+                cell.classList.add(
+                    "invalid"
+                );
+
+                grid.appendChild(
+                    cell
+                );
+
+                continue;
+            }
 
 
             const number =
@@ -2091,14 +1907,11 @@ function renderCalendar() {
                     "div"
                 );
 
-
             number.className =
-                "calendar-day-number";
-
+                "day-number";
 
             number.textContent =
                 day;
-
 
             cell.appendChild(
                 number
@@ -2110,54 +1923,15 @@ function renderCalendar() {
                     "select"
                 );
 
-
-            const blank =
-                document.createElement(
-                    "option"
-                );
+            select.className =
+                "calendar-person-select";
 
 
-            blank.value = "";
-            blank.textContent = "Select";
-
-
-            select.appendChild(
-                blank
-            );
-
-
-            const angelo =
-                document.createElement(
-                    "option"
-                );
-
-
-            angelo.value = "Angelo";
-            angelo.textContent = "Angelo";
-
-
-            select.appendChild(
-                angelo
-            );
-
-
-            const matthew =
-                document.createElement(
-                    "option"
-                );
-
-
-            matthew.value =
-                "Matthew";
-
-
-            matthew.textContent =
-                "Matthew";
-
-
-            select.appendChild(
-                matthew
-            );
+            select.innerHTML = `
+                <option value="">Choose</option>
+                <option value="Angelo">Angelo</option>
+                <option value="Matthew">Matthew</option>
+            `;
 
 
             const key =
@@ -2169,8 +1943,7 @@ function renderCalendar() {
 
 
             select.value =
-                calendarData[key] ||
-                "";
+                calendarData[key] || "";
 
 
             select.onchange =
@@ -2180,21 +1953,15 @@ function renderCalendar() {
                         return;
                     }
 
-
-                    calendarData[key] =
-                        select.value;
-
-
-                    localStorage.setItem(
-                        "showerCalendarData",
-                        JSON.stringify(
-                            calendarData
-                        )
-                    );
-
-
+                    const previousValue = calendarData[key] || "NOT SET";
+                    const newValue = select.value || "NOT SET";
+                    const reason = prompt("Why are you changing the schedule for " + key + "?");
+                    if (reason === null || !reason.trim()) { select.value = calendarData[key] || ""; return; }
+                    calendarData[key] = select.value;
+                    localStorage.setItem("showerCalendarData", JSON.stringify(calendarData));
+                    recordChange("Calendar", key + ": " + previousValue + " → " + newValue, reason.trim());
                     renderDashboard();
-
+                    runFairnessChecker();
                 };
 
 
@@ -2202,25 +1969,20 @@ function renderCalendar() {
                 select
             );
 
-
             grid.appendChild(
                 cell
             );
-
         }
 
 
         const totalCells =
             firstDay + 31;
 
-
         const remainder =
             totalCells % 7;
 
 
-        if (
-            remainder !== 0
-        ) {
+        if (remainder !== 0) {
 
             const extra =
                 7 - remainder;
@@ -2237,17 +1999,13 @@ function renderCalendar() {
                         "div"
                     );
 
-
                 empty.className =
-                    "calendar-empty";
-
+                    "calendar-day invalid";
 
                 grid.appendChild(
                     empty
                 );
-
             }
-
         }
 
 
@@ -2255,13 +2013,10 @@ function renderCalendar() {
             grid
         );
 
-
         container.appendChild(
             wrapper
         );
-
     }
-
 }
 
 
@@ -2269,7 +2024,7 @@ function renderCalendar() {
    SAVE MONTH
    ============================================================ */
 
-function saveMonth() {
+function saveCurrentMonth() {
 
     if (!editMode) {
         return;
@@ -2284,24 +2039,44 @@ function saveMonth() {
         );
 
 
-    const monthNumber =
+    const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    ];
+
+
+    const month =
         prompt(
-            "Enter the month number to save (1-12):"
+            "Which month do you want to save?\n\n" +
+            "Type 1 for January, 2 for February, 3 for March, etc."
         );
 
 
-    if (!monthNumber) {
+    if (month === null) {
         return;
     }
 
 
-    const month =
-        Number(monthNumber) - 1;
+    const monthNumber =
+        Number(month) - 1;
 
 
     if (
-        month < 0 ||
-        month > 11
+        !Number.isInteger(
+            monthNumber
+        ) ||
+        monthNumber < 0 ||
+        monthNumber > 11
     ) {
 
         alert(
@@ -2309,8 +2084,15 @@ function saveMonth() {
         );
 
         return;
-
     }
+
+
+    const daysInMonth =
+        new Date(
+            year,
+            monthNumber + 1,
+            0
+        ).getDate();
 
 
     const monthData = {};
@@ -2318,58 +2100,50 @@ function saveMonth() {
 
     for (
         let day = 1;
-        day <= 31;
+        day <= daysInMonth;
         day++
     ) {
-
-        const date =
-            new Date(
-                year,
-                month,
-                day
-            );
-
-
-        if (
-            date.getMonth() !==
-            month
-        ) {
-
-            continue;
-
-        }
-
 
         const key =
             calendarKey(
                 year,
-                month,
+                monthNumber,
                 day
             );
 
-
         monthData[day] =
-            calendarData[key] ||
-            "";
-
+            calendarData[key] || "";
     }
 
 
-    savedMonths.unshift({
+    const savedMonth = {
 
-        id: Date.now(),
+        id:
+            Date.now(),
 
-        year: year,
+        year:
+            year,
 
-        month: month,
+        month:
+            monthNumber,
 
-        data: monthData,
+        monthName:
+            monthNames[
+                monthNumber
+            ],
 
         savedAt:
             new Date()
-                .toLocaleString()
+                .toLocaleString(),
 
-    });
+        days:
+            monthData
+    };
+
+
+    savedMonths.unshift(
+        savedMonth
+    );
 
 
     localStorage.setItem(
@@ -2381,13 +2155,88 @@ function saveMonth() {
 
 
     renderSavedData();
-    renderDashboard();
 
 
     alert(
-        "Month saved."
+        monthNames[monthNumber] +
+        " " +
+        year +
+        " was saved."
+    );
+}
+
+
+/* ============================================================
+   RESET
+   ============================================================ */
+
+function resetCalendar() {
+
+    if (!editMode) {
+        return;
+    }
+
+
+    const year =
+        Number(
+            document.getElementById(
+                "calendarYear"
+            ).value
+        );
+
+
+    const answer =
+        confirm(
+            "Are you sure you want to clear the current year's calendar?"
+        );
+
+
+    if (!answer) {
+        return;
+    }
+
+
+    for (
+        let month = 0;
+        month < 12;
+        month++
+    ) {
+
+        const daysInMonth =
+            new Date(
+                year,
+                month + 1,
+                0
+            ).getDate();
+
+
+        for (
+            let day = 1;
+            day <= daysInMonth;
+            day++
+        ) {
+
+            const key =
+                calendarKey(
+                    year,
+                    month,
+                    day
+                );
+
+            delete calendarData[key];
+        }
+    }
+
+
+    localStorage.setItem(
+        "showerCalendarData",
+        JSON.stringify(
+            calendarData
+        )
     );
 
+
+    renderCalendar();
 }
 
 
@@ -2395,20 +2244,36 @@ function saveMonth() {
    TRACKER
    ============================================================ */
 
+function trackerKey(
+    year,
+    month,
+    day
+) {
+
+    return "tracker-" +
+        year + "-" +
+        String(month + 1)
+            .padStart(2, "0") +
+        "-" +
+        String(day)
+            .padStart(2, "0");
+}
+
+
 function renderTracker() {
-
-    const month =
-        Number(
-            document.getElementById(
-                "trackerMonth"
-            ).value
-        );
-
 
     const year =
         Number(
             document.getElementById(
                 "trackerYear"
+            ).value
+        );
+
+
+    const month =
+        Number(
+            document.getElementById(
+                "trackerMonth"
             ).value
         );
 
@@ -2422,14 +2287,31 @@ function renderTracker() {
     container.innerHTML = "";
 
 
-    const grid =
+    const table =
         document.createElement(
-            "div"
+            "table"
         );
 
+    table.className =
+        "tracker-table";
 
-    grid.className =
-        "calendar-grid";
+
+    table.innerHTML = `
+        <thead>
+            <tr>
+                <th>DAY</th>
+                <th>WHO</th>
+                <th>SIGNING STATUS</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    `;
+
+
+    const tbody =
+        table.querySelector(
+            "tbody"
+        );
 
 
     for (
@@ -2438,98 +2320,61 @@ function renderTracker() {
         day++
     ) {
 
-        const date =
-            new Date(
+        const tr =
+            document.createElement(
+                "tr"
+            );
+
+
+        const dayCell =
+            document.createElement(
+                "td"
+            );
+
+        dayCell.textContent =
+            day;
+
+        tr.appendChild(
+            dayCell
+        );
+
+
+        const personCell =
+            document.createElement(
+                "td"
+            );
+
+
+        const personSelect =
+            document.createElement(
+                "select"
+            );
+
+
+        personSelect.innerHTML = `
+            <option value="">Choose</option>
+            <option value="Angelo">Angelo</option>
+            <option value="Matthew">Matthew</option>
+        `;
+
+
+        const key =
+            trackerKey(
                 year,
                 month,
                 day
             );
 
 
-        if (
-            date.getMonth() !==
-            month
-        ) {
-
-            continue;
-
-        }
+        const stored =
+            trackerData[key] || {};
 
 
-        const box =
-            document.createElement(
-                "div"
-            );
+        personSelect.value =
+            stored.person || "";
 
 
-        box.className =
-            "calendar-day";
-
-
-        const number =
-            document.createElement(
-                "div"
-            );
-
-
-        number.className =
-            "calendar-day-number";
-
-
-        number.textContent =
-            day;
-
-
-        box.appendChild(
-            number
-        );
-
-
-        const key =
-            year +
-            "-" +
-            String(
-                month + 1
-            ).padStart(
-                2,
-                "0"
-            ) +
-            "-" +
-            String(day).padStart(
-                2,
-                "0"
-            );
-
-
-        const who =
-            document.createElement(
-                "select"
-            );
-
-
-        who.innerHTML = `
-
-            <option value="">
-                Who?
-            </option>
-
-            <option value="Angelo">
-                Angelo
-            </option>
-
-            <option value="Matthew">
-                Matthew
-            </option>
-
-        `;
-
-
-        who.value =
-            trackerData[key]?.who ||
-            "";
-
-
-        who.onchange =
+        personSelect.onchange =
             function() {
 
                 if (!editMode) {
@@ -2538,47 +2383,51 @@ function renderTracker() {
 
 
                 if (!trackerData[key]) {
-
                     trackerData[key] = {};
-
                 }
 
 
-                trackerData[key].who =
-                    who.value;
+                trackerData[key].person =
+                    personSelect.value;
 
+
+                saveTracker();
             };
 
 
-        const status =
+        personCell.appendChild(
+            personSelect
+        );
+
+        tr.appendChild(
+            personCell
+        );
+
+
+        const statusCell =
+            document.createElement(
+                "td"
+            );
+
+
+        const statusSelect =
             document.createElement(
                 "select"
             );
 
 
-        status.innerHTML = `
-
-            <option value="">
-                Status?
-            </option>
-
-            <option value="SIGNED">
-                SIGNED
-            </option>
-
-            <option value="MISSING">
-                MISSING
-            </option>
-
+        statusSelect.innerHTML = `
+            <option value="">Choose</option>
+            <option value="SIGNED">SIGNED</option>
+            <option value="MISSING">MISSING</option>
         `;
 
 
-        status.value =
-            trackerData[key]?.status ||
-            "";
+        statusSelect.value =
+            stored.status || "";
 
 
-        status.onchange =
+        statusSelect.onchange =
             function() {
 
                 if (!editMode) {
@@ -2587,52 +2436,40 @@ function renderTracker() {
 
 
                 if (!trackerData[key]) {
-
                     trackerData[key] = {};
-
                 }
 
 
                 trackerData[key].status =
-                    status.value;
+                    statusSelect.value;
 
+
+                saveTracker();
             };
 
 
-        box.appendChild(
-            who
+        statusCell.appendChild(
+            statusSelect
+        );
+
+        tr.appendChild(
+            statusCell
         );
 
 
-        box.appendChild(
-            status
+        tbody.appendChild(
+            tr
         );
-
-
-        grid.appendChild(
-            box
-        );
-
     }
 
 
     container.appendChild(
-        grid
+        table
     );
-
 }
 
 
-/* ============================================================
-   SAVE TRACKER
-   ============================================================ */
-
 function saveTracker() {
-
-    if (!editMode) {
-        return;
-    }
-
 
     localStorage.setItem(
         "showerTrackerData",
@@ -2640,14 +2477,18 @@ function saveTracker() {
             trackerData
         )
     );
+}
 
 
-    const month =
-        Number(
-            document.getElementById(
-                "trackerMonth"
-            ).value
-        );
+/* ============================================================
+   NEW: SAVE CURRENT SIGNING TRACKER
+   ============================================================ */
+
+function saveCurrentTracker() {
+
+    if (!editMode) {
+        return;
+    }
 
 
     const year =
@@ -2658,25 +2499,90 @@ function saveTracker() {
         );
 
 
-    savedTrackers.unshift({
+    const month =
+        Number(
+            document.getElementById(
+                "trackerMonth"
+            ).value
+        );
 
-        id: Date.now(),
 
-        month: month,
+    const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    ];
 
-        year: year,
 
-        data: JSON.parse(
-            JSON.stringify(
-                trackerData
-            )
-        ),
+    const days = {};
+
+
+    for (
+        let day = 1;
+        day <= 31;
+        day++
+    ) {
+
+        const key =
+            trackerKey(
+                year,
+                month,
+                day
+            );
+
+
+        const stored =
+            trackerData[key] || {};
+
+
+        days[day] = {
+
+            person:
+                stored.person || "",
+
+            status:
+                stored.status || ""
+
+        };
+    }
+
+
+    const savedTracker = {
+
+        id:
+            Date.now(),
+
+        year:
+            year,
+
+        month:
+            month,
+
+        monthName:
+            monthNames[month],
 
         savedAt:
             new Date()
-                .toLocaleString()
+                .toLocaleString(),
 
-    });
+        days:
+            days
+
+    };
+
+
+    savedTrackers.unshift(
+        savedTracker
+    );
 
 
     localStorage.setItem(
@@ -2689,10 +2595,553 @@ function saveTracker() {
 
     renderSavedData();
 
+
     alert(
-        "Tracker saved."
+        monthNames[month] +
+        " " +
+        year +
+        " Signing Tracker was saved."
+    );
+}
+
+
+/* ============================================================
+   NEW: SAVED SIGNING TRACKERS
+   ============================================================ */
+
+function renderSavedTrackers() {
+
+    const container =
+        document.getElementById(
+            "savedTrackersContainer"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    container.innerHTML = "";
+
+
+    if (
+        !Array.isArray(savedTrackers) ||
+        savedTrackers.length === 0
+    ) {
+
+        container.innerHTML =
+            "<p>No saved signing trackers yet.</p>";
+
+        return;
+    }
+
+
+    savedTrackers.forEach(
+        function(savedTracker) {
+
+            const box =
+                document.createElement(
+                    "div"
+                );
+
+
+            box.className =
+                "saved-month";
+
+
+            const title =
+                document.createElement(
+                    "h3"
+                );
+
+
+            title.textContent =
+                savedTracker.monthName +
+                " " +
+                savedTracker.year +
+                " — Signing Tracker";
+
+
+            box.appendChild(
+                title
+            );
+
+
+            const savedTime =
+                document.createElement(
+                    "p"
+                );
+
+
+            savedTime.textContent =
+                "Saved: " +
+                savedTracker.savedAt;
+
+
+            box.appendChild(
+                savedTime
+            );
+
+
+            const table =
+                document.createElement(
+                    "table"
+                );
+
+
+            table.className =
+                "tracker-table";
+
+
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>DAY</th>
+                        <th>WHO</th>
+                        <th>SIGNING STATUS</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            `;
+
+
+            const tbody =
+                table.querySelector(
+                    "tbody"
+                );
+
+
+            for (
+                let day = 1;
+                day <= 31;
+                day++
+            ) {
+
+                const tr =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                const dayCell =
+                    document.createElement(
+                        "td"
+                    );
+
+
+                dayCell.textContent =
+                    day;
+
+
+                tr.appendChild(
+                    dayCell
+                );
+
+
+                const personCell =
+                    document.createElement(
+                        "td"
+                    );
+
+
+                personCell.textContent =
+                    savedTracker.days[day]?.person ||
+                    "Not assigned";
+
+
+                tr.appendChild(
+                    personCell
+                );
+
+
+                const statusCell =
+                    document.createElement(
+                        "td"
+                    );
+
+
+                statusCell.textContent =
+                    savedTracker.days[day]?.status ||
+                    "Not selected";
+
+
+                tr.appendChild(
+                    statusCell
+                );
+
+
+                tbody.appendChild(
+                    tr
+                );
+            }
+
+
+            box.appendChild(
+                table
+            );
+
+
+            if (editMode) {
+
+                const deleteButton =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                deleteButton.className =
+                    "delete-button";
+
+
+                deleteButton.textContent =
+                    "DELETE SAVED TRACKER";
+
+
+                deleteButton.onclick =
+                    function() {
+
+                        deleteSavedTracker(
+                            savedTracker.id
+                        );
+
+                    };
+
+
+                box.appendChild(
+                    deleteButton
+                );
+            }
+
+
+            container.appendChild(
+                box
+            );
+
+        }
+    );
+}
+
+
+/* ============================================================
+   NEW: DELETE SAVED SIGNING TRACKER
+   ============================================================ */
+
+function deleteSavedTracker(id) {
+
+    if (!editMode) {
+        return;
+    }
+
+
+    const answer =
+        confirm(
+            "Delete this saved signing tracker?"
+        );
+
+
+    if (!answer) {
+        return;
+    }
+
+
+    savedTrackers =
+        savedTrackers.filter(
+            function(item) {
+
+                return item.id !== id;
+
+            }
+        );
+
+
+    localStorage.setItem(
+        "showerSavedTrackers",
+        JSON.stringify(
+            savedTrackers
+        )
     );
 
+
+    renderSavedTrackers();
+}
+
+
+/* ============================================================
+   ANGELO'S POINTS
+   ============================================================ */
+
+function renderAngeloPoints() {
+
+    const display =
+        document.getElementById("angeloPointsDisplay");
+
+    const progress =
+        document.getElementById("angeloPointsProgress");
+
+    if (!display || !progress) {
+        return;
+    }
+
+    display.textContent =
+        angeloPoints +
+        (angeloPoints === 1 ? " POINT" : " POINTS");
+
+    const percentage =
+        Math.max(0, Math.min((angeloPoints / 15) * 100, 100));
+
+    progress.style.width = percentage + "%";
+}
+
+
+function saveAngeloPoints() {
+
+    localStorage.setItem(
+        "angeloPoints",
+        String(angeloPoints)
+    );
+}
+
+
+function addAngeloPoint() {
+
+    if (!editMode) {
+        return;
+    }
+
+    const reason = prompt("Why are you adding 1 point to Angelo?");
+    if (reason === null || !reason.trim()) return;
+    const oldPoints = angeloPoints;
+    angeloPoints++;
+    saveAngeloPoints();
+    renderAngeloPoints();
+    recordChange("Angelo's points", "Changed from " + oldPoints + " to " + angeloPoints, reason.trim());
+    renderDashboard();
+}
+
+
+function removeAngeloPoint() {
+
+    if (!editMode) {
+        return;
+    }
+
+    const reason = prompt("Why are you removing 1 point from Angelo?");
+    if (reason === null || !reason.trim()) return;
+    const oldPoints = angeloPoints;
+    angeloPoints--;
+    saveAngeloPoints();
+    renderAngeloPoints();
+    recordChange("Angelo's points", "Changed from " + oldPoints + " to " + angeloPoints, reason.trim());
+    renderDashboard();
+}
+
+
+function setRewardToday() {
+
+    const input =
+        document.getElementById("rewardDate");
+
+    if (!input) {
+        return;
+    }
+
+    const today = new Date();
+
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
+    const dd = String(today.getDate()).padStart(2, "0");
+
+    input.value = yyyy + "-" + mm + "-" + dd;
+}
+
+
+function saveReward() {
+
+    if (!editMode) {
+        return;
+    }
+
+    const date =
+        document.getElementById("rewardDate").value;
+
+    const reward =
+        document.getElementById("rewardName").value.trim();
+
+    const notes =
+        document.getElementById("rewardNotes").value.trim();
+
+    if (!date) {
+        alert("Please choose a date.");
+        return;
+    }
+
+    if (!reward) {
+        alert("Please enter the reward.");
+        return;
+    }
+
+    const changeReason = prompt("Why are you adding this reward to the history?");
+    if (changeReason === null || !changeReason.trim()) return;
+    const entry = {
+        id: Date.now(),
+        date: date,
+        reward: reward,
+        notes: notes,
+        savedAt: new Date().toLocaleString()
+    };
+
+    rewardHistory.unshift(entry);
+
+    localStorage.setItem(
+        "angeloRewardHistory",
+        JSON.stringify(rewardHistory)
+    );
+
+    renderRewardHistory();
+    renderDashboard();
+    recordChange("Reward history", "Added reward: " + reward, changeReason.trim());
+    newReward();
+
+    alert("Reward saved.");
+}
+
+
+function newReward() {
+
+    if (!editMode) {
+        return;
+    }
+
+    setRewardToday();
+
+    document.getElementById("rewardName").value = "";
+    document.getElementById("rewardNotes").value = "";
+}
+
+
+function renderRewardHistory() {
+
+    const container =
+        document.getElementById("rewardHistoryContainer");
+
+    if (!container) {
+        return;
+    }
+
+    container.innerHTML = "";
+
+    if (rewardHistory.length === 0) {
+        container.innerHTML = "<p>No rewards recorded yet.</p>";
+        return;
+    }
+
+    rewardHistory.forEach(function(entry) {
+
+        const box =
+            document.createElement("div");
+
+        box.className = "reward-entry";
+
+        const title =
+            document.createElement("h3");
+
+        title.textContent =
+            "Reward - " + entry.date;
+
+        box.appendChild(title);
+
+        const details =
+            document.createElement("pre");
+
+        details.textContent =
+            "Reward: " + entry.reward +
+            "\n\n" +
+            "Notes:\n" +
+            (entry.notes || "No notes") +
+            "\n\n" +
+            "Saved: " + entry.savedAt;
+
+        box.appendChild(details);
+
+        if (editMode) {
+
+            const deleteButton =
+                document.createElement("button");
+
+            deleteButton.className = "delete-button";
+            deleteButton.textContent = "DELETE REWARD";
+
+            deleteButton.onclick = function() {
+                deleteReward(entry.id);
+            };
+
+            box.appendChild(deleteButton);
+        }
+
+        container.appendChild(box);
+    });
+}
+
+
+function deleteReward(id) {
+
+    if (!editMode) {
+        return;
+    }
+
+    const answer =
+        confirm("Delete this saved reward?");
+
+    if (!answer) {
+        return;
+    }
+
+    const deletedReward = rewardHistory.find(function(item) { return item.id === id; });
+    const changeReason = prompt("Why are you deleting this reward?");
+    if (changeReason === null || !changeReason.trim()) return;
+    rewardHistory = rewardHistory.filter(function(item) {
+        return item.id !== id;
+    });
+
+    localStorage.setItem(
+        "angeloRewardHistory",
+        JSON.stringify(rewardHistory)
+    );
+
+    renderRewardHistory();
+    renderDashboard();
+    recordChange("Reward history", "Deleted reward: " + (deletedReward ? deletedReward.reward : "Unknown reward"), changeReason.trim());
+}
+
+
+function setupPointsMode() {
+
+    const addButton =
+        document.getElementById("addPointButton");
+
+    const removeButton =
+        document.getElementById("removePointButton");
+
+    const saveButton =
+        document.getElementById("saveRewardButton");
+
+    const newButton =
+        document.getElementById("newRewardButton");
+
+    if (!editMode) {
+
+        if (addButton) addButton.style.display = "none";
+        if (removeButton) removeButton.style.display = "none";
+        if (saveButton) saveButton.style.display = "none";
+        if (newButton) newButton.style.display = "none";
+    } else {
+
+        if (addButton) addButton.style.display = "";
+        if (removeButton) removeButton.style.display = "";
+        if (saveButton) saveButton.style.display = "";
+        if (newButton) newButton.style.display = "";
+    }
 }
 
 
@@ -2738,7 +3187,6 @@ function saveDailyPaper() {
         );
 
         return;
-
     }
 
 
@@ -2749,28 +3197,35 @@ function saveDailyPaper() {
         );
 
         return;
-
     }
 
 
     const paper = {
 
-        id: Date.now(),
+        id:
+            Date.now(),
 
-        date: date,
+        date:
+            date,
 
         firstShowerer:
             firstShowerer,
 
-        status: status,
+        status:
+            status,
 
-        notes: notes,
+        notes:
+            notes,
 
         savedAt:
             new Date()
                 .toLocaleString()
-
     };
+
+
+    if (!Array.isArray(savedPapers)) {
+        savedPapers = [];
+    }
 
 
     savedPapers.unshift(
@@ -2787,15 +3242,17 @@ function saveDailyPaper() {
 
 
     renderSavedData();
-    renderDashboard();
 
 
     alert(
         "Daily paper saved."
     );
-
 }
 
+
+/* ============================================================
+   NEW DAILY PAPER
+   ============================================================ */
 
 function newDailyPaper() {
 
@@ -2820,7 +3277,6 @@ function newDailyPaper() {
     document.getElementById(
         "paperNotes"
     ).value = "";
-
 }
 
 
@@ -2830,64 +3286,53 @@ function newDailyPaper() {
 
 function renderSavedData() {
 
+    renderSavedMonths();
+
+    /*
+       NEW
+       Saved Signing Trackers
+    */
+
+    renderSavedTrackers();
+
+    renderSavedPapers();
+}
+
+
+/* ============================================================
+   SAVED MONTHS
+   ============================================================ */
+
+function renderSavedMonths() {
+
     const container =
         document.getElementById(
-            "savedDataContainer"
+            "savedMonthsContainer"
         );
 
 
     container.innerHTML = "";
 
 
-    /* SAVED MONTHS */
+    if (savedMonths.length === 0) {
 
-    const monthsTitle =
-        document.createElement(
-            "h2"
-        );
+        container.innerHTML =
+            "<p>No saved months yet.</p>";
 
-
-    monthsTitle.textContent =
-        "SAVED MONTHS";
-
-
-    container.appendChild(
-        monthsTitle
-    );
-
-
-    if (
-        savedMonths.length === 0
-    ) {
-
-        const empty =
-            document.createElement(
-                "p"
-            );
-
-
-        empty.textContent =
-            "No saved months.";
-
-
-        container.appendChild(
-            empty
-        );
-
+        return;
     }
 
 
     savedMonths.forEach(
-        function(item) {
+        function(savedMonth) {
 
             const box =
                 document.createElement(
                     "div"
                 );
 
-
             box.className =
-                "saved-item";
+                "saved-month";
 
 
             const title =
@@ -2895,12 +3340,10 @@ function renderSavedData() {
                     "h3"
                 );
 
-
             title.textContent =
-                "Month " +
-                (item.month + 1) +
-                " / " +
-                item.year;
+                savedMonth.monthName +
+                " " +
+                savedMonth.year;
 
 
             box.appendChild(
@@ -2908,11 +3351,25 @@ function renderSavedData() {
             );
 
 
+            const savedTime =
+                document.createElement(
+                    "p"
+                );
+
+            savedTime.textContent =
+                "Saved: " +
+                savedMonth.savedAt;
+
+
+            box.appendChild(
+                savedTime
+            );
+
+
             const grid =
                 document.createElement(
                     "div"
                 );
-
 
             grid.className =
                 "saved-month-grid";
@@ -2924,48 +3381,48 @@ function renderSavedData() {
                 day++
             ) {
 
-                const date =
-                    new Date(
-                        item.year,
-                        item.month,
-                        day
-                    );
-
-
-                if (
-                    date.getMonth() !==
-                    item.month
-                ) {
-
-                    continue;
-
-                }
-
-
                 const dayBox =
                     document.createElement(
                         "div"
                     );
 
-
                 dayBox.className =
                     "saved-month-day";
 
 
-                dayBox.innerHTML =
-                    "<strong>Day " +
-                    day +
-                    "</strong>" +
-                    (
-                        item.data[day] ||
-                        "Not set"
+                const dayNumber =
+                    document.createElement(
+                        "strong"
                     );
+
+                dayNumber.textContent =
+                    "Day " + day;
+
+
+                dayBox.appendChild(
+                    dayNumber
+                );
+
+
+                const person =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                person.textContent =
+                    savedMonth.days[day] ||
+                    "Not assigned";
+
+
+                dayBox.appendChild(
+                    person
+                );
 
 
                 grid.appendChild(
                     dayBox
                 );
-
             }
 
 
@@ -2993,40 +3450,9 @@ function renderSavedData() {
                 deleteButton.onclick =
                     function() {
 
-                        if (
-                            !confirm(
-                                "Delete this saved month?"
-                            )
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        savedMonths =
-                            savedMonths.filter(
-                                function(saved) {
-
-                                    return (
-                                        saved.id !==
-                                        item.id
-                                    );
-
-                                }
-                            );
-
-
-                        localStorage.setItem(
-                            "showerSavedMonths",
-                            JSON.stringify(
-                                savedMonths
-                            )
+                        deleteSavedMonth(
+                            savedMonth.id
                         );
-
-
-                        renderSavedData();
-                        renderDashboard();
 
                     };
 
@@ -3034,7 +3460,6 @@ function renderSavedData() {
                 box.appendChild(
                     deleteButton
                 );
-
             }
 
 
@@ -3044,640 +3469,82 @@ function renderSavedData() {
 
         }
     );
-
-
-    /* SAVED TRACKERS */
-
-    const trackersTitle =
-        document.createElement(
-            "h2"
-        );
-
-
-    trackersTitle.textContent =
-        "SAVED SIGNING TRACKERS";
-
-
-    container.appendChild(
-        trackersTitle
-    );
-
-
-    if (
-        savedTrackers.length === 0
-    ) {
-
-        const empty =
-            document.createElement(
-                "p"
-            );
-
-
-        empty.textContent =
-            "No saved signing trackers.";
-
-
-        container.appendChild(
-            empty
-        );
-
-    }
-
-
-    savedTrackers.forEach(
-        function(item) {
-
-            const box =
-                document.createElement(
-                    "div"
-                );
-
-
-            box.className =
-                "saved-item";
-
-
-            const title =
-                document.createElement(
-                    "h3"
-                );
-
-
-            title.textContent =
-                "Tracker — " +
-                (item.month + 1) +
-                "/" +
-                item.year;
-
-
-            box.appendChild(
-                title
-            );
-
-
-            const pre =
-                document.createElement(
-                    "pre"
-                );
-
-
-            pre.textContent =
-                JSON.stringify(
-                    item.data,
-                    null,
-                    2
-                );
-
-
-            box.appendChild(
-                pre
-            );
-
-
-            if (editMode) {
-
-                const deleteButton =
-                    document.createElement(
-                        "button"
-                    );
-
-
-                deleteButton.className =
-                    "delete-button";
-
-
-                deleteButton.textContent =
-                    "DELETE TRACKER";
-
-
-                deleteButton.onclick =
-                    function() {
-
-                        if (
-                            !confirm(
-                                "Delete this saved tracker?"
-                            )
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        savedTrackers =
-                            savedTrackers.filter(
-                                function(saved) {
-
-                                    return (
-                                        saved.id !==
-                                        item.id
-                                    );
-
-                                }
-                            );
-
-
-                        localStorage.setItem(
-                            "showerSavedTrackers",
-                            JSON.stringify(
-                                savedTrackers
-                            )
-                        );
-
-
-                        renderSavedData();
-
-                    };
-
-
-                box.appendChild(
-                    deleteButton
-                );
-
-            }
-
-
-            container.appendChild(
-                box
-            );
-
-        }
-    );
-
-
-    /* SAVED PAPERS */
-
-    const papersTitle =
-        document.createElement(
-            "h2"
-        );
-
-
-    papersTitle.textContent =
-        "SAVED DAILY PAPERS";
-
-
-    container.appendChild(
-        papersTitle
-    );
-
-
-    if (
-        savedPapers.length === 0
-    ) {
-
-        const empty =
-            document.createElement(
-                "p"
-            );
-
-
-        empty.textContent =
-            "No saved daily papers.";
-
-
-        container.appendChild(
-            empty
-        );
-
-    }
-
-
-    savedPapers.forEach(
-        function(item) {
-
-            const box =
-                document.createElement(
-                    "div"
-                );
-
-
-            box.className =
-                "saved-item";
-
-
-            const title =
-                document.createElement(
-                    "h3"
-                );
-
-
-            title.textContent =
-                "Daily Paper — " +
-                item.date;
-
-
-            box.appendChild(
-                title
-            );
-
-
-            const pre =
-                document.createElement(
-                    "pre"
-                );
-
-
-            pre.textContent =
-
-                "Date: " +
-                item.date +
-
-                "\n\nWho showered first: " +
-                item.firstShowerer +
-
-                "\n\nSigning status: " +
-                item.status +
-
-                "\n\nNotes:\n" +
-                (
-                    item.notes ||
-                    "No notes"
-                ) +
-
-                "\n\nSaved: " +
-                item.savedAt;
-
-
-            box.appendChild(
-                pre
-            );
-
-
-            if (editMode) {
-
-                const deleteButton =
-                    document.createElement(
-                        "button"
-                    );
-
-
-                deleteButton.className =
-                    "delete-button";
-
-
-                deleteButton.textContent =
-                    "DELETE DAILY PAPER";
-
-
-                deleteButton.onclick =
-                    function() {
-
-                        if (
-                            !confirm(
-                                "Delete this daily paper?"
-                            )
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        savedPapers =
-                            savedPapers.filter(
-                                function(saved) {
-
-                                    return (
-                                        saved.id !==
-                                        item.id
-                                    );
-
-                                }
-                            );
-
-
-                        localStorage.setItem(
-                            "showerSavedPapers",
-                            JSON.stringify(
-                                savedPapers
-                            )
-                        );
-
-
-                        renderSavedData();
-                        renderDashboard();
-
-                    };
-
-
-                box.appendChild(
-                    deleteButton
-                );
-
-            }
-
-
-            container.appendChild(
-                box
-            );
-
-        }
-    );
-
 }
 
 
 /* ============================================================
-   ANGELO'S POINTS
+   DELETE SAVED MONTH
    ============================================================ */
 
-function renderAngeloPoints() {
-
-    const display =
-        document.getElementById(
-            "angeloPointsDisplay"
-        );
-
-
-    const progress =
-        document.getElementById(
-            "angeloPointsProgress"
-        );
-
-
-    if (
-        !display ||
-        !progress
-    ) {
-
-        return;
-
-    }
-
-
-    display.textContent =
-        angeloPoints +
-        " POINTS";
-
-
-    const percent =
-        Math.min(
-            100,
-            Math.max(
-                0,
-                (
-                    angeloPoints /
-                    15
-                ) *
-                100
-            )
-        );
-
-
-    progress.style.width =
-        percent +
-        "%";
-
-}
-
-
-function saveAngeloPoints() {
-
-    localStorage.setItem(
-        "angeloPoints",
-        String(
-            angeloPoints
-        )
-    );
-
-}
-
-
-function addAngeloPoint() {
+function deleteSavedMonth(id) {
 
     if (!editMode) {
         return;
     }
 
 
-    angeloPoints++;
+    const answer =
+        confirm(
+            "Delete this saved month?"
+        );
 
 
-    saveAngeloPoints();
-
-    renderAngeloPoints();
-
-    renderDashboard();
-
-}
-
-
-function removeAngeloPoint() {
-
-    if (!editMode) {
+    if (!answer) {
         return;
     }
 
 
-    angeloPoints--;
+    savedMonths =
+        savedMonths.filter(
+            function(item) {
 
+                return item.id !== id;
 
-    saveAngeloPoints();
-
-    renderAngeloPoints();
-
-    renderDashboard();
-
-}
-
-
-/* ============================================================
-   REWARDS
-   ============================================================ */
-
-function setRewardToday() {
-
-    const input =
-        document.getElementById(
-            "rewardDate"
+            }
         );
-
-
-    if (!input) {
-        return;
-    }
-
-
-    const today =
-        new Date();
-
-
-    const yyyy =
-        today.getFullYear();
-
-
-    const mm =
-        String(
-            today.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    const dd =
-        String(
-            today.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    input.value =
-        yyyy +
-        "-" +
-        mm +
-        "-" +
-        dd;
-
-}
-
-
-function saveReward() {
-
-    if (!editMode) {
-        return;
-    }
-
-
-    const date =
-        document.getElementById(
-            "rewardDate"
-        ).value;
-
-
-    const reward =
-        document.getElementById(
-            "rewardName"
-        ).value.trim();
-
-
-    const notes =
-        document.getElementById(
-            "rewardNotes"
-        ).value.trim();
-
-
-    if (!date) {
-
-        alert(
-            "Please choose a date."
-        );
-
-        return;
-
-    }
-
-
-    if (!reward) {
-
-        alert(
-            "Please enter the reward."
-        );
-
-        return;
-
-    }
-
-
-    const entry = {
-
-        id: Date.now(),
-
-        date: date,
-
-        reward: reward,
-
-        notes: notes,
-
-        savedAt:
-            new Date()
-                .toLocaleString()
-
-    };
-
-
-    rewardHistory.unshift(
-        entry
-    );
 
 
     localStorage.setItem(
-        "angeloRewardHistory",
+        "showerSavedMonths",
         JSON.stringify(
-            rewardHistory
+            savedMonths
         )
     );
 
 
-    renderRewardHistory();
-
-    renderDashboard();
-
-    newReward();
-
-
-    alert(
-        "Reward saved."
-    );
-
+    renderSavedMonths();
 }
 
 
-function newReward() {
+/* ============================================================
+   SAVED PAPERS
+   ============================================================ */
 
-    if (!editMode) {
-        return;
-    }
-
-
-    setRewardToday();
-
-
-    document.getElementById(
-        "rewardName"
-    ).value = "";
-
-
-    document.getElementById(
-        "rewardNotes"
-    ).value = "";
-
-}
-
-
-function renderRewardHistory() {
+function renderSavedPapers() {
 
     const container =
         document.getElementById(
-            "rewardHistoryContainer"
+            "savedPapersContainer"
         );
-
-
-    if (!container) {
-        return;
-    }
 
 
     container.innerHTML = "";
 
 
     if (
-        rewardHistory.length === 0
+        !Array.isArray(savedPapers) ||
+        savedPapers.length === 0
     ) {
 
         container.innerHTML =
-            "<p>No rewards recorded yet.</p>";
+            "<p>No saved daily papers yet.</p>";
 
         return;
-
     }
 
 
-    rewardHistory.forEach(
-        function(item) {
+    savedPapers.forEach(
+        function(paper) {
 
             const box =
                 document.createElement(
@@ -3686,7 +3553,7 @@ function renderRewardHistory() {
 
 
             box.className =
-                "reward-entry";
+                "saved-item";
 
 
             const title =
@@ -3696,8 +3563,8 @@ function renderRewardHistory() {
 
 
             title.textContent =
-                "Reward — " +
-                item.date;
+                "Daily Paper - " +
+                paper.date;
 
 
             box.appendChild(
@@ -3712,18 +3579,26 @@ function renderRewardHistory() {
 
 
             details.textContent =
+                "Who showered first: " +
+                paper.firstShowerer +
+                "\n\n" +
 
-                "Reward: " +
-                item.reward +
-
-                "\n\nNotes:\n" +
+                "Signing status: " +
                 (
-                    item.notes ||
+                    paper.status ||
+                    "Not selected"
+                ) +
+                "\n\n" +
+
+                "Notes:\n" +
+                (
+                    paper.notes ||
                     "No notes"
                 ) +
+                "\n\n" +
 
-                "\n\nSaved: " +
-                item.savedAt;
+                "Saved: " +
+                paper.savedAt;
 
 
             box.appendChild(
@@ -3744,14 +3619,14 @@ function renderRewardHistory() {
 
 
                 deleteButton.textContent =
-                    "DELETE REWARD";
+                    "DELETE PAPER";
 
 
                 deleteButton.onclick =
                     function() {
 
-                        deleteReward(
-                            item.id
+                        deletePaper(
+                            paper.id
                         );
 
                     };
@@ -3760,7 +3635,6 @@ function renderRewardHistory() {
                 box.appendChild(
                     deleteButton
                 );
-
             }
 
 
@@ -3770,632 +3644,71 @@ function renderRewardHistory() {
 
         }
     );
-
 }
 
 
-function deleteReward(id) {
+/* ============================================================
+   DELETE PAPER
+   ============================================================ */
+
+function deletePaper(id) {
 
     if (!editMode) {
         return;
     }
 
 
-    if (
-        !confirm(
-            "Delete this saved reward?"
-        )
-    ) {
+    const answer =
+        confirm(
+            "Delete this saved paper?"
+        );
 
+
+    if (!answer) {
         return;
-
     }
 
 
-    rewardHistory =
-        rewardHistory.filter(
+    savedPapers =
+        savedPapers.filter(
             function(item) {
 
-                return (
-                    item.id !==
-                    id
-                );
+                return item.id !== id;
 
             }
         );
 
 
     localStorage.setItem(
-        "angeloRewardHistory",
+        "showerSavedPapers",
         JSON.stringify(
-            rewardHistory
+            savedPapers
         )
     );
 
 
-    renderRewardHistory();
-
-    renderDashboard();
-
+    renderSavedPapers();
 }
 
 
 /* ============================================================
-   POINTS MODE
+   ENTER KEY
    ============================================================ */
 
-function setupPointsMode() {
-
-    const addButton =
-        document.getElementById(
-            "addPointButton"
-        );
-
-
-    const removeButton =
-        document.getElementById(
-            "removePointButton"
-        );
-
-
-    const saveButton =
-        document.getElementById(
-            "saveRewardButton"
-        );
-
-
-    const newButton =
-        document.getElementById(
-            "newRewardButton"
-        );
-
-
-    if (!editMode) {
-
-        if (addButton)
-            addButton.style.display =
-                "none";
-
-
-        if (removeButton)
-            removeButton.style.display =
-                "none";
-
-
-        if (saveButton)
-            saveButton.style.display =
-                "none";
-
-
-        if (newButton)
-            newButton.style.display =
-                "none";
-
-    } else {
-
-        if (addButton)
-            addButton.style.display =
-                "";
-
-
-        if (removeButton)
-            removeButton.style.display =
-                "";
-
-
-        if (saveButton)
-            saveButton.style.display =
-                "";
-
-
-        if (newButton)
-            newButton.style.display =
-                "";
-
-    }
-
-}
-
-
-/* ============================================================
-   DASHBOARD
-   ============================================================ */
-
-function formatToolDate(value) {
-
-    if (!value) {
-        return "";
-    }
-
-
-    const parts =
-        value.split("-");
-
-
-    const d =
-        new Date(
-            Number(parts[0]),
-            Number(parts[1]) - 1,
-            Number(parts[2])
-        );
-
-
-    return d.toLocaleDateString(
-        undefined,
-        {
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-        }
-    );
-
-}
-
-
-function getScheduledPerson(
-    dateString
-) {
-
-    if (!dateString) {
-        return "NOT SET";
-    }
-
-
-    const parts =
-        dateString.split("-");
-
-
-    const year =
-        Number(parts[0]);
-
-
-    const month =
-        Number(parts[1]) - 1;
-
-
-    const day =
-        Number(parts[2]);
-
-
-    const key =
-        calendarKey(
-            year,
-            month,
-            day
-        );
-
-
-    return (
-        calendarData[key] ||
-        "NOT SET"
-    );
-
-}
-
-
-function setScheduleToolToday() {
-
-    const input =
-        document.getElementById(
-            "scheduleToolDate"
-        );
-
-
-    if (!input) {
-        return;
-    }
-
-
-    const today =
-        new Date();
-
-
-    input.value =
-        today.getFullYear() +
-        "-" +
-        String(
-            today.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        ) +
-        "-" +
-        String(
-            today.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    updateScheduleTool();
-
-}
-
-
-function updateScheduleTool() {
-
-    const input =
-        document.getElementById(
-            "scheduleToolDate"
-        );
-
-
-    const result =
-        document.getElementById(
-            "scheduleToolResult"
-        );
-
-
-    if (
-        !input ||
-        !result
-    ) {
-
-        return;
-
-    }
-
-
-    const person =
-        getScheduledPerson(
-            input.value
-        );
-
-
-    result.innerHTML =
-
-        "DATE: <strong>" +
-        formatToolDate(
-            input.value
-        ) +
-        "</strong><br><br>" +
-
-        "SCHEDULED PERSON: <strong>" +
-        person +
-        "</strong>";
-
-}
-
-
-function renderDashboard() {
-
-    const today =
-        new Date();
-
-
-    const todayValue =
-        today.getFullYear() +
-        "-" +
-        String(
-            today.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        ) +
-        "-" +
-        String(
-            today.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    const todayPerson =
-        getScheduledPerson(
-            todayValue
-        );
-
-
-    const todayEl =
-        document.getElementById(
-            "dashboardToday"
-        );
-
-
-    const pointsEl =
-        document.getElementById(
-            "dashboardPoints"
-        );
-
-
-    const rewardsEl =
-        document.getElementById(
-            "dashboardRewards"
-        );
-
-
-    const papersEl =
-        document.getElementById(
-            "dashboardPapers"
-        );
-
-
-    const monthsEl =
-        document.getElementById(
-            "dashboardMonths"
-        );
-
-
-    const nextEl =
-        document.getElementById(
-            "dashboardNext"
-        );
-
-
-    if (todayEl) {
-
-        todayEl.textContent =
-            todayPerson;
-
-    }
-
-
-    if (pointsEl) {
-
-        pointsEl.textContent =
-            angeloPoints +
-            " POINTS";
-
-    }
-
-
-    if (rewardsEl) {
-
-        rewardsEl.textContent =
-            rewardHistory.length;
-
-    }
-
-
-    if (papersEl) {
-
-        papersEl.textContent =
-            savedPapers.length;
-
-    }
-
-
-    if (monthsEl) {
-
-        monthsEl.textContent =
-            savedMonths.length;
-
-    }
-
-
-    if (nextEl) {
-
-        let found =
-            "NOT SET";
-
-
-        for (
-            let i = 1;
-            i <= 31;
-            i++
-        ) {
-
-            const d =
-                new Date(
-                    today.getFullYear(),
-                    today.getMonth(),
-                    today.getDate() + i
-                );
-
-
-            const value =
-                d.getFullYear() +
-                "-" +
-                String(
-                    d.getMonth() + 1
-                ).padStart(
-                    2,
-                    "0"
-                ) +
-                "-" +
-                String(
-                    d.getDate()
-                ).padStart(
-                    2,
-                    "0"
-                );
-
-
-            const person =
-                getScheduledPerson(
-                    value
-                );
-
-
-            if (
-                person !==
-                "NOT SET"
-            ) {
-
-                found =
-                    person +
-                    " — " +
-                    formatToolDate(
-                        value
-                    );
-
-                break;
-
-            }
+document.getElementById(
+    "passwordInput"
+).addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Enter") {
+
+            login();
 
         }
 
-
-        nextEl.textContent =
-            found;
-
     }
-
-}
-
-
-/* ============================================================
-   SETTINGS
-   ============================================================ */
-
-function updateSettings() {
-
-    const mode =
-        document.getElementById(
-            "settingsMode"
-        );
-
-
-    if (mode) {
-
-        mode.textContent =
-            editMode
-                ? "EDIT MODE"
-                : "VIEW ONLY";
-
-    }
-
-}
-
-
-function resetPoints() {
-
-    if (!editMode) {
-        return;
-    }
-
-
-    if (
-        !confirm(
-            "Reset Angelo's points to 0?"
-        )
-    ) {
-
-        return;
-
-    }
-
-
-    angeloPoints = 0;
-
-
-    saveAngeloPoints();
-
-    renderAngeloPoints();
-
-    renderDashboard();
-
-}
-
-
-function resetRewards() {
-
-    if (!editMode) {
-        return;
-    }
-
-
-    if (
-        !confirm(
-            "Clear all reward history?"
-        )
-    ) {
-
-        return;
-
-    }
-
-
-    rewardHistory = [];
-
-
-    localStorage.setItem(
-        "angeloRewardHistory",
-        JSON.stringify(
-            rewardHistory
-        )
-    );
-
-
-    renderRewardHistory();
-
-    renderDashboard();
-
-}
-
-
-/* ============================================================
-   INITIALIZE
-   ============================================================ */
-
-function initializePage() {
-
-    setToday();
-
-    renderCalendar();
-
-    renderTracker();
-
-    renderSavedData();
-
-    setRewardToday();
-
-    renderAngeloPoints();
-
-    renderRewardHistory();
-
-    setupPointsMode();
-
-    setScheduleToolToday();
-
-    renderDashboard();
-
-    updateSettings();
-
-
-    if (editMode) {
-
-        showSection(
-            "calendar"
-        );
-
-    } else {
-
-        showSection(
-            "dashboard"
-        );
-
-    }
-
-}
-
-
-/* ============================================================
-   START
-   ============================================================ */
-
-document
-    .getElementById(
-        "passwordInput"
-    )
-    .addEventListener(
-        "keydown",
-        function(event) {
-
-            if (
-                event.key ===
-                "Enter"
-            ) {
-
-                login();
-
-            }
-
-        }
-    );
-
+);
 
 </script>
 
