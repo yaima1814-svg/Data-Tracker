@@ -1266,8 +1266,12 @@ const VIEW_PASSWORD = "1814";
    If your Firebase database URL is different, replace only the URL below. */
 const SHARED_DATABASE_URL = "https://shower-schedule-2-default-rtdb.firebaseio.com";
 const SHARED_REQUESTS_PATH = "changeRequests";
+const SHARED_APP_DATA_PATH = "appData";
 let sharedRequests = [];
 let requestSyncTimer = null;
+let sharedAppSyncTimer = null;
+let sharedAppSaveTimer = null;
+let sharedAppHash = "";
 
 let editMode = false;
 
@@ -1338,10 +1342,133 @@ let countdownTimer = null;
 
 
 /* ============================================================
+   SHARED APP DATA
+   ============================================================ */
+function sharedAppUrl() {
+    return sharedDatabaseUrl(SHARED_APP_DATA_PATH);
+}
+
+function getSharedAppData() {
+    return {
+        calendarData: calendarData,
+        trackerData: trackerData,
+        savedPapers: savedPapers,
+        savedMonths: savedMonths,
+        savedTrackers: savedTrackers,
+        angeloPoints: angeloPoints,
+        rewardHistory: rewardHistory,
+        changeLog: changeLog,
+        countdowns: countdowns
+    };
+}
+
+function applySharedAppData(data) {
+    if (!data || typeof data !== "object") return;
+
+    calendarData = data.calendarData && typeof data.calendarData === "object" ? data.calendarData : {};
+    trackerData = data.trackerData && typeof data.trackerData === "object" ? data.trackerData : {};
+    savedPapers = Array.isArray(data.savedPapers) ? data.savedPapers : [];
+    savedMonths = Array.isArray(data.savedMonths) ? data.savedMonths : [];
+    savedTrackers = Array.isArray(data.savedTrackers) ? data.savedTrackers : [];
+    angeloPoints = Number.isFinite(Number(data.angeloPoints)) ? Number(data.angeloPoints) : 0;
+    rewardHistory = Array.isArray(data.rewardHistory) ? data.rewardHistory : [];
+    changeLog = Array.isArray(data.changeLog) ? data.changeLog : [];
+    countdowns = Array.isArray(data.countdowns) ? data.countdowns : [];
+
+    localStorage.setItem("showerCalendarData", JSON.stringify(calendarData));
+    scheduleSharedAppSave();
+    localStorage.setItem("showerTrackerData", JSON.stringify(trackerData));
+    scheduleSharedAppSave();
+    localStorage.setItem("showerSavedPapers", JSON.stringify(savedPapers));
+    scheduleSharedAppSave();
+    localStorage.setItem("showerSavedMonths", JSON.stringify(savedMonths));
+    scheduleSharedAppSave();
+    localStorage.setItem("showerSavedTrackers", JSON.stringify(savedTrackers));
+    scheduleSharedAppSave();
+    localStorage.setItem("angeloPoints", String(angeloPoints));
+    scheduleSharedAppSave();
+    localStorage.setItem("angeloRewardHistory", JSON.stringify(rewardHistory));
+    scheduleSharedAppSave();
+    localStorage.setItem("showerChangeLog", JSON.stringify(changeLog));
+    scheduleSharedAppSave();
+    localStorage.setItem("showerCountdowns", JSON.stringify(countdowns));
+    scheduleSharedAppSave();
+
+    sharedAppHash = JSON.stringify(getSharedAppData());
+}
+
+async function loadSharedAppData() {
+    try {
+        const response = await fetch(sharedAppUrl(), { cache: "no-store" });
+        if (!response.ok) throw new Error("Shared app data request failed: " + response.status);
+        const data = await response.json();
+
+        if (data && typeof data === "object") {
+            applySharedAppData(data);
+            renderCalendar();
+            renderTracker();
+            renderSavedData();
+            renderAngeloPoints();
+            renderRewardHistory();
+            renderChangeLog();
+            renderCountdowns();
+            renderDashboard();
+            return true;
+        }
+
+        return false;
+    } catch (error) {
+        console.error("Shared app data error:", error);
+        return false;
+    }
+}
+
+async function saveSharedAppData() {
+    if (!editMode) return;
+
+    const payload = getSharedAppData();
+    const hash = JSON.stringify(payload);
+    if (hash === sharedAppHash) return;
+
+    try {
+        const response = await fetch(sharedAppUrl(), {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+        if (!response.ok) throw new Error("Shared app data write failed: " + response.status);
+        sharedAppHash = hash;
+    } catch (error) {
+        console.error("Could not save shared app data:", error);
+    }
+}
+
+function scheduleSharedAppSave() {
+    if (!editMode) return;
+    clearTimeout(sharedAppSaveTimer);
+    sharedAppSaveTimer = setTimeout(function() {
+        saveSharedAppData();
+    }, 250);
+}
+
+function startSharedAppSync() {
+    clearInterval(sharedAppSyncTimer);
+
+    sharedAppSyncTimer = setInterval(function() {
+        if (editMode) {
+            saveSharedAppData();
+        } else {
+            loadSharedAppData();
+        }
+    }, 3000);
+}
+
+
+/* ============================================================
    LOGIN
    ============================================================ */
 
-function login() {
+async function login() {
 
     const password =
         document.getElementById("passwordInput").value;
@@ -1364,8 +1491,14 @@ function login() {
 
         setupEditMode();
 
+        const loadedEditData = await loadSharedAppData();
+        if (!loadedEditData) {
+            sharedAppHash = "";
+            await saveSharedAppData();
+        }
         initializePage();
         startSharedRequestSync();
+        startSharedAppSync();
 
         return;
     }
@@ -1385,8 +1518,10 @@ function login() {
 
         setupViewMode();
 
+        await loadSharedAppData();
         initializePage();
         startSharedRequestSync();
+        startSharedAppSync();
 
         return;
     }
@@ -1480,16 +1615,17 @@ function setupViewMode() {
     document.querySelectorAll("select").forEach(function(select) {
         select.disabled = true;
     });
-   document.querySelectorAll("input, textarea").forEach(function(input) {
-    if (
-        input.id !== "passwordInput" &&
-        input.id !== "requestName" &&
-        input.id !== "requestChange" &&
-        input.id !== "requestReason"
-    ) {
-        input.disabled = true;
-    }
-});
+    document.querySelectorAll("input, textarea").forEach(function(input) {
+        if (
+            input.id !== "passwordInput" &&
+            input.id !== "requestName" &&
+            input.id !== "requestChange" &&
+            input.id !== "requestReason"
+        ) {
+            input.disabled = true;
+        }
+    });
+
     /* The Request a Change form is the ONE editable exception in View Mode. */
     ["requestName", "requestChange", "requestReason"].forEach(function(id) {
         const field = document.getElementById(id);
@@ -1672,6 +1808,7 @@ function resetRewards() {
     const oldCount = rewardHistory.length;
     rewardHistory = [];
     localStorage.setItem("angeloRewardHistory", JSON.stringify(rewardHistory));
+    scheduleSharedAppSave();
     renderRewardHistory();
     renderDashboard();
     recordChange("Reward history", "Cleared " + oldCount + " reward(s)", reason.trim());
@@ -1868,6 +2005,7 @@ function startSharedRequestSync() {
 function recordChange(type, change, reason) {
     changeLog.unshift({id:Date.now()+Math.random(),date:new Date().toLocaleString(),type:type,change:change,reason:reason});
     localStorage.setItem("showerChangeLog",JSON.stringify(changeLog));
+    scheduleSharedAppSave();
     renderChangeLog();
 }
 function addManualChangeLog(){
@@ -1880,10 +2018,13 @@ function renderChangeLog(){
     const c=document.getElementById("changeLogContainer"); if(!c)return; c.innerHTML="";
     if(!changeLog.length){c.innerHTML="<p>No changes recorded yet.</p>";return;}
     changeLog.forEach(function(e){const b=document.createElement("div");b.className="change-log-entry";const h=document.createElement("h3");h.textContent=e.type;b.appendChild(h);const d=document.createElement("pre");d.textContent="Date: "+e.date+"\n\nChange: "+e.change+"\n\nReason: "+e.reason;b.appendChild(d);if(editMode){const x=document.createElement("button");x.className="delete-button";x.textContent="DELETE LOG";x.onclick=function(){changeLog=changeLog.filter(function(i){return i.id!==e.id});localStorage.setItem("showerChangeLog",JSON.stringify(changeLog));renderChangeLog()};b.appendChild(x)}c.appendChild(b)});
+    scheduleSharedAppSave();
 }
 function clearChangeLog(){if(!editMode||!changeLog.length)return;if(!confirm("Clear the entire change log?"))return;const r=prompt("Why are you clearing the change log?");if(r===null||!r.trim())return;changeLog=[];localStorage.setItem("showerChangeLog",JSON.stringify(changeLog));renderChangeLog();}
+    scheduleSharedAppSave();
 function newCountdown(){if(!editMode)return;document.getElementById("countdownName").value="";document.getElementById("countdownDate").value="";document.getElementById("countdownTime").value="00:00";updateCountdownLive()}
 function saveCountdown(){if(!editMode)return;const n=document.getElementById("countdownName").value.trim(),d=document.getElementById("countdownDate").value,t=document.getElementById("countdownTime").value||"00:00";if(!n||!d){alert("Please enter a name and date.");return}const r=prompt("Why are you saving this countdown?");if(r===null||!r.trim())return;const e={id:Date.now(),name:n,date:d,time:t};countdowns.unshift(e);localStorage.setItem("showerCountdowns",JSON.stringify(countdowns));recordChange("Countdown","Saved countdown: "+n+" for "+d+" "+t,r.trim());renderCountdowns();updateCountdownLive()}
+    scheduleSharedAppSave();
 function countdownTarget(e){return new Date(e.date+"T"+(e.time||"00:00")+":00")}
 function getCountdownParts(target){let ms=target.getTime()-Date.now();if(ms<=0)return{expired:true,months:0,days:0,weeks:0,hours:0,minutes:0,seconds:0,totalDays:0,totalHours:0,totalMinutes:0,totalSeconds:0};const ts=Math.floor(ms/1000),tm=Math.floor(ms/60000),th=Math.floor(ms/3600000),td=Math.floor(ms/86400000),weeks=Math.floor(td/7);let cursor=new Date();let months=0;while(true){const next=new Date(cursor);next.setMonth(next.getMonth()+1);if(next<=target){months++;cursor=next}else break;if(months>120000)break}const days=Math.floor((target-cursor)/86400000),rem=target-(cursor.getTime()+days*86400000),hours=Math.floor(rem/3600000),minutes=Math.floor((rem%3600000)/60000),seconds=Math.floor((rem%60000)/1000);return{expired:false,months,days,weeks,hours,minutes,seconds,totalDays:td,totalHours:th,totalMinutes:tm,totalSeconds:ts}}
 function countdownHTML(e){const p=getCountdownParts(countdownTarget(e));if(p.expired)return"<strong>TIME REACHED</strong>";return '<div class="countdown-grid"><div class="countdown-number"><strong>'+p.months+'</strong>MONTHS</div><div class="countdown-number"><strong>'+p.days+'</strong>DAYS</div><div class="countdown-number"><strong>'+p.weeks+'</strong>WEEKS</div><div class="countdown-number"><strong>'+p.hours+'</strong>HOURS</div><div class="countdown-number"><strong>'+p.minutes+'</strong>MINUTES</div><div class="countdown-number"><strong>'+p.seconds+'</strong>SECONDS</div></div><p>Total: '+p.totalDays+' days / '+p.totalHours+' hours / '+p.totalMinutes+' minutes / '+p.totalSeconds+' seconds</p>'}
@@ -1893,6 +2034,7 @@ function updateCountdownLive(){const b=document.getElementById("countdownLiveCon
 function startCountdownTimer(){if(countdownTimer)clearInterval(countdownTimer);countdownTimer=setInterval(function(){updateCountdownLive();renderCountdowns(false)},1000)}
 function renderCountdowns(){const c=document.getElementById("savedCountdownsContainer");if(!c)return;c.innerHTML="";if(!countdowns.length){c.innerHTML="<p>No countdowns saved yet.</p>";return}countdowns.forEach(function(e){const b=document.createElement("div");b.className="countdown-entry";const h=document.createElement("h3");h.textContent=e.name;b.appendChild(h);const p=document.createElement("p");p.textContent="Target: "+formatCountdownDate(e);b.appendChild(p);const l=document.createElement("div");l.innerHTML=countdownHTML(e);b.appendChild(l);if(editMode){const x=document.createElement("button");x.className="delete-button";x.textContent="DELETE COUNTDOWN";x.onclick=function(){deleteCountdown(e.id)};b.appendChild(x)}c.appendChild(b)})}
 function deleteCountdown(id){if(!editMode)return;const e=countdowns.find(function(i){return i.id===id}),r=prompt("Why are you deleting this countdown?");if(r===null||!r.trim())return;countdowns=countdowns.filter(function(i){return i.id!==id});localStorage.setItem("showerCountdowns",JSON.stringify(countdowns));recordChange("Countdown","Deleted countdown: "+(e?e.name:"Unknown"),r.trim());renderCountdowns()}
+    scheduleSharedAppSave();
 function runFairnessChecker(){const r=document.getElementById("fairnessResult");if(!r)return;const keys=Object.keys(calendarData).filter(function(k){return calendarData[k]==="Angelo"||calendarData[k]==="Matthew"}).sort();if(!keys.length){r.innerHTML="<strong>NOT ENOUGH DATA</strong><br><br>No saved calendar assignments were found.";return}const problems=[];for(let i=1;i<keys.length;i++){const prev=calendarData[keys[i-1]],cur=calendarData[keys[i]];if(prev===cur)problems.push(keys[i]+": "+cur+" is scheduled after "+cur+".");const a=new Date(keys[i-1]+"T00:00:00"),b=new Date(keys[i]+"T00:00:00"),gap=Math.round((b-a)/86400000);if(gap>1)problems.push(keys[i-1]+" to "+keys[i]+": there are "+(gap-1)+" unscheduled day(s) between saved assignments.")}if(!problems.length)r.innerHTML="<span class=\"fairness-ok\">SCHEDULE LOOKS FAIR</span><br><br>Saved assignments alternate correctly and there are no missing days between them.";else r.innerHTML="<span class=\"fairness-warning\">POSSIBLE SCHEDULE PROBLEMS</span><br><br>"+problems.map(escapeHTML).join("<br><br>")}
 
 /* ============================================================
@@ -2206,6 +2348,7 @@ function renderCalendar() {
                     if (reason === null || !reason.trim()) { select.value = calendarData[key] || ""; return; }
                     calendarData[key] = select.value;
                     localStorage.setItem("showerCalendarData", JSON.stringify(calendarData));
+    scheduleSharedAppSave();
                     recordChange("Calendar", key + ": " + previousValue + " → " + newValue, reason.trim());
                     renderDashboard();
                     runFairnessChecker();
@@ -2399,6 +2542,7 @@ function saveCurrentMonth() {
             savedMonths
         )
     );
+    scheduleSharedAppSave();
 
 
     renderSavedData();
@@ -2481,6 +2625,7 @@ function resetCalendar() {
             calendarData
         )
     );
+    scheduleSharedAppSave();
 
 
     renderCalendar();
@@ -2724,6 +2869,7 @@ function saveTracker() {
             trackerData
         )
     );
+    scheduleSharedAppSave();
 }
 
 
@@ -2838,6 +2984,7 @@ function saveCurrentTracker() {
             savedTrackers
         )
     );
+    scheduleSharedAppSave();
 
 
     renderSavedData();
@@ -3108,6 +3255,7 @@ function deleteSavedTracker(id) {
             savedTrackers
         )
     );
+    scheduleSharedAppSave();
 
 
     renderSavedTrackers();
@@ -3147,6 +3295,7 @@ function saveAngeloPoints() {
         "angeloPoints",
         String(angeloPoints)
     );
+    scheduleSharedAppSave();
 }
 
 
@@ -3244,6 +3393,7 @@ function saveReward() {
         "angeloRewardHistory",
         JSON.stringify(rewardHistory)
     );
+    scheduleSharedAppSave();
 
     renderRewardHistory();
     renderDashboard();
@@ -3355,6 +3505,7 @@ function deleteReward(id) {
         "angeloRewardHistory",
         JSON.stringify(rewardHistory)
     );
+    scheduleSharedAppSave();
 
     renderRewardHistory();
     renderDashboard();
@@ -3486,6 +3637,7 @@ function saveDailyPaper() {
             savedPapers
         )
     );
+    scheduleSharedAppSave();
 
 
     renderSavedData();
@@ -3757,6 +3909,7 @@ function deleteSavedMonth(id) {
             savedMonths
         )
     );
+    scheduleSharedAppSave();
 
 
     renderSavedMonths();
@@ -3932,6 +4085,7 @@ function deletePaper(id) {
             savedPapers
         )
     );
+    scheduleSharedAppSave();
 
 
     renderSavedPapers();
