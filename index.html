@@ -656,6 +656,34 @@ select{
         display:none!important
     }
 }
+
+.submission-signature {
+    display: block;
+    width: 100%;
+    max-width: 700px;
+    height: 220px;
+    background: white;
+    border: 2px solid black;
+    border-radius: 6px;
+    touch-action: none;
+    cursor: crosshair;
+}
+
+.saved-submission-signature {
+    display: block;
+    max-width: 700px;
+    width: 100%;
+    height: auto;
+    background: white;
+    border: 2px solid black;
+    margin: 15px 0;
+}
+
+.submission-card,
+.submission-history-card {
+    margin-bottom: 20px;
+}
+
 </style>
 </head>
 
@@ -691,6 +719,7 @@ select{
     <button onclick="showSection('countdowns')">COUNTDOWNS</button>
     <button onclick="showSection('fairness')">FAIRNESS CHECKER</button>
     <button id="navChangeRequests" onclick="showSection('changeRequests')">CHANGE REQUESTS</button>
+    <button id="navSubmissions" onclick="showSection('submissions')">SUBMISSIONS</button>
     <button onclick="showSection('changeLog')">CHANGE LOG</button>
     <button onclick="showSection('points')">ANGELO'S POINTS</button>
 
@@ -850,6 +879,64 @@ select{
 
     <div id="changeRequestsContainer">
         <p>Loading change requests...</p>
+    </div>
+
+</section>
+
+
+<!-- SUBMISSIONS -->
+<section id="submissions" class="section">
+
+    <div class="section-title">SUBMISSIONS</div>
+
+    <div id="submissionAssignmentBox" class="schedule-tool-box">
+
+        <div class="paper-row">
+            <label for="submissionDate">DATE</label>
+            <input type="date" id="submissionDate" onchange="updateSubmissionAssignment()">
+        </div>
+
+        <div id="submissionScheduleResult" class="schedule-result">
+            Choose a date to see who is scheduled.
+        </div>
+
+        <div class="paper-row">
+            <label for="submissionTitle">ASSIGNMENT</label>
+            <input type="text" id="submissionTitle" placeholder="Daily Shower Submission">
+        </div>
+
+        <div class="paper-row">
+            <label for="submissionInstructions">INSTRUCTIONS</label>
+            <textarea id="submissionInstructions" rows="5" placeholder="Enter what the person needs to submit."></textarea>
+        </div>
+
+        <div class="controls">
+            <button id="assignSubmissionButton" class="action-button blue-button" onclick="assignSubmission()">
+                ASSIGN SUBMISSION
+            </button>
+            <button class="action-button" onclick="newSubmissionAssignment()">
+                NEW ASSIGNMENT
+            </button>
+        </div>
+
+        <div id="submissionAssignmentMessage" class="request-status"></div>
+    </div>
+
+    <div id="submissionViewBox" class="schedule-tool-box">
+
+        <div class="section-title">SUBMISSION</div>
+
+        <div id="activeSubmissionContainer">
+            <p>No submission is currently assigned.</p>
+        </div>
+
+    </div>
+
+    <div id="submissionHistoryBox" class="schedule-tool-box">
+        <div class="section-title">SUBMISSION HISTORY</div>
+        <div id="submissionHistoryContainer">
+            <p>No submissions yet.</p>
+        </div>
     </div>
 
 </section>
@@ -1541,6 +1628,8 @@ let sharedAppSaveTimer = null;
 let sharedAppHash = "";
 
 let countdownTimer = null;
+let submissions = JSON.parse(localStorage.getItem("showerSubmissions")) || [];
+if (!Array.isArray(submissions)) submissions = [];
 
 
 /* ============================================================
@@ -1611,7 +1700,8 @@ function getSharedAppData() {
         angeloPoints: angeloPoints,
         rewardHistory: rewardHistory,
         changeLog: changeLog,
-        countdowns: countdowns
+        countdowns: countdowns,
+        submissions: submissions
     };
 }
 
@@ -2269,9 +2359,15 @@ function showSection(sectionId) {
         runFairnessChecker();
     }
 
+    if (sectionId === "submissions") {
+        renderSubmissions();
+        updateSubmissionAssignment();
+    }
+
     if (sectionId === "changeRequests") {
         loadSharedRequests();
         renderChangeRequests();
+    renderSubmissions();
     }
 }
 
