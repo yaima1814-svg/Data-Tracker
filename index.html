@@ -721,6 +721,7 @@ select{
     <button id="navChangeRequests" onclick="showSection('changeRequests')">CHANGE REQUESTS</button>
     <button id="navSubmissions" onclick="showSection('submissions')">SUBMISSIONS</button>
     <button onclick="showSection('changeLog')">CHANGE LOG</button>
+    <button id="navViolations" onclick="showSection('violations')">SYSTEM VIOLATIONS</button>
     <button onclick="showSection('points')">ANGELO'S POINTS</button>
 
     <button id="navTracker" onclick="showSection('tracker')">SIGNING TRACKER</button>
@@ -937,6 +938,53 @@ select{
         <div id="submissionHistoryContainer">
             <p>No submissions yet.</p>
         </div>
+    </div>
+
+</section>
+
+<!-- SYSTEM VIOLATIONS -->
+<section id="violations" class="section">
+
+    <div class="section-title">SYSTEM VIOLATIONS</div>
+
+    <div class="schedule-tool-box">
+        <p><strong>EDIT MODE ONLY</strong></p>
+        <p>Record a situation where the shower schedule or agreement was not followed.</p>
+
+        <div class="paper-row">
+            <label for="violationDate">DATE</label>
+            <input type="date" id="violationDate">
+        </div>
+
+        <div class="paper-row">
+            <label for="violationType">VIOLATION</label>
+            <select id="violationType">
+                <option value="">Choose a violation</option>
+                <option value="Showered out of scheduled order">Showered out of scheduled order</option>
+                <option value="Did not follow the agreed schedule">Did not follow the agreed schedule</option>
+                <option value="Did not sign the required paper">Did not sign the required paper</option>
+                <option value="Changed the schedule without agreement">Changed the schedule without agreement</option>
+                <option value="Attempted to bypass the system">Attempted to bypass the system</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <div class="paper-row">
+            <label for="violationNotes">NOTES</label>
+            <textarea id="violationNotes" rows="5" placeholder="Describe what happened."></textarea>
+        </div>
+
+        <div class="controls">
+            <button class="action-button blue-button" onclick="saveViolation()">SAVE VIOLATION</button>
+            <button class="action-button" onclick="newViolation()">NEW VIOLATION</button>
+        </div>
+
+        <div id="violationMessage" class="request-status"></div>
+    </div>
+
+    <div class="schedule-tool-box">
+        <div class="section-title">VIOLATION HISTORY</div>
+        <div id="violationsContainer"><p>No violations recorded.</p></div>
     </div>
 
 </section>
@@ -1664,6 +1712,9 @@ let changeLog =
 let countdowns =
     JSON.parse(localStorage.getItem("showerCountdowns")) || [];
 
+let violations =
+    JSON.parse(localStorage.getItem("showerViolations")) || [];
+
 
 if (!Array.isArray(savedPapers)) savedPapers = [];
 if (!Array.isArray(savedMonths)) savedMonths = [];
@@ -1671,6 +1722,7 @@ if (!Array.isArray(savedTrackers)) savedTrackers = [];
 if (!Array.isArray(rewardHistory)) rewardHistory = [];
 if (!Array.isArray(changeLog)) changeLog = [];
 if (!Array.isArray(countdowns)) countdowns = [];
+if (!Array.isArray(violations)) violations = [];
 
 
 /* ============================================================
@@ -1702,7 +1754,8 @@ function getSharedAppData() {
         rewardHistory: rewardHistory,
         changeLog: changeLog,
         countdowns: countdowns,
-        submissions: submissions
+        submissions: submissions,
+        violations: violations
     };
 }
 
@@ -1814,6 +1867,16 @@ function applySharedAppData(data) {
     localStorage.setItem(
         "showerCountdowns",
         JSON.stringify(countdowns)
+    );
+
+    violations =
+        Array.isArray(data.violations)
+            ? data.violations
+            : [];
+
+    localStorage.setItem(
+        "showerViolations",
+        JSON.stringify(violations)
     );
 
     sharedAppHash =
@@ -2415,6 +2478,10 @@ function showSection(sectionId) {
     if (sectionId === "submissions") {
         renderSubmissions();
         updateSubmissionAssignment();
+    }
+
+    if (sectionId === "violations") {
+        renderViolations();
     }
 
     if (sectionId === "changeRequests") {
@@ -7295,6 +7362,111 @@ function deleteSubmission(id) {
 
     renderSubmissions();
     scheduleSharedAppSave();
+}
+
+
+/* ============================================================
+   SYSTEM VIOLATIONS
+   ============================================================ */
+
+function setViolationToday() {
+    const input = document.getElementById("violationDate");
+    if (!input) return;
+
+    const today = new Date();
+    input.value =
+        today.getFullYear() + "-" +
+        String(today.getMonth() + 1).padStart(2, "0") + "-" +
+        String(today.getDate()).padStart(2, "0");
+}
+
+function newViolation() {
+    const date = document.getElementById("violationDate");
+    const type = document.getElementById("violationType");
+    const notes = document.getElementById("violationNotes");
+    const message = document.getElementById("violationMessage");
+
+    setViolationToday();
+    if (type) type.value = "";
+    if (notes) notes.value = "";
+    if (message) message.textContent = "";
+}
+
+function saveViolation() {
+    if (!editMode) return;
+
+    const date = document.getElementById("violationDate").value;
+    const type = document.getElementById("violationType").value;
+    const notes = document.getElementById("violationNotes").value.trim();
+    const message = document.getElementById("violationMessage");
+
+    if (!date) {
+        message.textContent = "Choose a date first.";
+        return;
+    }
+
+    if (!type) {
+        message.textContent = "Choose a violation first.";
+        return;
+    }
+
+    if (!notes) {
+        message.textContent = "Add notes describing what happened.";
+        return;
+    }
+
+    violations.unshift({
+        id: "violation-" + Date.now(),
+        date: date,
+        type: type,
+        notes: notes,
+        createdAt: new Date().toISOString()
+    });
+
+    localStorage.setItem("showerViolations", JSON.stringify(violations));
+
+    if (typeof recordChange === "function") {
+        recordChange("SYSTEM VIOLATION RECORDED", type + " on " + formatToolDate(date) + ".");
+    }
+
+    message.textContent = "Violation saved.";
+    renderViolations();
+    scheduleSharedAppSave();
+}
+
+function deleteViolation(id) {
+    if (!editMode) return;
+
+    violations = violations.filter(function(item) {
+        return item.id !== id;
+    });
+
+    localStorage.setItem("showerViolations", JSON.stringify(violations));
+    renderViolations();
+    scheduleSharedAppSave();
+}
+
+function renderViolations() {
+    const container = document.getElementById("violationsContainer");
+    if (!container) return;
+
+    if (!violations.length) {
+        container.innerHTML = "<p>No violations recorded.</p>";
+        return;
+    }
+
+    const sorted = violations.slice().sort(function(a, b) {
+        return String(b.date).localeCompare(String(a.date));
+    });
+
+    container.innerHTML = sorted.map(function(item) {
+        return '<div class="saved-item">' +
+            '<h3>' + escapeHTML(item.type || "Violation") + '</h3>' +
+            '<p><strong>DATE:</strong> ' + escapeHTML(formatToolDate(item.date)) + '</p>' +
+            '<p><strong>NOTES:</strong> ' + escapeHTML(item.notes || "") + '</p>' +
+            '<button class="delete-button" onclick="deleteViolation(\'' + item.id + '\')">DELETE</button>' +
+            '</div>';
+    }).join("");
 }
 
 
