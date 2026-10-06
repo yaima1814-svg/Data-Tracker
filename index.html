@@ -1484,6 +1484,12 @@ function setupViewMode() {
         if (input.id !== "passwordInput") input.disabled = true;
     });
 
+    /* The Request a Change form is the ONE editable exception in View Mode. */
+    ["requestName", "requestChange", "requestReason"].forEach(function(id) {
+        const field = document.getElementById(id);
+        if (field) field.disabled = false;
+    });
+
     /* Hide every normal editing button. The request button is handled separately. */
     document.querySelectorAll(".action-button, .delete-button").forEach(function(button) {
         button.style.display = "none";
