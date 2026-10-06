@@ -1617,6 +1617,7 @@ const SHARED_DATABASE_URL =
 
 const SHARED_REQUESTS_PATH = "changeRequests";
 const SHARED_APP_DATA_PATH = "appData";
+const SHARED_SUBMISSIONS_PATH = "submissions";
 
 let editMode = false;
 
@@ -1759,6 +1760,16 @@ function applySharedAppData(data) {
             ? data.countdowns
             : [];
 
+    submissions =
+        Array.isArray(data.submissions)
+            ? data.submissions
+            : submissions;
+
+    localStorage.setItem(
+        "showerSubmissions",
+        JSON.stringify(submissions)
+    );
+
 
     localStorage.setItem(
         "showerCalendarData",
@@ -1838,6 +1849,22 @@ async function loadSharedAppData() {
 
             applySharedAppData(data);
 
+            try {
+                const submissionResponse = await fetch(
+                    sharedDatabaseUrl(SHARED_SUBMISSIONS_PATH),
+                    {cache:"no-store"}
+                );
+                if (submissionResponse.ok) {
+                    const sharedSubmissions = await submissionResponse.json();
+                    if (Array.isArray(sharedSubmissions)) {
+                        submissions = sharedSubmissions;
+                        localStorage.setItem("showerSubmissions", JSON.stringify(submissions));
+                    }
+                }
+            } catch(error) {
+                console.error("Shared submissions load error:", error);
+            }
+
             return true;
         }
 
@@ -1896,6 +1923,15 @@ async function saveSharedAppData() {
         }
 
         sharedAppHash = hash;
+
+        await fetch(
+            sharedDatabaseUrl(SHARED_SUBMISSIONS_PATH),
+            {
+                method:"PUT",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify(submissions)
+            }
+        );
 
     } catch(error) {
 
@@ -2147,8 +2183,15 @@ function setupViewMode() {
             'nav button[onclick="showSection(\'dashboard\')"]'
         );
 
+    const submissionsButton =
+        document.getElementById("navSubmissions");
+
     if (dashboardButton) {
         dashboardButton.style.display = "";
+    }
+
+    if (submissionsButton) {
+        submissionsButton.style.display = "";
     }
 
 
@@ -2157,7 +2200,7 @@ function setupViewMode() {
     ).forEach(
         function(section){
 
-            if (section.id !== "dashboard") {
+            if (section.id !== "dashboard" && section.id !== "submissions") {
 
                 section.classList.remove(
                     "active"
@@ -2170,6 +2213,11 @@ function setupViewMode() {
 
         }
     );
+
+    const submissionSection = document.getElementById("submissions");
+    if (submissionSection) {
+        submissionSection.classList.remove("hidden-for-view");
+    }
 
 
     document.querySelectorAll(
@@ -2225,6 +2273,10 @@ function setupViewMode() {
         }
     );
 
+    ["submitSignatureButton", "clearSignatureButton"].forEach(function(id){
+        const button = document.getElementById(id);
+        if (button) button.style.display = "";
+    });
 
     const requestCard =
         document.getElementById(
@@ -2287,7 +2339,8 @@ function showSection(sectionId) {
 
     if (
         !editMode &&
-        sectionId !== "dashboard"
+        sectionId !== "dashboard" &&
+        sectionId !== "submissions"
     ) {
         return;
     }
@@ -2389,6 +2442,7 @@ function renderAllData() {
     updateSettings();
     runFairnessChecker();
     renderChangeRequests();
+    renderSubmissions();
 }
 
 
@@ -6945,6 +6999,306 @@ function startSharedRequestSync() {
 
 
 /* ============================================================
+   SUBMISSIONS
+   ============================================================ */
+
+function submissionDateKey(value) {
+    return value || "";
+}
+
+
+function getSubmissionScheduledPerson(dateString) {
+    if (!dateString) return "NOT SET";
+    return getScheduledPerson(dateString);
+}
+
+
+function updateSubmissionAssignment() {
+    const dateInput = document.getElementById("submissionDate");
+    const result = document.getElementById("submissionScheduleResult");
+
+    if (!dateInput || !result) return;
+
+    const date = dateInput.value;
+
+    if (!date) {
+        result.innerHTML = "Choose a date to see who is scheduled.";
+        return;
+    }
+
+    const person = getSubmissionScheduledPerson(date);
+
+    result.innerHTML =
+        "DATE: <strong>" + formatToolDate(date) + "</strong><br><br>" +
+        "ASSIGNED TO: <strong>" + escapeHTML(person) + "</strong>";
+}
+
+
+function newSubmissionAssignment() {
+    const dateInput = document.getElementById("submissionDate");
+    const title = document.getElementById("submissionTitle");
+    const instructions = document.getElementById("submissionInstructions");
+    const message = document.getElementById("submissionAssignmentMessage");
+
+    if (dateInput) dateInput.value = "";
+    if (title) title.value = "Daily Shower Submission";
+    if (instructions) instructions.value = "Sign the daily shower paper in the submission box.";
+    if (message) message.textContent = "";
+
+    updateSubmissionAssignment();
+}
+
+
+async function assignSubmission() {
+    if (!editMode) return;
+
+    const date = document.getElementById("submissionDate").value;
+    const title = document.getElementById("submissionTitle").value.trim();
+    const instructions = document.getElementById("submissionInstructions").value.trim();
+    const message = document.getElementById("submissionAssignmentMessage");
+
+    if (!date) {
+        message.textContent = "Choose a date first.";
+        return;
+    }
+
+    const assignedTo = getSubmissionScheduledPerson(date);
+
+    if (!assignedTo || assignedTo === "NOT SET") {
+        message.textContent = "That date does not have a person assigned on the calendar yet.";
+        return;
+    }
+
+    const record = {
+        id: "submission-" + Date.now(),
+        date: date,
+        assignedTo: assignedTo,
+        title: title || "Daily Shower Submission",
+        instructions: instructions || "Sign the daily shower paper in the submission box.",
+        status: "ASSIGNED",
+        signature: "",
+        assignedAt: new Date().toISOString(),
+        submittedAt: ""
+    };
+
+    submissions.unshift(record);
+    localStorage.setItem("showerSubmissions", JSON.stringify(submissions));
+
+    if (typeof recordChange === "function") {
+        recordChange(
+            "SUBMISSION ASSIGNED",
+            "Assigned " + record.title + " to " + assignedTo + " for " + formatToolDate(date) + "."
+        );
+    }
+
+    message.textContent = "Submission assigned to " + assignedTo + ".";
+    renderSubmissions();
+    scheduleSharedAppSave();
+}
+
+
+function renderSubmissions() {
+    const assignmentBox = document.getElementById("submissionAssignmentBox");
+    const activeContainer = document.getElementById("activeSubmissionContainer");
+    const historyContainer = document.getElementById("submissionHistoryContainer");
+
+    if (!activeContainer || !historyContainer) return;
+
+    if (assignmentBox) {
+        assignmentBox.style.display = editMode ? "block" : "none";
+    }
+
+    const pending = submissions
+        .filter(function(item){ return item && item.status !== "SUBMITTED"; })
+        .sort(function(a,b){ return String(b.date).localeCompare(String(a.date)); });
+
+    const active = pending.length ? pending[0] : null;
+
+    if (!active) {
+        activeContainer.innerHTML = "<p>No submission is currently assigned.</p>";
+    } else {
+        activeContainer.innerHTML = renderSubmissionCard(active, true);
+        setupSubmissionSignature(active.id);
+    }
+
+    renderSubmissionHistory(historyContainer);
+}
+
+
+function renderSubmissionCard(item, active) {
+    const submitted = item.status === "SUBMITTED";
+
+    let html =
+        '<div class="submission-card">' +
+        '<h2>' + escapeHTML(item.title || "Daily Shower Submission") + '</h2>' +
+        '<p><strong>DATE:</strong> ' + escapeHTML(formatToolDate(item.date)) + '</p>' +
+        '<p><strong>ASSIGNED TO:</strong> ' + escapeHTML(item.assignedTo || "-") + '</p>' +
+        '<div class="rules-box"><strong>INSTRUCTIONS</strong><br><br>' +
+        escapeHTML(item.instructions || "") + '</div>';
+
+    if (submitted) {
+        html +=
+            '<p><strong>STATUS:</strong> SUBMITTED</p>' +
+            (item.signature ? '<img class="saved-submission-signature" src="' + item.signature + '" alt="Saved signature">' : '');
+    } else if (active) {
+        html +=
+            '<p><strong>STATUS:</strong> WAITING FOR SIGNATURE</p>' +
+            '<label for="submissionSignatureCanvas">SIGN HERE WITH YOUR FINGER, MOUSE, OR STYLUS</label>' +
+            '<canvas id="submissionSignatureCanvas" class="submission-signature" width="700" height="220"></canvas>' +
+            '<div class="controls">' +
+            '<button id="clearSignatureButton" class="action-button" onclick="clearSubmissionSignature()">CLEAR SIGNATURE</button>' +
+            '<button id="submitSignatureButton" class="action-button blue-button" onclick="submitSignature(\'' + item.id + '\')">SUBMIT SIGNATURE</button>' +
+            '</div>' +
+            '<div id="submissionSignatureMessage" class="request-status"></div>';
+    }
+
+    if (editMode) {
+        html += '<button class="delete-button" onclick="deleteSubmission(\'' + item.id + '\')">DELETE SUBMISSION</button>';
+    }
+
+    html += '</div>';
+    return html;
+}
+
+
+function renderSubmissionHistory(container) {
+    if (!submissions.length) {
+        container.innerHTML = "<p>No submissions yet.</p>";
+        return;
+    }
+
+    const sorted = submissions.slice().sort(function(a,b){
+        return String(b.date).localeCompare(String(a.date));
+    });
+
+    container.innerHTML = sorted.map(function(item){
+        const status = item.status === "SUBMITTED" ? "SUBMITTED" : "ASSIGNED";
+        return '<div class="submission-history-card saved-item">' +
+            '<h3>' + escapeHTML(item.title || "Daily Shower Submission") + '</h3>' +
+            '<p><strong>DATE:</strong> ' + escapeHTML(formatToolDate(item.date)) + '</p>' +
+            '<p><strong>ASSIGNED TO:</strong> ' + escapeHTML(item.assignedTo || "-") + '</p>' +
+            '<p><strong>STATUS:</strong> ' + status + '</p>' +
+            (item.status === "SUBMITTED" && item.signature ? '<img class="saved-submission-signature" src="' + item.signature + '" alt="Saved signature">' : '') +
+            (editMode ? '<button class="delete-button" onclick="deleteSubmission(\'' + item.id + '\')">DELETE</button>' : '') +
+            '</div>';
+    }).join("");
+}
+
+
+function setupSubmissionSignature(id) {
+    const canvas = document.getElementById("submissionSignatureCanvas");
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    ctx.lineWidth = 3;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+
+    let drawing = false;
+    let hasDrawn = false;
+
+    function position(event) {
+        const rect = canvas.getBoundingClientRect();
+        return {
+            x: (event.clientX - rect.left) * (canvas.width / rect.width),
+            y: (event.clientY - rect.top) * (canvas.height / rect.height)
+        };
+    }
+
+    canvas.addEventListener("pointerdown", function(event){
+        drawing = true;
+        hasDrawn = true;
+        canvas.setPointerCapture(event.pointerId);
+        const p = position(event);
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        event.preventDefault();
+    });
+
+    canvas.addEventListener("pointermove", function(event){
+        if (!drawing) return;
+        const p = position(event);
+        ctx.lineTo(p.x, p.y);
+        ctx.stroke();
+        event.preventDefault();
+    });
+
+    ["pointerup", "pointercancel", "pointerleave"].forEach(function(type){
+        canvas.addEventListener(type, function(){
+            drawing = false;
+        });
+    });
+
+    canvas.dataset.submissionId = id;
+    canvas.dataset.hasDrawn = "false";
+
+    canvas.addEventListener("pointerdown", function(){
+        canvas.dataset.hasDrawn = "true";
+    });
+}
+
+
+function clearSubmissionSignature() {
+    const canvas = document.getElementById("submissionSignatureCanvas");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    canvas.dataset.hasDrawn = "false";
+}
+
+
+async function submitSignature(id) {
+    const canvas = document.getElementById("submissionSignatureCanvas");
+    const message = document.getElementById("submissionSignatureMessage");
+
+    if (!canvas || canvas.dataset.hasDrawn !== "true") {
+        if (message) message.textContent = "Please sign inside the box first.";
+        return;
+    }
+
+    const index = submissions.findIndex(function(item){ return item.id === id; });
+    if (index === -1) return;
+
+    submissions[index].signature = canvas.toDataURL("image/png");
+    submissions[index].status = "SUBMITTED";
+    submissions[index].submittedAt = new Date().toISOString();
+
+    localStorage.setItem("showerSubmissions", JSON.stringify(submissions));
+
+    try {
+        await fetch(
+            sharedDatabaseUrl(SHARED_SUBMISSIONS_PATH),
+            {
+                method:"PUT",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify(submissions)
+            }
+        );
+    } catch(error) {
+        console.error("Could not save submission signature:", error);
+    }
+
+    if (message) message.textContent = "Signature submitted.";
+    renderSubmissions();
+}
+
+
+function deleteSubmission(id) {
+    if (!editMode) return;
+
+    submissions = submissions.filter(function(item){ return item.id !== id; });
+    localStorage.setItem("showerSubmissions", JSON.stringify(submissions));
+
+    if (typeof recordChange === "function") {
+        recordChange("SUBMISSION DELETED", "Deleted a submission.");
+    }
+
+    renderSubmissions();
+    scheduleSharedAppSave();
+}
+
+
+/* ============================================================
    INITIALIZE
    ============================================================ */
 
@@ -6972,7 +7326,7 @@ function initializePage() {
     } else {
 
         showSection(
-            "dashboard"
+            "submissions"
         );
     }
 }
