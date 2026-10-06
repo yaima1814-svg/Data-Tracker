@@ -1480,10 +1480,16 @@ function setupViewMode() {
     document.querySelectorAll("select").forEach(function(select) {
         select.disabled = true;
     });
-    document.querySelectorAll("input, textarea").forEach(function(input) {
-        if (input.id !== "passwordInput") input.disabled = true;
-    });
-
+   document.querySelectorAll("input, textarea").forEach(function(input) {
+    if (
+        input.id !== "passwordInput" &&
+        input.id !== "requestName" &&
+        input.id !== "requestChange" &&
+        input.id !== "requestReason"
+    ) {
+        input.disabled = true;
+    }
+});
     /* The Request a Change form is the ONE editable exception in View Mode. */
     ["requestName", "requestChange", "requestReason"].forEach(function(id) {
         const field = document.getElementById(id);
