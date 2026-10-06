@@ -6,621 +6,664 @@
 <title>Shower Schedule</title>
 
 <style>
-* {
-    box-sizing: border-box;
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    background:white;
+    color:black;
+    font-family:Arial,Helvetica,sans-serif
 }
 
-body {
-    margin: 0;
-    background: white;
-    color: black;
-    font-family: Arial, Helvetica, sans-serif;
+header{
+    background:black;
+    color:white;
+    text-align:center;
+    padding:20px
 }
 
-header {
-    background: black;
-    color: white;
-    text-align: center;
-    padding: 20px;
+header h1{
+    margin:0;
+    font-size:30px
 }
 
-header h1 {
-    margin: 0;
-    font-size: 30px;
+header p{
+    margin:8px 0 0;
+    font-size:16px
 }
 
-header p {
-    margin: 8px 0 0;
-    font-size: 16px;
+nav{
+    background:white;
+    border-bottom:3px solid black;
+    padding:12px;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px
 }
 
-nav {
-    background: white;
-    border-bottom: 3px solid black;
-    padding: 12px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
+nav button{
+    background:white;
+    border:2px solid #0057b8;
+    color:#0057b8;
+    font-weight:bold;
+    font-size:16px;
+    padding:10px 15px;
+    border-radius:6px;
+    cursor:pointer
 }
 
-nav button {
-    background: white;
-    border: 2px solid #0057b8;
-    color: #0057b8;
-    font-weight: bold;
-    font-size: 16px;
-    padding: 10px 15px;
-    border-radius: 6px;
-    cursor: pointer;
+nav button:hover{
+    background:#eef6ff
 }
 
-nav button:hover {
-    background: #eef6ff;
+.section{
+    display:none;
+    padding:20px;
+    max-width:1500px;
+    margin:auto
 }
 
-.section {
-    display: none;
-    padding: 20px;
-    max-width: 1500px;
-    margin: auto;
+.section.active{
+    display:block
 }
 
-.section.active {
-    display: block;
+.section-title{
+    color:#0057b8;
+    font-weight:bold;
+    font-size:27px;
+    border-bottom:3px solid black;
+    padding-bottom:8px;
+    margin-bottom:20px
 }
 
-.section-title {
-    color: #0057b8;
-    font-weight: bold;
-    font-size: 27px;
-    border-bottom: 3px solid black;
-    padding-bottom: 8px;
-    margin-bottom: 20px;
+.controls{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:15px;
+    margin-bottom:20px
 }
 
-.controls {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
+label{
+    font-weight:bold;
+    font-size:17px
 }
 
-label {
-    font-weight: bold;
-    font-size: 17px;
+select,input,textarea{
+    font-family:Arial,Helvetica,sans-serif
 }
 
-select,
-input,
-textarea {
-    font-family: Arial, Helvetica, sans-serif;
+select{
+    min-width:150px;
+    min-height:52px;
+    padding:8px 12px;
+    font-size:18px;
+    font-weight:bold;
+    border:2px solid black;
+    border-radius:6px;
+    background:white;
+    color:black;
+    cursor:pointer
 }
 
-select {
-    min-width: 150px;
-    min-height: 52px;
-    padding: 8px 12px;
-    font-size: 18px;
-    font-weight: bold;
-    border: 2px solid black;
-    border-radius: 6px;
-    background: white;
-    color: black;
-    cursor: pointer;
+.action-button{
+    min-height:52px;
+    padding:10px 20px;
+    font-size:18px;
+    font-weight:bold;
+    border:2px solid black;
+    background:white;
+    color:black;
+    border-radius:6px;
+    cursor:pointer
 }
 
-.action-button {
-    min-height: 52px;
-    padding: 10px 20px;
-    font-size: 18px;
-    font-weight: bold;
-    border: 2px solid black;
-    background: white;
-    color: black;
-    border-radius: 6px;
-    cursor: pointer;
+.action-button:hover{
+    background:#eee
 }
 
-.action-button:hover {
-    background: #eeeeee;
+.blue-button{
+    border-color:#0057b8;
+    color:#0057b8
 }
 
-.blue-button {
-    border-color: #0057b8;
-    color: #0057b8;
+.calendar-wrapper{
+    width:100%;
+    overflow-x:auto
 }
 
-.calendar-wrapper {
-    width: 100%;
-    overflow-x: auto;
+.calendar-grid{
+    display:grid;
+    grid-template-columns:repeat(7,minmax(150px,1fr));
+    gap:6px;
+    min-width:1080px
 }
 
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, minmax(150px, 1fr));
-    gap: 6px;
-    min-width: 1080px;
+.day-header{
+    background:black;
+    color:white;
+    text-align:center;
+    font-weight:bold;
+    padding:12px;
+    font-size:17px
 }
 
-.day-header {
-    background: black;
-    color: white;
-    text-align: center;
-    font-weight: bold;
-    padding: 12px;
-    font-size: 17px;
+.calendar-day{
+    border:2px solid black;
+    min-height:145px;
+    padding:10px;
+    background:white
 }
 
-.calendar-day {
-    border: 2px solid black;
-    min-height: 145px;
-    padding: 10px;
-    background: white;
+.calendar-day.invalid{
+    background:#eee
 }
 
-.calendar-day.invalid {
-    background: #eeeeee;
+.day-number{
+    font-size:21px;
+    font-weight:bold;
+    margin-bottom:10px
 }
 
-.day-number {
-    font-size: 21px;
-    font-weight: bold;
-    margin-bottom: 10px;
+.calendar-day select{
+    width:100%;
+    min-width:0;
+    min-height:58px;
+    font-size:17px
 }
 
-.calendar-day select {
-    width: 100%;
-    min-width: 0;
-    min-height: 58px;
-    font-size: 17px;
+.month-title{
+    font-size:24px;
+    font-weight:bold;
+    text-align:center;
+    margin:30px 0 12px;
+    padding:10px;
+    border:3px solid black;
+    background:white
 }
 
-.month-title {
-    font-size: 24px;
-    font-weight: bold;
-    text-align: center;
-    margin: 30px 0 12px;
-    padding: 10px;
-    border: 3px solid black;
-    background: white;
-}
-
-.tracker-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
+.tracker-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px
 }
 
 .tracker-table th,
-.tracker-table td {
-    border: 2px solid black;
-    padding: 10px;
-    text-align: center;
+.tracker-table td{
+    border:2px solid black;
+    padding:10px;
+    text-align:center
 }
 
-.tracker-table th {
-    background: black;
-    color: white;
-    font-size: 17px;
+.tracker-table th{
+    background:black;
+    color:white;
+    font-size:17px
 }
 
-.tracker-table td {
-    font-size: 17px;
+.tracker-table td{
+    font-size:17px
 }
 
-.tracker-table select {
-    width: 100%;
-    min-width: 180px;
-    min-height: 58px;
+.tracker-table select{
+    width:100%;
+    min-width:180px;
+    min-height:58px
 }
 
-.contract {
-    border: 3px solid black;
-    padding: 25px;
-    line-height: 1.6;
-    font-size: 18px;
+.contract{
+    border:3px solid black;
+    padding:25px;
+    line-height:1.6;
+    font-size:18px
 }
 
-.contract h2 {
-    text-align: center;
-    margin-top: 0;
+.contract h2{
+    text-align:center;
+    margin-top:0
 }
 
-.contract h3 {
-    margin-bottom: 5px;
+.contract h3{
+    margin-bottom:5px
 }
 
-.agreed-rule {
-    border: 3px solid black;
-    padding: 15px;
-    font-weight: bold;
-    font-size: 20px;
-    margin: 15px 0;
+.agreed-rule{
+    border:3px solid black;
+    padding:15px;
+    font-weight:bold;
+    font-size:20px;
+    margin:15px 0
 }
 
-.paper {
-    border: 3px solid black;
-    padding: 25px;
-    min-height: 600px;
+.paper{
+    border:3px solid black;
+    padding:25px;
+    min-height:600px
 }
 
-.paper h2 {
-    text-align: center;
-    margin-top: 0;
+.paper h2{
+    text-align:center;
+    margin-top:0
 }
 
-.paper-row {
-    margin: 18px 0;
+.paper-row{
+    margin:18px 0
 }
 
-.paper-row label {
-    display: block;
-    margin-bottom: 8px;
+.paper-row label{
+    display:block;
+    margin-bottom:8px
 }
 
 .paper-row input,
-.paper-row select {
-    width: 100%;
-    max-width: 600px;
+.paper-row select{
+    width:100%;
+    max-width:600px
 }
 
-.paper-row textarea {
-    width: 100%;
-    min-height: 180px;
-    border: 2px solid black;
-    padding: 12px;
-    font-size: 18px;
-    resize: vertical;
+.paper-row textarea{
+    width:100%;
+    min-height:180px;
+    border:2px solid black;
+    padding:12px;
+    font-size:18px;
+    resize:vertical
 }
 
-.saved-item {
-    border: 2px solid black;
-    padding: 18px;
-    margin-bottom: 15px;
+.saved-item{
+    border:2px solid black;
+    padding:18px;
+    margin-bottom:15px
 }
 
-.saved-item h3 {
-    margin-top: 0;
+.saved-item h3{
+    margin-top:0
 }
 
-.saved-item pre {
-    white-space: pre-wrap;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px;
+.saved-item pre{
+    white-space:pre-wrap;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:16px
 }
 
-.login-screen {
-    position: fixed;
-    inset: 0;
-    background: white;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
+.login-screen{
+    position:fixed;
+    inset:0;
+    background:white;
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px
 }
 
-.login-box {
-    width: 100%;
-    max-width: 450px;
-    border: 3px solid black;
-    padding: 30px;
-    text-align: center;
+.login-box{
+    width:100%;
+    max-width:450px;
+    border:3px solid black;
+    padding:30px;
+    text-align:center
 }
 
-.login-box h1 {
-    margin-top: 0;
+.login-box h1{
+    margin-top:0
 }
 
-.login-box input {
-    width: 100%;
-    height: 55px;
-    border: 2px solid black;
-    font-size: 20px;
-    padding: 10px;
-    margin: 15px 0;
-    text-align: center;
+.login-box input{
+    width:100%;
+    height:55px;
+    border:2px solid black;
+    font-size:20px;
+    padding:10px;
+    margin:15px 0;
+    text-align:center
 }
 
-.login-box button {
-    width: 100%;
-    height: 55px;
-    font-size: 19px;
-    font-weight: bold;
-    border: 2px solid black;
-    background: white;
-    cursor: pointer;
+.login-box button{
+    width:100%;
+    height:55px;
+    font-size:19px;
+    font-weight:bold;
+    border:2px solid black;
+    background:white;
+    cursor:pointer
 }
 
-.login-box button:hover {
-    background: #eeeeee;
+.login-box button:hover{
+    background:#eee
 }
 
-#loginMessage {
-    color: black;
-    font-weight: bold;
-    min-height: 25px;
-    margin-top: 10px;
+#loginMessage{
+    color:black;
+    font-weight:bold;
+    min-height:25px;
+    margin-top:10px
 }
 
-.view-notice {
-    border: 2px solid black;
-    padding: 12px;
-    margin-bottom: 20px;
-    font-weight: bold;
-    text-align: center;
+.view-notice{
+    border:2px solid black;
+    padding:12px;
+    margin-bottom:20px;
+    font-weight:bold;
+    text-align:center
 }
 
-.saved-month {
-    border: 3px solid black;
-    padding: 18px;
-    margin-bottom: 20px;
+.saved-month{
+    border:3px solid black;
+    padding:18px;
+    margin-bottom:20px
 }
 
-.saved-month h3 {
-    margin-top: 0;
-    color: #0057b8;
+.saved-month h3{
+    margin-top:0;
+    color:#0057b8
 }
 
-.saved-month-grid {
-    display: grid;
-    grid-template-columns: repeat(7, minmax(120px, 1fr));
-    gap: 4px;
-    overflow-x: auto;
+.saved-month-grid{
+    display:grid;
+    grid-template-columns:repeat(7,minmax(120px,1fr));
+    gap:4px;
+    overflow-x:auto
 }
 
-.saved-month-day {
-    border: 1px solid black;
-    min-height: 100px;
-    padding: 7px;
+.saved-month-day{
+    border:1px solid black;
+    min-height:100px;
+    padding:7px
 }
 
-.saved-month-day strong {
-    display: block;
-    margin-bottom: 8px;
+.saved-month-day strong{
+    display:block;
+    margin-bottom:8px
 }
 
-.delete-button {
-    margin-top: 10px;
-    min-height: 45px;
-    padding: 8px 15px;
-    font-size: 16px;
-    font-weight: bold;
-    border: 2px solid black;
-    background: white;
-    cursor: pointer;
+.delete-button{
+    margin-top:10px;
+    min-height:45px;
+    padding:8px 15px;
+    font-size:16px;
+    font-weight:bold;
+    border:2px solid black;
+    background:white;
+    cursor:pointer
 }
 
-.delete-button:hover {
-    background: #eeeeee;
+.delete-button:hover{
+    background:#eee
 }
 
-
-.points-box {
-    border: 3px solid black;
-    padding: 25px;
-    margin-bottom: 25px;
-    text-align: center;
+.points-box{
+    border:3px solid black;
+    padding:25px;
+    margin-bottom:25px;
+    text-align:center
 }
 
-.points-number {
-    font-size: 42px;
-    font-weight: bold;
-    margin-bottom: 8px;
+.points-number{
+    font-size:42px;
+    font-weight:bold;
+    margin-bottom:8px
 }
 
-.points-goal {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 15px;
+.points-goal{
+    font-size:20px;
+    font-weight:bold;
+    margin-bottom:15px
 }
 
-.points-progress {
-    width: 100%;
-    max-width: 700px;
-    height: 28px;
-    border: 2px solid black;
-    margin: 0 auto 20px;
-    background: white;
+.points-progress{
+    width:100%;
+    max-width:700px;
+    height:28px;
+    border:2px solid black;
+    margin:0 auto 20px;
+    background:white
 }
 
-.points-progress-fill {
-    height: 100%;
-    width: 0%;
-    background: #0057b8;
+.points-progress-fill{
+    height:100%;
+    width:0%;
+    background:#0057b8
 }
 
-.reward-history {
-    border: 3px solid black;
-    padding: 20px;
+.reward-history{
+    border:3px solid black;
+    padding:20px
 }
 
-.reward-form {
-    border-bottom: 3px solid black;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
+.reward-form{
+    border-bottom:3px solid black;
+    padding-bottom:20px;
+    margin-bottom:20px
 }
 
-.reward-entry {
-    border: 2px solid black;
-    padding: 18px;
-    margin-bottom: 15px;
+.reward-entry{
+    border:2px solid black;
+    padding:18px;
+    margin-bottom:15px
 }
 
-.reward-entry h3 {
-    margin-top: 0;
-    color: #0057b8;
+.reward-entry h3{
+    margin-top:0;
+    color:#0057b8
 }
 
-.hidden-for-view {
-    display: none !important;
+.hidden-for-view{
+    display:none!important
 }
 
+.request-modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    z-index:9999;
+    padding:20px;
+    overflow-y:auto
+}
 
-.request-modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.55);
-    z-index: 9999;
-    padding: 20px;
-    overflow-y: auto;
+.request-modal-box{
+    background:white;
+    border:3px solid black;
+    max-width:850px;
+    margin:40px auto;
+    padding:20px
 }
-.request-modal-box {
-    background: white;
-    border: 3px solid black;
-    max-width: 850px;
-    margin: 40px auto;
-    padding: 20px;
-}
+
 .request-modal-box input,
-.request-modal-box textarea {
-    width: 100%;
-    border: 2px solid black;
-    padding: 12px;
-    font-size: 17px;
-    border-radius: 6px;
-}
-.request-card {
-    border: 2px solid black;
-    padding: 18px;
-    margin-bottom: 15px;
-    background: white;
-}
-.request-card h3 { margin-top: 0; color: #0057b8; }
-.request-card pre {
-    white-space: pre-wrap;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
-}
-.request-status {
-    margin-top: 10px;
-    font-weight: bold;
-}
-.request-pending { border-left: 8px solid #0057b8; }
-.request-approved { border-left: 8px solid black; }
-.request-denied { border-left: 8px solid #777; }
-
-@media (max-width: 700px) {
-
-    .section {
-        padding: 12px;
-    }
-
-    .section-title {
-        font-size: 23px;
-    }
-
-    select {
-        width: 100%;
-    }
-
-    .controls {
-        display: block;
-    }
-
-    .controls > * {
-        margin-bottom: 10px;
-    }
-
-    .action-button {
-        width: 100%;
-    }
-
-    .contract {
-        font-size: 16px;
-        padding: 15px;
-    }
+.request-modal-box textarea{
+    width:100%;
+    border:2px solid black;
+    padding:12px;
+    font-size:17px;
+    border-radius:6px
 }
 
-@media print {
+.request-card{
+    border:2px solid black;
+    padding:18px;
+    margin-bottom:15px;
+    background:white
+}
 
+.request-card h3{
+    margin-top:0;
+    color:#0057b8
+}
+
+.request-card pre{
+    white-space:pre-wrap;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:16px;
+    line-height:1.5
+}
+
+.request-status{
+    margin-top:10px;
+    font-weight:bold
+}
+
+.request-pending{
+    border-left:8px solid #0057b8
+}
+
+.request-approved{
+    border-left:8px solid black
+}
+
+.request-denied{
+    border-left:8px solid #777
+}
+
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(250px,1fr));
+    gap:18px
+}
+
+.dashboard-card,
+.schedule-tool-box,
+.agreement-box,
+.settings-box{
+    border:3px solid black;
+    padding:20px;
+    margin-bottom:20px
+}
+
+.dashboard-card h3,
+.agreement-box h3{
+    margin-top:0;
+    color:#0057b8
+}
+
+.dashboard-value{
+    font-size:28px;
+    font-weight:bold
+}
+
+.schedule-result{
+    border:2px solid black;
+    padding:18px;
+    margin-top:20px
+}
+
+.schedule-result strong{
+    color:#0057b8
+}
+
+.agreement-box{
+    white-space:pre-line
+}
+
+.settings-row{
+    border-bottom:2px solid black;
+    padding:15px 0
+}
+
+.settings-row:last-child{
+    border-bottom:none
+}
+
+.change-log-entry,
+.countdown-entry,
+.fairness-result,
+.rules-box{
+    border:2px solid black;
+    padding:16px;
+    margin-top:14px
+}
+
+.change-log-entry h3,
+.countdown-entry h3{
+    margin-top:0;
+    color:#0057b8
+}
+
+.countdown-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(120px,1fr));
+    gap:12px;
+    margin-top:18px
+}
+
+.countdown-number{
+    border:2px solid black;
+    padding:14px;
+    text-align:center
+}
+
+.countdown-number strong{
+    display:block;
+    font-size:26px
+}
+
+.fairness-ok,
+.fairness-warning{
+    font-weight:bold
+}
+
+@media(max-width:700px){
+    .section{
+        padding:12px
+    }
+
+    .section-title{
+        font-size:23px
+    }
+
+    select{
+        width:100%
+    }
+
+    .controls{
+        display:block
+    }
+
+    .controls>*{
+        margin-bottom:10px
+    }
+
+    .action-button{
+        width:100%
+    }
+
+    .contract{
+        font-size:16px;
+        padding:15px
+    }
+
+    .dashboard-grid{
+        grid-template-columns:1fr
+    }
+
+    .countdown-grid{
+        grid-template-columns:1fr
+    }
+}
+
+@media print{
     nav,
     .controls,
-    .delete-button {
-        display: none !important;
+    .delete-button{
+        display:none!important
     }
 
-    .section {
-        display: block !important;
+    .section{
+        display:block!important
     }
 
-    .login-screen {
-        display: none !important;
+    .login-screen{
+        display:none!important
     }
 }
-
-/* NEW DASHBOARD / SCHEDULE / AGREEMENTS / SETTINGS */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(250px, 1fr));
-    gap: 18px;
-}
-
-.dashboard-card, .schedule-tool-box, .agreement-box, .settings-box {
-    border: 3px solid black;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.dashboard-card h3, .agreement-box h3 {
-    margin-top: 0;
-    color: #0057b8;
-}
-
-.dashboard-value {
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.schedule-result {
-    border: 2px solid black;
-    padding: 18px;
-    margin-top: 20px;
-}
-
-.schedule-result strong {
-    color: #0057b8;
-}
-
-.agreement-box {
-    white-space: pre-line;
-}
-
-.settings-row {
-    border-bottom: 2px solid black;
-    padding: 15px 0;
-}
-
-.settings-row:last-child {
-    border-bottom: none;
-}
-
-.change-log-entry, .countdown-entry, .fairness-result, .rules-box { border: 2px solid black; padding: 16px; margin-top: 14px; }
-.change-log-entry h3, .countdown-entry h3 { margin-top: 0; color: #0057b8; }
-.countdown-grid { display: grid; grid-template-columns: repeat(3, minmax(120px, 1fr)); gap: 12px; margin-top: 18px; }
-.countdown-number { border: 2px solid black; padding: 14px; text-align: center; }
-.countdown-number strong { display: block; font-size: 26px; }
-.fairness-ok, .fairness-warning { font-weight: bold; }
-@media (max-width: 700px) {
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
 </style>
 </head>
 
 <body>
 
 <div class="login-screen" id="loginScreen">
-
     <div class="login-box">
-
         <h1>SHOWER SCHEDULE</h1>
-
         <p>Enter your password to continue.</p>
 
         <input
@@ -633,24 +676,15 @@ select {
         <button onclick="login()">ENTER</button>
 
         <div id="loginMessage"></div>
-
     </div>
-
 </div>
 
-
 <header>
-
     <h1>SHOWER SCHEDULE</h1>
-
     <p id="modeText">Loading...</p>
-
 </header>
 
-
 <nav>
-
-    <!-- EVERYONE -->
     <button onclick="showSection('dashboard')">MAIN DASHBOARD</button>
     <button onclick="showSection('scheduleTool')">SCHEDULE TOOL</button>
     <button onclick="showSection('agreements')">AGREEMENTS</button>
@@ -660,132 +694,337 @@ select {
     <button onclick="showSection('changeLog')">CHANGE LOG</button>
     <button onclick="showSection('points')">ANGELO'S POINTS</button>
 
-    <!-- EDIT MODE ONLY -->
     <button id="navTracker" onclick="showSection('tracker')">SIGNING TRACKER</button>
-
-    <!-- EVERYONE -->
     <button onclick="showSection('contract')">RULES AND REGULATION</button>
-
-    <!-- EDIT MODE ONLY -->
     <button id="navCalendar" onclick="showSection('calendar')">CALENDAR</button>
-
-    <!-- EVERYONE -->
     <button onclick="showSection('saved')">SAVED DATA</button>
-
-    <!-- EDIT MODE ONLY -->
     <button id="navPaper" onclick="showSection('paper')">DAILY PAPER</button>
     <button id="navSettings" onclick="showSection('settings')">SETTINGS</button>
-
 </nav>
 
-
-
-
-<!-- MAIN DASHBOARD -->
+<!-- DASHBOARD -->
 <section id="dashboard" class="section">
     <div class="section-title">MAIN DASHBOARD</div>
+
     <div class="dashboard-grid">
-        <div class="dashboard-card"><h3>TODAY</h3><div class="dashboard-value" id="dashboardToday">-</div></div>
-        <div class="dashboard-card"><h3>WHO'S NEXT?</h3><div class="dashboard-value" id="dashboardNextPerson">-</div><p id="dashboardNextDate">-</p></div>
-        <div class="dashboard-card"><h3>ANGELO'S POINTS</h3><div class="dashboard-value" id="dashboardPoints">0</div><p>GOAL: 15 POINTS</p></div>
-        <div class="dashboard-card"><h3>REWARD HISTORY</h3><div class="dashboard-value" id="dashboardRewards">0</div><p>REWARDS SAVED</p></div>
-        <div class="dashboard-card"><h3>SAVED DAILY PAPERS</h3><div class="dashboard-value" id="dashboardPapers">0</div></div>
-        <div class="dashboard-card"><h3>SAVED MONTHS</h3><div class="dashboard-value" id="dashboardMonths">0</div></div>
+        <div class="dashboard-card">
+            <h3>TODAY</h3>
+            <div class="dashboard-value" id="dashboardToday">-</div>
+        </div>
+
+        <div class="dashboard-card">
+            <h3>WHO'S NEXT?</h3>
+            <div class="dashboard-value" id="dashboardNextPerson">-</div>
+            <p id="dashboardNextDate">-</p>
+        </div>
+
+        <div class="dashboard-card">
+            <h3>ANGELO'S POINTS</h3>
+            <div class="dashboard-value" id="dashboardPoints">0</div>
+            <p>GOAL: 15 POINTS</p>
+        </div>
+
+        <div class="dashboard-card">
+            <h3>REWARD HISTORY</h3>
+            <div class="dashboard-value" id="dashboardRewards">0</div>
+            <p>REWARDS SAVED</p>
+        </div>
+
+        <div class="dashboard-card">
+            <h3>SAVED DAILY PAPERS</h3>
+            <div class="dashboard-value" id="dashboardPapers">0</div>
+        </div>
+
+        <div class="dashboard-card">
+            <h3>SAVED MONTHS</h3>
+            <div class="dashboard-value" id="dashboardMonths">0</div>
+        </div>
     </div>
+
     <div class="dashboard-card">
         <h3>IMPORTANT RULES</h3>
+
         <div class="rules-box">
             <strong>• The shower schedule must always be followed.</strong><br><br>
             <strong>• Whoever showers first must sign the paper.</strong><br><br>
             <strong>• The schedule can only be changed if BOTH Matt and Angelo agree.</strong><br><br>
             <strong>• Roblox rules apply to all people.</strong>
         </div>
-        <button id="viewAgreementsButton" onclick="showSection('agreements')">VIEW ALL AGREEMENTS</button>
+
+        <button id="viewAgreementsButton" onclick="showSection('agreements')">
+            VIEW ALL AGREEMENTS
+        </button>
     </div>
+
     <div class="dashboard-card" id="viewRequestCard">
         <h3>REQUEST A CHANGE</h3>
-        <p>View Mode cannot change the schedule or saved information. You can send a request to the person using Edit Mode.</p>
-        <button class="action-button blue-button" onclick="openChangeRequestForm()">REQUEST A CHANGE</button>
+
+        <p>
+            View Mode cannot change the schedule or saved information.
+            You can send a request to the person using Edit Mode.
+        </p>
+
+        <button
+            class="action-button blue-button"
+            onclick="openChangeRequestForm()"
+        >
+            REQUEST A CHANGE
+        </button>
+
         <div id="requestStatus" class="request-status"></div>
     </div>
+
     <div class="dashboard-card" id="myRequestStatusCard">
         <h3>MY CHANGE REQUESTS</h3>
         <div id="myRequestStatus">No requests yet.</div>
     </div>
 </section>
 
-<!-- CHANGE REQUEST FORM -->
+<!-- REQUEST MODAL -->
 <div id="changeRequestModal" class="request-modal" style="display:none;">
     <div class="request-modal-box">
+
         <div class="section-title">REQUEST A CHANGE</div>
-        <div class="paper-row"><label for="requestName">YOUR NAME</label><input type="text" id="requestName" placeholder="Matt or Angelo"></div>
-        <div class="paper-row"><label for="requestChange">WHAT WOULD YOU LIKE CHANGED?</label><textarea id="requestChange" rows="5" placeholder="Explain what you want changed."></textarea></div>
-        <div class="paper-row"><label for="requestReason">WHY?</label><textarea id="requestReason" rows="4" placeholder="Explain why you are requesting the change."></textarea></div>
-        <div class="controls">
-            <button class="action-button blue-button" onclick="submitChangeRequest()">SUBMIT REQUEST</button>
-            <button class="action-button" onclick="closeChangeRequestForm()">CANCEL</button>
+
+        <div class="paper-row">
+            <label for="requestName">YOUR NAME</label>
+            <input type="text" id="requestName" placeholder="Matt or Angelo">
         </div>
+
+        <div class="paper-row">
+            <label for="requestChange">WHAT WOULD YOU LIKE CHANGED?</label>
+            <textarea
+                id="requestChange"
+                rows="5"
+                placeholder="Explain what you want changed."
+            ></textarea>
+        </div>
+
+        <div class="paper-row">
+            <label for="requestReason">WHY?</label>
+            <textarea
+                id="requestReason"
+                rows="4"
+                placeholder="Explain why you are requesting the change."
+            ></textarea>
+        </div>
+
+        <div class="controls">
+            <button
+                class="action-button blue-button"
+                onclick="submitChangeRequest()"
+            >
+                SUBMIT REQUEST
+            </button>
+
+            <button
+                class="action-button"
+                onclick="closeChangeRequestForm()"
+            >
+                CANCEL
+            </button>
+        </div>
+
         <div id="requestFormMessage"></div>
     </div>
 </div>
 
 <!-- CHANGE REQUESTS -->
 <section id="changeRequests" class="section">
+
     <div class="section-title">CHANGE REQUESTS</div>
+
     <div class="schedule-tool-box">
-        <p>Requests submitted from View Mode appear here. You decide whether each request is approved or denied.</p>
-        <div id="changeRequestConnection" class="request-status"></div>
+        <p>
+            Requests submitted from View Mode appear here.
+            You decide whether each request is approved or denied.
+        </p>
+
+        <div
+            id="changeRequestConnection"
+            class="request-status"
+        >
+            CONNECTING...
+        </div>
     </div>
-    <div id="changeRequestsContainer"><p>No change requests yet.</p></div>
+
+    <div id="changeRequestsContainer">
+        <p>Loading change requests...</p>
+    </div>
+
 </section>
 
 <!-- SCHEDULE TOOL -->
 <section id="scheduleTool" class="section">
+
     <div class="section-title">SCHEDULE TOOL</div>
+
     <div class="schedule-tool-box">
-        <div class="paper-row"><label for="scheduleToolDate">DATE</label><input type="date" id="scheduleToolDate" onchange="updateScheduleTool()"></div>
-        <div class="schedule-result" id="scheduleToolResult">Choose a date to see the scheduled person.</div>
+
+        <div class="paper-row">
+            <label for="scheduleToolDate">DATE</label>
+            <input
+                type="date"
+                id="scheduleToolDate"
+                onchange="updateScheduleTool()"
+            >
+        </div>
+
+        <div
+            class="schedule-result"
+            id="scheduleToolResult"
+        >
+            Choose a date to see the scheduled person.
+        </div>
+
     </div>
+
 </section>
 
 <!-- COUNTDOWNS -->
 <section id="countdowns" class="section">
+
     <div class="section-title">COUNTDOWNS</div>
+
     <div class="schedule-tool-box">
-        <div class="paper-row"><label for="countdownName">NAME</label><input type="text" id="countdownName" placeholder="Example: Christmas"></div>
-        <div class="paper-row"><label for="countdownDate">DATE</label><input type="date" id="countdownDate" onchange="updateCountdownLive()"></div>
-        <div class="paper-row"><label for="countdownTime">TIME</label><input type="time" id="countdownTime" value="00:00" onchange="updateCountdownLive()"></div>
-        <div class="controls"><button class="action-button blue-button" onclick="saveCountdown()">SAVE COUNTDOWN</button><button class="action-button" onclick="newCountdown()">NEW COUNTDOWN</button></div>
+
+        <div class="paper-row">
+            <label for="countdownName">NAME</label>
+            <input
+                type="text"
+                id="countdownName"
+                placeholder="Example: Christmas"
+            >
+        </div>
+
+        <div class="paper-row">
+            <label for="countdownDate">DATE</label>
+            <input
+                type="date"
+                id="countdownDate"
+                onchange="updateCountdownLive()"
+            >
+        </div>
+
+        <div class="paper-row">
+            <label for="countdownTime">TIME</label>
+            <input
+                type="time"
+                id="countdownTime"
+                value="00:00"
+                onchange="updateCountdownLive()"
+            >
+        </div>
+
+        <div class="controls">
+            <button
+                class="action-button blue-button"
+                onclick="saveCountdown()"
+            >
+                SAVE COUNTDOWN
+            </button>
+
+            <button
+                class="action-button"
+                onclick="newCountdown()"
+            >
+                NEW COUNTDOWN
+            </button>
+        </div>
+
     </div>
-    <div class="dashboard-card"><h3>COUNTDOWN</h3><div id="countdownLiveContent">Choose a date and time.</div></div>
-    <div class="dashboard-card"><h3>SAVED COUNTDOWNS</h3><div id="savedCountdownsContainer"><p>No countdowns saved yet.</p></div></div>
+
+    <div class="dashboard-card">
+        <h3>COUNTDOWN</h3>
+        <div id="countdownLiveContent">
+            Choose a date and time.
+        </div>
+    </div>
+
+    <div class="dashboard-card">
+        <h3>SAVED COUNTDOWNS</h3>
+        <div id="savedCountdownsContainer">
+            <p>No countdowns saved yet.</p>
+        </div>
+    </div>
+
 </section>
 
-<!-- FAIRNESS CHECKER -->
+<!-- FAIRNESS -->
 <section id="fairness" class="section">
+
     <div class="section-title">FAIRNESS CHECKER</div>
+
     <div class="schedule-tool-box">
-        <p>Checks saved calendar entries for repeated people and missing days in the schedule.</p>
-        <button class="action-button blue-button" onclick="runFairnessChecker()">CHECK SCHEDULE</button>
+        <p>
+            Checks saved calendar entries for repeated people
+            and missing days in the schedule.
+        </p>
+
+        <button
+            class="action-button blue-button"
+            onclick="runFairnessChecker()"
+        >
+            CHECK SCHEDULE
+        </button>
     </div>
-    <div id="fairnessResult" class="fairness-result">Press CHECK SCHEDULE to check the calendar.</div>
+
+    <div
+        id="fairnessResult"
+        class="fairness-result"
+    >
+        Press CHECK SCHEDULE to check the calendar.
+    </div>
+
 </section>
 
 <!-- CHANGE LOG -->
 <section id="changeLog" class="section">
+
     <div class="section-title">CHANGE LOG</div>
+
     <div class="schedule-tool-box">
-        <p>Important changes are recorded with the reason you entered for making the change.</p>
-        <div class="controls"><button class="action-button blue-button" onclick="addManualChangeLog()">ADD LOG ENTRY</button><button class="action-button" onclick="clearChangeLog()">CLEAR CHANGE LOG</button></div>
+
+        <p>
+            Important changes are recorded with the reason
+            entered for making the change.
+        </p>
+
+        <div class="controls">
+
+            <button
+                class="action-button blue-button"
+                onclick="addManualChangeLog()"
+            >
+                ADD LOG ENTRY
+            </button>
+
+            <button
+                class="action-button"
+                onclick="clearChangeLog()"
+            >
+                CLEAR CHANGE LOG
+            </button>
+
+        </div>
+
     </div>
-    <div id="changeLogContainer"><p>No changes recorded yet.</p></div>
+
+    <div id="changeLogContainer">
+        <p>No changes recorded yet.</p>
+    </div>
+
 </section>
 
 <!-- AGREEMENTS -->
 <section id="agreements" class="section">
+
     <div class="section-title">AGREEMENTS</div>
+
     <div class="agreement-box">
+
         <h3>SHOWER SCHEDULE AGREEMENT</h3>
+
         <strong>Between: Matt and Angelo</strong>
 
 PURPOSE
@@ -803,10 +1042,13 @@ II. If someone showers before their scheduled day, it does NOT automatically giv
 III. The next person follows the schedule exactly as written.
 IV. The schedule can only be changed if BOTH Matt and Angelo agree to the change.
 V. Who ever showers first any day has to sign the paper witch is given at the end of each shower.
+
     </div>
 
     <div class="agreement-box">
+
         <h3>ROBLOX RULES AGREEMENT</h3>
+
         <strong>Between: Matt and Angelo</strong>
 
 PURPOSE
@@ -831,22 +1073,67 @@ Date: __________________
 
 Angelo's Signature: ____________________________
 Date: __________________
+
     </div>
+
 </section>
 
 <!-- SETTINGS -->
 <section id="settings" class="section">
+
     <div class="section-title">SETTINGS</div>
+
     <div class="settings-box">
-        <div class="settings-row"><strong>MODE</strong><p id="settingsMode">-</p></div>
-        <div class="settings-row"><strong>DATA</strong><p>All current website data is stored in this browser.</p></div>
-        <div class="settings-row"><strong>RESET OPTIONS</strong><div class="controls"><button class="action-button" onclick="resetPoints()">RESET ANGELO'S POINTS</button><button class="action-button" onclick="resetRewards()">CLEAR REWARD HISTORY</button></div></div>
-        <div class="settings-row"><strong>PRINT</strong><p>Use your browser's print option to print the current page.</p></div>
+
+        <div class="settings-row">
+            <strong>MODE</strong>
+            <p id="settingsMode">-</p>
+        </div>
+
+        <div class="settings-row">
+            <strong>DATA</strong>
+            <p>
+                Current website data is stored locally and synchronized
+                with the shared database when Edit Mode is used.
+            </p>
+        </div>
+
+        <div class="settings-row">
+
+            <strong>RESET OPTIONS</strong>
+
+            <div class="controls">
+
+                <button
+                    class="action-button"
+                    onclick="resetPoints()"
+                >
+                    RESET ANGELO'S POINTS
+                </button>
+
+                <button
+                    class="action-button"
+                    onclick="resetRewards()"
+                >
+                    CLEAR REWARD HISTORY
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="settings-row">
+            <strong>PRINT</strong>
+            <p>
+                Use your browser's print option to print the current page.
+            </p>
+        </div>
+
     </div>
+
 </section>
 
-<!-- ANGELO'S POINTS -->
-
+<!-- POINTS -->
 <section id="points" class="section">
 
     <div class="section-title">
@@ -854,21 +1141,45 @@ Date: __________________
     </div>
 
     <div class="points-box">
-        <div class="points-number" id="angeloPointsDisplay">0 POINTS</div>
-        <div class="points-goal">GOAL: 15 POINTS</div>
+
+        <div
+            class="points-number"
+            id="angeloPointsDisplay"
+        >
+            0 POINTS
+        </div>
+
+        <div class="points-goal">
+            GOAL: 15 POINTS
+        </div>
 
         <div class="points-progress">
-            <div id="angeloPointsProgress" class="points-progress-fill"></div>
+            <div
+                id="angeloPointsProgress"
+                class="points-progress-fill"
+            ></div>
         </div>
 
         <div class="controls">
-            <button id="addPointButton" class="action-button blue-button" onclick="addAngeloPoint()">
+
+            <button
+                id="addPointButton"
+                class="action-button blue-button"
+                onclick="addAngeloPoint()"
+            >
                 ADD 1 POINT
             </button>
-            <button id="removePointButton" class="action-button" onclick="removeAngeloPoint()">
+
+            <button
+                id="removePointButton"
+                class="action-button"
+                onclick="removeAngeloPoint()"
+            >
                 REMOVE 1 POINT
             </button>
+
         </div>
+
     </div>
 
     <div class="section-title">
@@ -886,21 +1197,39 @@ Date: __________________
 
             <div class="paper-row">
                 <label for="rewardName">REWARD</label>
-                <input type="text" id="rewardName" placeholder="Enter the reward">
+                <input
+                    type="text"
+                    id="rewardName"
+                    placeholder="Enter the reward"
+                >
             </div>
 
             <div class="paper-row">
                 <label for="rewardNotes">NOTES</label>
-                <textarea id="rewardNotes" placeholder="Optional notes..."></textarea>
+                <textarea
+                    id="rewardNotes"
+                    placeholder="Optional notes..."
+                ></textarea>
             </div>
 
             <div class="controls">
-                <button id="saveRewardButton" class="action-button blue-button" onclick="saveReward()">
+
+                <button
+                    id="saveRewardButton"
+                    class="action-button blue-button"
+                    onclick="saveReward()"
+                >
                     SAVE REWARD
                 </button>
-                <button id="newRewardButton" class="action-button" onclick="newReward()">
+
+                <button
+                    id="newRewardButton"
+                    class="action-button"
+                    onclick="newReward()"
+                >
                     NEW REWARD
                 </button>
+
             </div>
 
         </div>
@@ -911,9 +1240,7 @@ Date: __________________
 
 </section>
 
-
-<!-- SIGNING TRACKER -->
-
+<!-- TRACKER -->
 <section id="tracker" class="section">
 
     <div class="section-title">
@@ -922,14 +1249,12 @@ Date: __________________
 
     <div class="controls">
 
-        <label for="trackerMonth">
-            Month:
-        </label>
+        <label for="trackerMonth">Month:</label>
 
         <select
             id="trackerMonth"
-            onchange="renderTracker()">
-
+            onchange="renderTracker()"
+        >
             <option value="0">January</option>
             <option value="1">February</option>
             <option value="2">March</option>
@@ -942,47 +1267,39 @@ Date: __________________
             <option value="9">October</option>
             <option value="10">November</option>
             <option value="11">December</option>
-
         </select>
 
-        <label for="trackerYear">
-            Year:
-        </label>
+        <label for="trackerYear">Year:</label>
 
         <select
             id="trackerYear"
-            onchange="renderTracker()">
-
+            onchange="renderTracker()"
+        >
             <option>2026</option>
             <option>2027</option>
             <option>2028</option>
             <option>2029</option>
             <option>2030</option>
-
         </select>
 
     </div>
 
     <div id="trackerContainer"></div>
 
-    <!-- ONLY NEW BUTTON -->
     <div class="controls">
 
         <button
             class="action-button blue-button"
-            onclick="saveCurrentTracker()">
-
+            onclick="saveCurrentTracker()"
+        >
             SAVE TRACKER
-
         </button>
 
     </div>
 
 </section>
 
-
 <!-- CONTRACT -->
-
 <section id="contract" class="section">
 
     <div class="section-title">
@@ -1007,39 +1324,32 @@ Date: __________________
         <h3>AGREED RULE</h3>
 
         <div class="agreed-rule">
-
             NO MATTER WHAT DAY IT IS, WHAT TIME SOMEONE SHOWERS,
             OR WHO SHOWERS FIRST, THE SHOWER SCHEDULE WILL STILL
             BE FOLLOWED.
-
         </div>
 
         <h3>RULES</h3>
 
-        <p>
-            <strong>I.</strong>
+        <p><strong>I.</strong>
             Showering earlier or later does NOT change the schedule.
         </p>
 
-        <p>
-            <strong>II.</strong>
+        <p><strong>II.</strong>
             If someone showers before their scheduled day,
             it does NOT automatically give them the next shower day.
         </p>
 
-        <p>
-            <strong>III.</strong>
+        <p><strong>III.</strong>
             The next person follows the schedule exactly as written.
         </p>
 
-        <p>
-            <strong>IV.</strong>
+        <p><strong>IV.</strong>
             The schedule can only be changed if BOTH Matt and Angelo
             agree to the change.
         </p>
 
-        <p>
-            <strong>V.</strong>
+        <p><strong>V.</strong>
             Who ever showers first any day has to sign the paper
             witch is given at the end of each shower.
         </p>
@@ -1048,9 +1358,7 @@ Date: __________________
 
 </section>
 
-
 <!-- CALENDAR -->
-
 <section id="calendar" class="section">
 
     <div class="section-title">
@@ -1059,36 +1367,31 @@ Date: __________________
 
     <div class="controls">
 
-        <label for="calendarYear">
-            Year:
-        </label>
+        <label for="calendarYear">Year:</label>
 
         <select
             id="calendarYear"
-            onchange="renderCalendar()">
-
+            onchange="renderCalendar()"
+        >
             <option selected>2026</option>
             <option>2027</option>
             <option>2028</option>
             <option>2029</option>
             <option>2030</option>
-
         </select>
 
         <button
             class="action-button blue-button"
-            onclick="saveCurrentMonth()">
-
+            onclick="saveCurrentMonth()"
+        >
             SAVE MONTH
-
         </button>
 
         <button
             class="action-button"
-            onclick="resetCalendar()">
-
+            onclick="resetCalendar()"
+        >
             RESET CURRENT YEAR
-
         </button>
 
     </div>
@@ -1097,9 +1400,7 @@ Date: __________________
 
 </section>
 
-
-<!-- SAVED DATA -->
-
+<!-- SAVED -->
 <section id="saved" class="section">
 
     <div class="section-title">
@@ -1110,31 +1411,21 @@ Date: __________________
         Saved information is stored on this device.
     </div>
 
-    <h2>
-        Saved Months
-    </h2>
+    <h2>Saved Months</h2>
 
     <div id="savedMonthsContainer"></div>
 
-    <!-- ONLY NEW SAVED DATA SECTION -->
-
-    <h2>
-        Saved Signing Trackers
-    </h2>
+    <h2>Saved Signing Trackers</h2>
 
     <div id="savedTrackersContainer"></div>
 
-    <h2>
-        Saved Daily Papers
-    </h2>
+    <h2>Saved Daily Papers</h2>
 
     <div id="savedPapersContainer"></div>
 
 </section>
 
-
 <!-- DAILY PAPER -->
-
 <section id="paper" class="section">
 
     <div class="section-title">
@@ -1143,27 +1434,16 @@ Date: __________________
 
     <div class="paper">
 
-        <h2>
-            DAILY SHOWER PAPER
-        </h2>
+        <h2>DAILY SHOWER PAPER</h2>
 
         <div class="paper-row">
-
-            <label for="paperDate">
-                DATE
-            </label>
+            <label for="paperDate">DATE</label>
 
             <input
                 type="date"
                 id="paperDate"
-                style="
-                    height:52px;
-                    border:2px solid black;
-                    padding:8px;
-                    font-size:18px;
-                "
+                style="height:52px;border:2px solid black;padding:8px;font-size:18px;"
             >
-
         </div>
 
         <div class="paper-row">
@@ -1174,17 +1454,9 @@ Date: __________________
 
             <select id="firstShowerer">
 
-                <option value="">
-                    Choose one
-                </option>
-
-                <option value="Angelo">
-                    Angelo
-                </option>
-
-                <option value="Matthew">
-                    Matthew
-                </option>
+                <option value="">Choose one</option>
+                <option value="Angelo">Angelo</option>
+                <option value="Matthew">Matthew</option>
 
             </select>
 
@@ -1198,17 +1470,9 @@ Date: __________________
 
             <select id="paperStatus">
 
-                <option value="">
-                    Choose one
-                </option>
-
-                <option value="SIGNED">
-                    SIGNED
-                </option>
-
-                <option value="MISSING">
-                    MISSING
-                </option>
+                <option value="">Choose one</option>
+                <option value="SIGNED">SIGNED</option>
+                <option value="MISSING">MISSING</option>
 
             </select>
 
@@ -1216,9 +1480,7 @@ Date: __________________
 
         <div class="paper-row">
 
-            <label for="paperNotes">
-                NOTES
-            </label>
+            <label for="paperNotes">NOTES</label>
 
             <textarea
                 id="paperNotes"
@@ -1231,18 +1493,16 @@ Date: __________________
 
             <button
                 class="action-button blue-button"
-                onclick="saveDailyPaper()">
-
+                onclick="saveDailyPaper()"
+            >
                 SAVE
-
             </button>
 
             <button
                 class="action-button"
-                onclick="newDailyPaper()">
-
+                onclick="newDailyPaper()"
+            >
                 NEW COPY
-
             </button>
 
         </div>
@@ -1250,7 +1510,6 @@ Date: __________________
     </div>
 
 </section>
-
 
 <script>
 
@@ -1261,94 +1520,88 @@ Date: __________________
 const MINE_PASSWORD = "1014131814";
 const VIEW_PASSWORD = "1814";
 
-/* SHARED CHANGE REQUEST DATABASE
-   This uses the Firebase Realtime Database created for this project.
-   If your Firebase database URL is different, replace only the URL below. */
-const SHARED_DATABASE_URL = "https://shower-schedule-2-default-rtdb.firebaseio.com";
+
+/* ============================================================
+   FIREBASE REST DATABASE
+   ============================================================ */
+
+const SHARED_DATABASE_URL =
+    "https://shower-schedule-2-default-rtdb.firebaseio.com";
+
 const SHARED_REQUESTS_PATH = "changeRequests";
 const SHARED_APP_DATA_PATH = "appData";
+
+let editMode = false;
+
 let sharedRequests = [];
+
 let requestSyncTimer = null;
 let sharedAppSyncTimer = null;
 let sharedAppSaveTimer = null;
 let sharedAppHash = "";
 
-let editMode = false;
+let countdownTimer = null;
 
 
 /* ============================================================
-   DATA
+   LOCAL DATA
    ============================================================ */
 
 let calendarData =
-    JSON.parse(
-        localStorage.getItem("showerCalendarData")
-    ) || {};
+    JSON.parse(localStorage.getItem("showerCalendarData")) || {};
 
 let trackerData =
-    JSON.parse(
-        localStorage.getItem("showerTrackerData")
-    ) || {};
+    JSON.parse(localStorage.getItem("showerTrackerData")) || {};
 
 let savedPapers =
-    JSON.parse(
-        localStorage.getItem("showerSavedPapers")
-    ) || [];
+    JSON.parse(localStorage.getItem("showerSavedPapers")) || [];
 
 let savedMonths =
-    JSON.parse(
-        localStorage.getItem("showerSavedMonths")
-    ) || [];
-
-
-/* ============================================================
-   NEW: SAVED SIGNING TRACKERS
-   ============================================================ */
+    JSON.parse(localStorage.getItem("showerSavedMonths")) || [];
 
 let savedTrackers =
-    JSON.parse(
-        localStorage.getItem("showerSavedTrackers")
-    ) || [];
-
-
-/* Make sure it is an array */
-
-if (!Array.isArray(savedTrackers)) {
-    savedTrackers = [];
-}
-
-
-/* ============================================================
-   ANGELO'S POINTS AND REWARD HISTORY
-   ============================================================ */
+    JSON.parse(localStorage.getItem("showerSavedTrackers")) || [];
 
 let angeloPoints =
     Number(localStorage.getItem("angeloPoints")) || 0;
 
 let rewardHistory =
-    JSON.parse(
-        localStorage.getItem("angeloRewardHistory")
-    ) || [];
+    JSON.parse(localStorage.getItem("angeloRewardHistory")) || [];
 
-if (!Array.isArray(rewardHistory)) {
-    rewardHistory = [];
-}
+let changeLog =
+    JSON.parse(localStorage.getItem("showerChangeLog")) || [];
 
-let changeLog = JSON.parse(localStorage.getItem("showerChangeLog")) || [];
+let countdowns =
+    JSON.parse(localStorage.getItem("showerCountdowns")) || [];
+
+
+if (!Array.isArray(savedPapers)) savedPapers = [];
+if (!Array.isArray(savedMonths)) savedMonths = [];
+if (!Array.isArray(savedTrackers)) savedTrackers = [];
+if (!Array.isArray(rewardHistory)) rewardHistory = [];
 if (!Array.isArray(changeLog)) changeLog = [];
-let countdowns = JSON.parse(localStorage.getItem("showerCountdowns")) || [];
 if (!Array.isArray(countdowns)) countdowns = [];
-let countdownTimer = null;
+
+
+/* ============================================================
+   SHARED DATABASE HELPERS
+   ============================================================ */
+
+function sharedDatabaseUrl(path) {
+
+    return SHARED_DATABASE_URL.replace(/\/$/, "") +
+        "/" +
+        path +
+        ".json";
+}
 
 
 /* ============================================================
    SHARED APP DATA
    ============================================================ */
-function sharedAppUrl() {
-    return sharedDatabaseUrl(SHARED_APP_DATA_PATH);
-}
 
 function getSharedAppData() {
+
     return {
         calendarData: calendarData,
         trackerData: trackerData,
@@ -1362,105 +1615,251 @@ function getSharedAppData() {
     };
 }
 
+
 function applySharedAppData(data) {
-    if (!data || typeof data !== "object") return;
 
-    calendarData = data.calendarData && typeof data.calendarData === "object" ? data.calendarData : {};
-    trackerData = data.trackerData && typeof data.trackerData === "object" ? data.trackerData : {};
-    savedPapers = Array.isArray(data.savedPapers) ? data.savedPapers : [];
-    savedMonths = Array.isArray(data.savedMonths) ? data.savedMonths : [];
-    savedTrackers = Array.isArray(data.savedTrackers) ? data.savedTrackers : [];
-    angeloPoints = Number.isFinite(Number(data.angeloPoints)) ? Number(data.angeloPoints) : 0;
-    rewardHistory = Array.isArray(data.rewardHistory) ? data.rewardHistory : [];
-    changeLog = Array.isArray(data.changeLog) ? data.changeLog : [];
-    countdowns = Array.isArray(data.countdowns) ? data.countdowns : [];
+    if (!data || typeof data !== "object") {
+        return;
+    }
 
-    localStorage.setItem("showerCalendarData", JSON.stringify(calendarData));
-    scheduleSharedAppSave();
-    localStorage.setItem("showerTrackerData", JSON.stringify(trackerData));
-    scheduleSharedAppSave();
-    localStorage.setItem("showerSavedPapers", JSON.stringify(savedPapers));
-    scheduleSharedAppSave();
-    localStorage.setItem("showerSavedMonths", JSON.stringify(savedMonths));
-    scheduleSharedAppSave();
-    localStorage.setItem("showerSavedTrackers", JSON.stringify(savedTrackers));
-    scheduleSharedAppSave();
-    localStorage.setItem("angeloPoints", String(angeloPoints));
-    scheduleSharedAppSave();
-    localStorage.setItem("angeloRewardHistory", JSON.stringify(rewardHistory));
-    scheduleSharedAppSave();
-    localStorage.setItem("showerChangeLog", JSON.stringify(changeLog));
-    scheduleSharedAppSave();
-    localStorage.setItem("showerCountdowns", JSON.stringify(countdowns));
-    scheduleSharedAppSave();
+    calendarData =
+        data.calendarData &&
+        typeof data.calendarData === "object"
+            ? data.calendarData
+            : {};
 
-    sharedAppHash = JSON.stringify(getSharedAppData());
+    trackerData =
+        data.trackerData &&
+        typeof data.trackerData === "object"
+            ? data.trackerData
+            : {};
+
+    savedPapers =
+        Array.isArray(data.savedPapers)
+            ? data.savedPapers
+            : [];
+
+    savedMonths =
+        Array.isArray(data.savedMonths)
+            ? data.savedMonths
+            : [];
+
+    savedTrackers =
+        Array.isArray(data.savedTrackers)
+            ? data.savedTrackers
+            : [];
+
+    angeloPoints =
+        Number.isFinite(Number(data.angeloPoints))
+            ? Number(data.angeloPoints)
+            : 0;
+
+    rewardHistory =
+        Array.isArray(data.rewardHistory)
+            ? data.rewardHistory
+            : [];
+
+    changeLog =
+        Array.isArray(data.changeLog)
+            ? data.changeLog
+            : [];
+
+    countdowns =
+        Array.isArray(data.countdowns)
+            ? data.countdowns
+            : [];
+
+
+    localStorage.setItem(
+        "showerCalendarData",
+        JSON.stringify(calendarData)
+    );
+
+    localStorage.setItem(
+        "showerTrackerData",
+        JSON.stringify(trackerData)
+    );
+
+    localStorage.setItem(
+        "showerSavedPapers",
+        JSON.stringify(savedPapers)
+    );
+
+    localStorage.setItem(
+        "showerSavedMonths",
+        JSON.stringify(savedMonths)
+    );
+
+    localStorage.setItem(
+        "showerSavedTrackers",
+        JSON.stringify(savedTrackers)
+    );
+
+    localStorage.setItem(
+        "angeloPoints",
+        String(angeloPoints)
+    );
+
+    localStorage.setItem(
+        "angeloRewardHistory",
+        JSON.stringify(rewardHistory)
+    );
+
+    localStorage.setItem(
+        "showerChangeLog",
+        JSON.stringify(changeLog)
+    );
+
+    localStorage.setItem(
+        "showerCountdowns",
+        JSON.stringify(countdowns)
+    );
+
+    sharedAppHash =
+        JSON.stringify(getSharedAppData());
+
+    renderAllData();
 }
 
+
 async function loadSharedAppData() {
+
     try {
-        const response = await fetch(sharedAppUrl(), { cache: "no-store" });
-        if (!response.ok) throw new Error("Shared app data request failed: " + response.status);
-        const data = await response.json();
+
+        const response =
+            await fetch(
+                sharedDatabaseUrl(SHARED_APP_DATA_PATH),
+                {
+                    cache:"no-store"
+                }
+            );
+
+        if (!response.ok) {
+            throw new Error(
+                "Shared app data request failed: " +
+                response.status
+            );
+        }
+
+        const data =
+            await response.json();
 
         if (data && typeof data === "object") {
+
             applySharedAppData(data);
-            renderCalendar();
-            renderTracker();
-            renderSavedData();
-            renderAngeloPoints();
-            renderRewardHistory();
-            renderChangeLog();
-            renderCountdowns();
-            renderDashboard();
+
             return true;
         }
 
         return false;
-    } catch (error) {
-        console.error("Shared app data error:", error);
+
+    } catch(error) {
+
+        console.error(
+            "Shared app data error:",
+            error
+        );
+
         return false;
     }
 }
 
-async function saveSharedAppData() {
-    if (!editMode) return;
 
-    const payload = getSharedAppData();
-    const hash = JSON.stringify(payload);
-    if (hash === sharedAppHash) return;
+async function saveSharedAppData() {
+
+    if (!editMode) {
+        return;
+    }
+
+    const payload =
+        getSharedAppData();
+
+    const hash =
+        JSON.stringify(payload);
+
+    if (hash === sharedAppHash) {
+        return;
+    }
 
     try {
-        const response = await fetch(sharedAppUrl(), {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        });
-        if (!response.ok) throw new Error("Shared app data write failed: " + response.status);
+
+        const response =
+            await fetch(
+                sharedDatabaseUrl(SHARED_APP_DATA_PATH),
+                {
+                    method:"PUT",
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+                    body:
+                        JSON.stringify(payload)
+                }
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Shared app data write failed: " +
+                response.status
+            );
+        }
+
         sharedAppHash = hash;
-    } catch (error) {
-        console.error("Could not save shared app data:", error);
+
+    } catch(error) {
+
+        console.error(
+            "Could not save shared app data:",
+            error
+        );
     }
 }
 
+
 function scheduleSharedAppSave() {
-    if (!editMode) return;
-    clearTimeout(sharedAppSaveTimer);
-    sharedAppSaveTimer = setTimeout(function() {
-        saveSharedAppData();
-    }, 250);
+
+    if (!editMode) {
+        return;
+    }
+
+    clearTimeout(
+        sharedAppSaveTimer
+    );
+
+    sharedAppSaveTimer =
+        setTimeout(
+            function(){
+                saveSharedAppData();
+            },
+            250
+        );
 }
 
-function startSharedAppSync() {
-    clearInterval(sharedAppSyncTimer);
 
-    sharedAppSyncTimer = setInterval(function() {
-        if (editMode) {
-            saveSharedAppData();
-        } else {
-            loadSharedAppData();
-        }
-    }, 3000);
+function startSharedAppSync() {
+
+    clearInterval(
+        sharedAppSyncTimer
+    );
+
+    sharedAppSyncTimer =
+        setInterval(
+            async function(){
+
+                if (editMode) {
+
+                    await saveSharedAppData();
+
+                } else {
+
+                    await loadSharedAppData();
+
+                }
+
+            },
+            3000
+        );
 }
 
 
@@ -1471,56 +1870,70 @@ function startSharedAppSync() {
 async function login() {
 
     const password =
-        document.getElementById("passwordInput").value;
+        document.getElementById(
+            "passwordInput"
+        ).value;
 
     const message =
-        document.getElementById("loginMessage");
+        document.getElementById(
+            "loginMessage"
+        );
 
-
-    /* EDIT MODE */
 
     if (password === MINE_PASSWORD) {
 
         editMode = true;
 
-        document.getElementById("loginScreen")
-            .style.display = "none";
+        document.getElementById(
+            "loginScreen"
+        ).style.display = "none";
 
-        document.getElementById("modeText")
-            .textContent = "EDIT MODE";
+        document.getElementById(
+            "modeText"
+        ).textContent = "EDIT MODE";
 
         setupEditMode();
 
-        const loadedEditData = await loadSharedAppData();
-        if (!loadedEditData) {
+        const loaded =
+            await loadSharedAppData();
+
+        if (!loaded) {
+
             sharedAppHash = "";
+
             await saveSharedAppData();
         }
+
         initializePage();
+
         startSharedRequestSync();
+
         startSharedAppSync();
 
         return;
     }
 
 
-    /* VIEW ONLY MODE */
-
     if (password === VIEW_PASSWORD) {
 
         editMode = false;
 
-        document.getElementById("loginScreen")
-            .style.display = "none";
+        document.getElementById(
+            "loginScreen"
+        ).style.display = "none";
 
-        document.getElementById("modeText")
-            .textContent = "VIEW ONLY";
+        document.getElementById(
+            "modeText"
+        ).textContent = "VIEW ONLY";
 
         setupViewMode();
 
         await loadSharedAppData();
+
         initializePage();
+
         startSharedRequestSync();
+
         startSharedAppSync();
 
         return;
@@ -1538,116 +1951,241 @@ async function login() {
 
 function setupEditMode() {
 
-    document.querySelectorAll("nav button").forEach(function(button) {
-        button.style.display = "";
-    });
+    document.querySelectorAll(
+        "nav button"
+    ).forEach(
+        function(button){
+            button.style.display = "";
+        }
+    );
 
-    document.querySelectorAll(".section").forEach(function(section) {
-        section.classList.remove("hidden-for-view");
-    });
-    const agreementsButton = document.getElementById("viewAgreementsButton");
-    if (agreementsButton) agreementsButton.style.display = "";
 
-    document.getElementById("navTracker")
-        .style.display = "";
+    document.querySelectorAll(
+        ".section"
+    ).forEach(
+        function(section){
 
-    document.getElementById("navCalendar")
-        .style.display = "";
+            section.classList.remove(
+                "hidden-for-view"
+            );
 
-    document.getElementById("navPaper")
-        .style.display = "";
+        }
+    );
 
-    document.getElementById("navSettings")
-        .style.display = "";
 
-    document.querySelectorAll("select")
-        .forEach(function(select) {
-
+    document.querySelectorAll(
+        "select"
+    ).forEach(
+        function(select){
             select.disabled = false;
+        }
+    );
 
-        });
 
-    document.querySelectorAll("input")
-        .forEach(function(input) {
+    document.querySelectorAll(
+        "input"
+    ).forEach(
+        function(input){
 
-            if (input.id !== "passwordInput") {
+            if (
+                input.id !==
+                "passwordInput"
+            ) {
                 input.disabled = false;
             }
 
-        });
+        }
+    );
 
-    document.querySelectorAll("textarea")
-        .forEach(function(textarea) {
 
+    document.querySelectorAll(
+        "textarea"
+    ).forEach(
+        function(textarea){
             textarea.disabled = false;
+        }
+    );
 
-        });
 
-    document.querySelectorAll(".action-button")
-        .forEach(function(button) {
-
+    document.querySelectorAll(
+        ".action-button"
+    ).forEach(
+        function(button){
             button.style.display = "";
+        }
+    );
 
-        });
+
+    const requestCard =
+        document.getElementById(
+            "viewRequestCard"
+        );
+
+    if (requestCard) {
+        requestCard.style.display = "none";
+    }
+
+
+    const agreementsButton =
+        document.getElementById(
+            "viewAgreementsButton"
+        );
+
+    if (agreementsButton) {
+        agreementsButton.style.display = "";
+    }
 }
 
 
 /* ============================================================
-   VIEW ONLY MODE
+   VIEW MODE
    ============================================================ */
 
 function setupViewMode() {
 
-    /* VIEW MODE: ONLY THE MAIN DASHBOARD IS AVAILABLE. */
-    document.querySelectorAll("nav button").forEach(function(button) {
-        button.style.display = "none";
-    });
-    const dashboardButton = document.querySelector("nav button[onclick=\"showSection('dashboard')\"]");
-    if (dashboardButton) dashboardButton.style.display = "";
-
-    document.querySelectorAll(".section").forEach(function(section) {
-        if (section.id !== "dashboard") {
-            section.classList.remove("active");
-            section.classList.add("hidden-for-view");
+    document.querySelectorAll(
+        "nav button"
+    ).forEach(
+        function(button){
+            button.style.display = "none";
         }
-    });
+    );
 
-    document.querySelectorAll("select").forEach(function(select) {
-        select.disabled = true;
-    });
-    document.querySelectorAll("input, textarea").forEach(function(input) {
-        if (
-            input.id !== "passwordInput" &&
-            input.id !== "requestName" &&
-            input.id !== "requestChange" &&
-            input.id !== "requestReason"
-        ) {
-            input.disabled = true;
+
+    const dashboardButton =
+        document.querySelector(
+            'nav button[onclick="showSection(\'dashboard\')"]'
+        );
+
+    if (dashboardButton) {
+        dashboardButton.style.display = "";
+    }
+
+
+    document.querySelectorAll(
+        ".section"
+    ).forEach(
+        function(section){
+
+            if (section.id !== "dashboard") {
+
+                section.classList.remove(
+                    "active"
+                );
+
+                section.classList.add(
+                    "hidden-for-view"
+                );
+            }
+
         }
-    });
+    );
 
-    /* The Request a Change form is the ONE editable exception in View Mode. */
-    ["requestName", "requestChange", "requestReason"].forEach(function(id) {
-        const field = document.getElementById(id);
-        if (field) field.disabled = false;
-    });
 
-    /* Hide every normal editing button. The request button is handled separately. */
-    document.querySelectorAll(".action-button, .delete-button").forEach(function(button) {
-        button.style.display = "none";
-    });
-    const requestCard = document.getElementById("viewRequestCard");
-    if (requestCard) requestCard.style.display = "block";
-    const requestButton = requestCard ? requestCard.querySelector("button") : null;
-    if (requestButton) requestButton.style.display = "";
-    document.querySelectorAll("#changeRequestModal .action-button").forEach(function(button) {
-        button.style.display = "";
-    });
-    const agreementsButton = document.getElementById("viewAgreementsButton");
-    if (agreementsButton) agreementsButton.style.display = "none";
+    document.querySelectorAll(
+        "select"
+    ).forEach(
+        function(select){
+            select.disabled = true;
+        }
+    );
 
-    document.getElementById("savedNotice").textContent =
-        "VIEW ONLY MODE — saved information cannot be changed here. You can submit a change request.";
+
+    document.querySelectorAll(
+        "input, textarea"
+    ).forEach(
+        function(input){
+
+            if (
+                input.id !== "passwordInput" &&
+                input.id !== "requestName" &&
+                input.id !== "requestChange" &&
+                input.id !== "requestReason"
+            ) {
+                input.disabled = true;
+            }
+
+        }
+    );
+
+
+    [
+        "requestName",
+        "requestChange",
+        "requestReason"
+    ].forEach(
+        function(id){
+
+            const field =
+                document.getElementById(id);
+
+            if (field) {
+                field.disabled = false;
+            }
+
+        }
+    );
+
+
+    document.querySelectorAll(
+        ".action-button, .delete-button"
+    ).forEach(
+        function(button){
+            button.style.display = "none";
+        }
+    );
+
+
+    const requestCard =
+        document.getElementById(
+            "viewRequestCard"
+        );
+
+    if (requestCard) {
+
+        requestCard.style.display =
+            "block";
+
+        const requestButton =
+            requestCard.querySelector(
+                "button"
+            );
+
+        if (requestButton) {
+            requestButton.style.display = "";
+        }
+    }
+
+
+    document.querySelectorAll(
+        "#changeRequestModal .action-button"
+    ).forEach(
+        function(button){
+            button.style.display = "";
+        }
+    );
+
+
+    const agreementsButton =
+        document.getElementById(
+            "viewAgreementsButton"
+        );
+
+    if (agreementsButton) {
+        agreementsButton.style.display = "none";
+    }
+
+
+    const savedNotice =
+        document.getElementById(
+            "savedNotice"
+        );
+
+    if (savedNotice) {
+
+        savedNotice.textContent =
+            "VIEW ONLY MODE — saved information cannot be changed here. You can submit a change request.";
+    }
 }
 
 
@@ -1657,48 +2195,53 @@ function setupViewMode() {
 
 function showSection(sectionId) {
 
-    /* VIEW MODE can ONLY open the Main Dashboard. */
-    if (!editMode && sectionId !== "dashboard") {
+    if (
+        !editMode &&
+        sectionId !== "dashboard"
+    ) {
         return;
     }
 
 
-    document.querySelectorAll(".section")
-        .forEach(function(section) {
+    document.querySelectorAll(
+        ".section"
+    ).forEach(
+        function(section){
 
-            section.classList.remove("active");
+            section.classList.remove(
+                "active"
+            );
 
-        });
+        }
+    );
 
 
     const section =
-        document.getElementById(sectionId);
+        document.getElementById(
+            sectionId
+        );
 
-    if (section) {
 
-        section.classList.add("active");
-
+    if (!section) {
+        return;
     }
+
+
+    section.classList.add(
+        "active"
+    );
 
 
     if (sectionId === "calendar") {
-
         renderCalendar();
-
     }
-
 
     if (sectionId === "tracker") {
-
         renderTracker();
-
     }
 
-
     if (sectionId === "saved") {
-
         renderSavedData();
-
     }
 
     if (sectionId === "dashboard") {
@@ -1712,400 +2255,343 @@ function showSection(sectionId) {
     if (sectionId === "settings") {
         updateSettings();
     }
-    if (sectionId === "changeLog") renderChangeLog();
-    if (sectionId === "countdowns") { renderCountdowns(); startCountdownTimer(); }
-    if (sectionId === "fairness") runFairnessChecker();
+
+    if (sectionId === "changeLog") {
+        renderChangeLog();
+    }
+
+    if (sectionId === "countdowns") {
+        renderCountdowns();
+        startCountdownTimer();
+    }
+
+    if (sectionId === "fairness") {
+        runFairnessChecker();
+    }
+
+    if (sectionId === "changeRequests") {
+        loadSharedRequests();
+        renderChangeRequests();
+    }
 }
 
 
 /* ============================================================
-   NEW DASHBOARD / SCHEDULE TOOL / SETTINGS
+   RENDER EVERYTHING
+   ============================================================ */
+
+function renderAllData() {
+
+    renderCalendar();
+    renderTracker();
+    renderSavedData();
+    renderAngeloPoints();
+    renderRewardHistory();
+    renderChangeLog();
+    renderCountdowns();
+    renderDashboard();
+    updateSettings();
+    runFairnessChecker();
+    renderChangeRequests();
+}
+
+
+/* ============================================================
+   DASHBOARD
    ============================================================ */
 
 function formatToolDate(value) {
-    if (!value) return "";
-    const parts = value.split("-");
-    const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
-    return d.toLocaleDateString(undefined, {year:"numeric", month:"long", day:"numeric"});
+
+    if (!value) {
+        return "";
+    }
+
+    const parts =
+        value.split("-");
+
+    const d =
+        new Date(
+            Number(parts[0]),
+            Number(parts[1]) - 1,
+            Number(parts[2])
+        );
+
+    return d.toLocaleDateString(
+        undefined,
+        {
+            year:"numeric",
+            month:"long",
+            day:"numeric"
+        }
+    );
 }
+
 
 function getScheduledPerson(dateString) {
-    if (!dateString) return "NOT SET";
-    const parts = dateString.split("-");
-    const year = Number(parts[0]);
-    const month = Number(parts[1]) - 1;
-    const day = Number(parts[2]);
-    const key = calendarKey(year, month, day);
-    return calendarData[key] || "NOT SET";
+
+    if (!dateString) {
+        return "NOT SET";
+    }
+
+    const parts =
+        dateString.split("-");
+
+    const year =
+        Number(parts[0]);
+
+    const month =
+        Number(parts[1]) - 1;
+
+    const day =
+        Number(parts[2]);
+
+    const key =
+        calendarKey(
+            year,
+            month,
+            day
+        );
+
+    return (
+        calendarData[key] ||
+        "NOT SET"
+    );
 }
+
 
 function setScheduleToolToday() {
-    const input = document.getElementById("scheduleToolDate");
-    if (!input) return;
-    const today = new Date();
-    input.value = today.getFullYear() + "-" + String(today.getMonth()+1).padStart(2,"0") + "-" + String(today.getDate()).padStart(2,"0");
-    updateScheduleTool();
-}
 
-function updateScheduleTool() {
-    const input = document.getElementById("scheduleToolDate");
-    const result = document.getElementById("scheduleToolResult");
-    if (!input || !result) return;
-    const person = getScheduledPerson(input.value);
-    result.innerHTML = "DATE: <strong>" + formatToolDate(input.value) + "</strong><br><br>SCHEDULED PERSON: <strong>" + person + "</strong>";
-}
+    const input =
+        document.getElementById(
+            "scheduleToolDate"
+        );
 
-function renderDashboard() {
-    const today = new Date();
-    const todayValue = today.getFullYear()+"-"+String(today.getMonth()+1).padStart(2,"0")+"-"+String(today.getDate()).padStart(2,"0");
-    const todayPerson = getScheduledPerson(todayValue);
-    const todayEl = document.getElementById("dashboardToday");
-    const pointsEl = document.getElementById("dashboardPoints");
-    const rewardsEl = document.getElementById("dashboardRewards");
-    const papersEl = document.getElementById("dashboardPapers");
-    const monthsEl = document.getElementById("dashboardMonths");
-    const nextPersonEl = document.getElementById("dashboardNextPerson");
-    const nextDateEl = document.getElementById("dashboardNextDate");
-    if (todayEl) todayEl.textContent = todayPerson;
-    if (pointsEl) pointsEl.textContent = angeloPoints + " POINTS";
-    if (rewardsEl) rewardsEl.textContent = rewardHistory.length;
-    if (papersEl) papersEl.textContent = savedPapers.length;
-    if (monthsEl) monthsEl.textContent = savedMonths.length;
-    let foundPerson="NOT SET", foundDate="No future scheduled shower found.";
-    for (let i=0;i<=366;i++) {
-        const d=new Date(today.getFullYear(),today.getMonth(),today.getDate()+i);
-        const value=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
-        const person=getScheduledPerson(value);
-        if(person!=="NOT SET"){ foundPerson=person; foundDate=(i===0?"Today — ":"")+formatToolDate(value); break; }
-    }
-    if(nextPersonEl) nextPersonEl.textContent=foundPerson;
-    if(nextDateEl) nextDateEl.textContent=foundDate;
-}
-
-function updateSettings() {
-    const mode = document.getElementById("settingsMode");
-    if (mode) mode.textContent = editMode ? "EDIT MODE" : "VIEW ONLY";
-}
-
-function resetPoints() {
-    if (!editMode) return;
-    if (!confirm("Reset Angelo's points to 0?")) return;
-    const reason = prompt("Why are you resetting Angelo's points?");
-    if (reason === null || !reason.trim()) return;
-    const oldPoints = angeloPoints;
-    angeloPoints = 0;
-    saveAngeloPoints();
-    renderAngeloPoints();
-    renderDashboard();
-    recordChange("Angelo's points", "Reset from " + oldPoints + " to 0", reason.trim());
-}
-
-function resetRewards() {
-    if (!editMode) return;
-    if (!confirm("Clear all reward history?")) return;
-    const reason = prompt("Why are you clearing the reward history?");
-    if (reason === null || !reason.trim()) return;
-    const oldCount = rewardHistory.length;
-    rewardHistory = [];
-    localStorage.setItem("angeloRewardHistory", JSON.stringify(rewardHistory));
-    scheduleSharedAppSave();
-    renderRewardHistory();
-    renderDashboard();
-    recordChange("Reward history", "Cleared " + oldCount + " reward(s)", reason.trim());
-}
-
-/* ============================================================
-   SHARED CHANGE REQUESTS
-   ============================================================ */
-function sharedDatabaseUrl(path) {
-    return SHARED_DATABASE_URL.replace(/\/$/, "") + "/" + path + ".json";
-}
-
-async function loadSharedRequests() {
-    try {
-        const response = await fetch(sharedDatabaseUrl(SHARED_REQUESTS_PATH), { cache: "no-store" });
-        if (!response.ok) throw new Error("Database request failed: " + response.status);
-        const data = await response.json();
-        sharedRequests = data ? Object.keys(data).map(function(key) {
-            return Object.assign({ id: key }, data[key]);
-        }) : [];
-        sharedRequests.sort(function(a,b) { return Number(b.createdAt || 0) - Number(a.createdAt || 0); });
-        renderChangeRequests();
-        const status = document.getElementById("changeRequestConnection");
-        if (status) status.textContent = "SHARED REQUEST DATABASE: CONNECTED";
-        return true;
-    } catch (error) {
-        const status = document.getElementById("changeRequestConnection");
-        if (status) status.textContent = "SHARED REQUEST DATABASE: NOT CONNECTED — CHECK THE FIREBASE DATABASE URL AND RULES.";
-        renderChangeRequests();
-        return false;
-    }
-}
-
-async function writeSharedRequest(request) {
-    const response = await fetch(sharedDatabaseUrl(SHARED_REQUESTS_PATH + "/" + encodeURIComponent(request.id)), {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(request)
-    });
-    if (!response.ok) throw new Error("Database write failed: " + response.status);
-}
-
-function openChangeRequestForm() {
-    const modal = document.getElementById("changeRequestModal");
-    if (!modal) return;
-    document.getElementById("requestName").value = "";
-    document.getElementById("requestChange").value = "";
-    document.getElementById("requestReason").value = "";
-    document.getElementById("requestFormMessage").textContent = "";
-    modal.style.display = "block";
-}
-
-function closeChangeRequestForm() {
-    const modal = document.getElementById("changeRequestModal");
-    if (modal) modal.style.display = "none";
-}
-
-async function submitChangeRequest() {
-    if (editMode) return;
-    const name = document.getElementById("requestName").value.trim();
-    const change = document.getElementById("requestChange").value.trim();
-    const reason = document.getElementById("requestReason").value.trim();
-    const message = document.getElementById("requestFormMessage");
-    if (!name || !change || !reason) {
-        message.textContent = "Please fill in your name, requested change, and reason.";
+    if (!input) {
         return;
     }
-    const request = {
-        id: String(Date.now()) + "-" + Math.random().toString(36).slice(2, 8),
-        requestedBy: name,
-        change: change,
-        reason: reason,
-        status: "PENDING",
-        createdAt: Date.now(),
-        createdDate: new Date().toLocaleString()
-    };
-    try {
-        message.textContent = "Sending request...";
-        await writeSharedRequest(request);
-        sharedRequests.unshift(request);
-        renderChangeRequests();
-        message.textContent = "REQUEST SENT. It will appear in Edit Mode.";
-        setTimeout(closeChangeRequestForm, 800);
-    } catch (error) {
-        message.textContent = "The request could not be sent. Make sure the shared database is connected.";
-    }
-}
-
-async function decideChangeRequest(id, decision) {
-    if (!editMode) return;
-    const request = sharedRequests.find(function(item) { return item.id === id; });
-    if (!request) return;
-    const reason = prompt("Why are you " + decision.toLowerCase() + "ing this request?");
-    if (reason === null || !reason.trim()) return;
-    request.status = decision;
-    request.decidedAt = Date.now();
-    request.decidedDate = new Date().toLocaleString();
-    request.decisionReason = reason.trim();
-    request.decidedBy = "Matt";
-    try {
-        await writeSharedRequest(request);
-        renderChangeRequests();
-        recordChange("Change Request", decision + " request from " + request.requestedBy + ": " + request.change, reason.trim());
-    } catch (error) {
-        alert("The decision could not be saved to the shared database.");
-    }
-}
-
-async function deleteChangeRequest(id) {
-    if (!editMode) return;
-    const request = sharedRequests.find(function(item) { return item.id === id; });
-    if (!request) return;
-    const reason = prompt("Why are you deleting this change request?");
-    if (reason === null || !reason.trim()) return;
-    try {
-        const response = await fetch(sharedDatabaseUrl(SHARED_REQUESTS_PATH + "/" + encodeURIComponent(id)), { method: "DELETE" });
-        if (!response.ok) throw new Error("delete failed");
-        sharedRequests = sharedRequests.filter(function(item) { return item.id !== id; });
-        renderChangeRequests();
-        recordChange("Change Request", "Deleted request from " + request.requestedBy, reason.trim());
-    } catch (error) {
-        alert("The request could not be deleted from the shared database.");
-    }
-}
-
-function renderChangeRequests() {
-    const container = document.getElementById("changeRequestsContainer");
-    if (!container) return;
-    container.innerHTML = "";
-    if (!sharedRequests.length) {
-        container.innerHTML = "<p>No change requests yet.</p>";
-        const emptyStatus = document.getElementById("myRequestStatus");
-        if (emptyStatus) emptyStatus.textContent = "No requests yet.";
-        return;
-    }
-    sharedRequests.forEach(function(request) {
-        const card = document.createElement("div");
-        card.className = "request-card request-" + String(request.status || "PENDING").toLowerCase();
-        const h = document.createElement("h3");
-        h.textContent = "REQUEST — " + (request.status || "PENDING");
-        card.appendChild(h);
-        const pre = document.createElement("pre");
-        pre.textContent =
-            "Requested by: " + request.requestedBy + "\n" +
-            "Date: " + request.createdDate + "\n\n" +
-            "Requested change:\n" + request.change + "\n\n" +
-            "Reason:\n" + request.reason +
-            (request.decidedDate ? "\n\nDecision date: " + request.decidedDate + "\nDecision by: " + (request.decidedBy || "Matt") + "\nDecision reason:\n" + (request.decisionReason || "") : "");
-        card.appendChild(pre);
-        if (editMode && request.status === "PENDING") {
-            const approve = document.createElement("button");
-            approve.className = "action-button blue-button";
-            approve.textContent = "APPROVE";
-            approve.onclick = function() { decideChangeRequest(request.id, "APPROVED"); };
-            card.appendChild(approve);
-            const deny = document.createElement("button");
-            deny.className = "action-button";
-            deny.textContent = "DENY";
-            deny.onclick = function() { decideChangeRequest(request.id, "DENIED"); };
-            card.appendChild(deny);
-        }
-        if (editMode) {
-            const del = document.createElement("button");
-            del.className = "delete-button";
-            del.textContent = "DELETE REQUEST";
-            del.onclick = function() { deleteChangeRequest(request.id); };
-            card.appendChild(del);
-        }
-        container.appendChild(card);
-    });
-
-    const statusBox = document.getElementById("myRequestStatus");
-    if (statusBox) {
-        if (!sharedRequests.length) {
-            statusBox.textContent = "No requests yet.";
-        } else {
-            statusBox.innerHTML = sharedRequests.slice(0, 5).map(function(request) {
-                const status = escapeHTML(request.status || "PENDING");
-                return "<div class=\"request-status\"><strong>" + status + "</strong> — " + escapeHTML(request.requestedBy || "Unknown") + " — " + escapeHTML(request.change || "") + "</div>";
-            }).join("<br>");
-        }
-    }
-}
-
-function startSharedRequestSync() {
-    if (requestSyncTimer) clearInterval(requestSyncTimer);
-    loadSharedRequests();
-    requestSyncTimer = setInterval(loadSharedRequests, 3000);
-}
-
-/* ============================================================
-   CHANGE LOG / COUNTDOWNS / FAIRNESS CHECKER
-   ============================================================ */
-function recordChange(type, change, reason) {
-    changeLog.unshift({id:Date.now()+Math.random(),date:new Date().toLocaleString(),type:type,change:change,reason:reason});
-    localStorage.setItem("showerChangeLog",JSON.stringify(changeLog));
-    scheduleSharedAppSave();
-    renderChangeLog();
-}
-function addManualChangeLog(){
-    if(!editMode)return;
-    const change=prompt("What changed?"); if(change===null||!change.trim())return;
-    const reason=prompt("Why did you make this change?"); if(reason===null||!reason.trim())return;
-    recordChange("Manual entry",change.trim(),reason.trim());
-}
-function renderChangeLog(){
-    const c=document.getElementById("changeLogContainer"); if(!c)return; c.innerHTML="";
-    if(!changeLog.length){c.innerHTML="<p>No changes recorded yet.</p>";return;}
-    changeLog.forEach(function(e){const b=document.createElement("div");b.className="change-log-entry";const h=document.createElement("h3");h.textContent=e.type;b.appendChild(h);const d=document.createElement("pre");d.textContent="Date: "+e.date+"\n\nChange: "+e.change+"\n\nReason: "+e.reason;b.appendChild(d);if(editMode){const x=document.createElement("button");x.className="delete-button";x.textContent="DELETE LOG";x.onclick=function(){changeLog=changeLog.filter(function(i){return i.id!==e.id});localStorage.setItem("showerChangeLog",JSON.stringify(changeLog));renderChangeLog()};b.appendChild(x)}c.appendChild(b)});
-    scheduleSharedAppSave();
-}
-function clearChangeLog(){if(!editMode||!changeLog.length)return;if(!confirm("Clear the entire change log?"))return;const r=prompt("Why are you clearing the change log?");if(r===null||!r.trim())return;changeLog=[];localStorage.setItem("showerChangeLog",JSON.stringify(changeLog));renderChangeLog();}
-    scheduleSharedAppSave();
-function newCountdown(){if(!editMode)return;document.getElementById("countdownName").value="";document.getElementById("countdownDate").value="";document.getElementById("countdownTime").value="00:00";updateCountdownLive()}
-function saveCountdown(){if(!editMode)return;const n=document.getElementById("countdownName").value.trim(),d=document.getElementById("countdownDate").value,t=document.getElementById("countdownTime").value||"00:00";if(!n||!d){alert("Please enter a name and date.");return}const r=prompt("Why are you saving this countdown?");if(r===null||!r.trim())return;const e={id:Date.now(),name:n,date:d,time:t};countdowns.unshift(e);localStorage.setItem("showerCountdowns",JSON.stringify(countdowns));recordChange("Countdown","Saved countdown: "+n+" for "+d+" "+t,r.trim());renderCountdowns();updateCountdownLive()}
-    scheduleSharedAppSave();
-function countdownTarget(e){return new Date(e.date+"T"+(e.time||"00:00")+":00")}
-function getCountdownParts(target){let ms=target.getTime()-Date.now();if(ms<=0)return{expired:true,months:0,days:0,weeks:0,hours:0,minutes:0,seconds:0,totalDays:0,totalHours:0,totalMinutes:0,totalSeconds:0};const ts=Math.floor(ms/1000),tm=Math.floor(ms/60000),th=Math.floor(ms/3600000),td=Math.floor(ms/86400000),weeks=Math.floor(td/7);let cursor=new Date();let months=0;while(true){const next=new Date(cursor);next.setMonth(next.getMonth()+1);if(next<=target){months++;cursor=next}else break;if(months>120000)break}const days=Math.floor((target-cursor)/86400000),rem=target-(cursor.getTime()+days*86400000),hours=Math.floor(rem/3600000),minutes=Math.floor((rem%3600000)/60000),seconds=Math.floor((rem%60000)/1000);return{expired:false,months,days,weeks,hours,minutes,seconds,totalDays:td,totalHours:th,totalMinutes:tm,totalSeconds:ts}}
-function countdownHTML(e){const p=getCountdownParts(countdownTarget(e));if(p.expired)return"<strong>TIME REACHED</strong>";return '<div class="countdown-grid"><div class="countdown-number"><strong>'+p.months+'</strong>MONTHS</div><div class="countdown-number"><strong>'+p.days+'</strong>DAYS</div><div class="countdown-number"><strong>'+p.weeks+'</strong>WEEKS</div><div class="countdown-number"><strong>'+p.hours+'</strong>HOURS</div><div class="countdown-number"><strong>'+p.minutes+'</strong>MINUTES</div><div class="countdown-number"><strong>'+p.seconds+'</strong>SECONDS</div></div><p>Total: '+p.totalDays+' days / '+p.totalHours+' hours / '+p.totalMinutes+' minutes / '+p.totalSeconds+' seconds</p>'}
-function formatCountdownDate(e){return countdownTarget(e).toLocaleString(undefined,{year:"numeric",month:"long",day:"numeric",hour:"numeric",minute:"2-digit"})}
-function escapeHTML(v){return String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
-function updateCountdownLive(){const b=document.getElementById("countdownLiveContent");if(!b)return;const d=document.getElementById("countdownDate").value;if(!d){b.textContent="Choose a date and time.";return}const e={name:document.getElementById("countdownName").value||"Selected countdown",date:d,time:document.getElementById("countdownTime").value||"00:00"};b.innerHTML="<h3>"+escapeHTML(e.name)+"</h3><p>Target: "+escapeHTML(formatCountdownDate(e))+"</p>"+countdownHTML(e)}
-function startCountdownTimer(){if(countdownTimer)clearInterval(countdownTimer);countdownTimer=setInterval(function(){updateCountdownLive();renderCountdowns(false)},1000)}
-function renderCountdowns(){const c=document.getElementById("savedCountdownsContainer");if(!c)return;c.innerHTML="";if(!countdowns.length){c.innerHTML="<p>No countdowns saved yet.</p>";return}countdowns.forEach(function(e){const b=document.createElement("div");b.className="countdown-entry";const h=document.createElement("h3");h.textContent=e.name;b.appendChild(h);const p=document.createElement("p");p.textContent="Target: "+formatCountdownDate(e);b.appendChild(p);const l=document.createElement("div");l.innerHTML=countdownHTML(e);b.appendChild(l);if(editMode){const x=document.createElement("button");x.className="delete-button";x.textContent="DELETE COUNTDOWN";x.onclick=function(){deleteCountdown(e.id)};b.appendChild(x)}c.appendChild(b)})}
-function deleteCountdown(id){if(!editMode)return;const e=countdowns.find(function(i){return i.id===id}),r=prompt("Why are you deleting this countdown?");if(r===null||!r.trim())return;countdowns=countdowns.filter(function(i){return i.id!==id});localStorage.setItem("showerCountdowns",JSON.stringify(countdowns));recordChange("Countdown","Deleted countdown: "+(e?e.name:"Unknown"),r.trim());renderCountdowns()}
-    scheduleSharedAppSave();
-function runFairnessChecker(){const r=document.getElementById("fairnessResult");if(!r)return;const keys=Object.keys(calendarData).filter(function(k){return calendarData[k]==="Angelo"||calendarData[k]==="Matthew"}).sort();if(!keys.length){r.innerHTML="<strong>NOT ENOUGH DATA</strong><br><br>No saved calendar assignments were found.";return}const problems=[];for(let i=1;i<keys.length;i++){const prev=calendarData[keys[i-1]],cur=calendarData[keys[i]];if(prev===cur)problems.push(keys[i]+": "+cur+" is scheduled after "+cur+".");const a=new Date(keys[i-1]+"T00:00:00"),b=new Date(keys[i]+"T00:00:00"),gap=Math.round((b-a)/86400000);if(gap>1)problems.push(keys[i-1]+" to "+keys[i]+": there are "+(gap-1)+" unscheduled day(s) between saved assignments.")}if(!problems.length)r.innerHTML="<span class=\"fairness-ok\">SCHEDULE LOOKS FAIR</span><br><br>Saved assignments alternate correctly and there are no missing days between them.";else r.innerHTML="<span class=\"fairness-warning\">POSSIBLE SCHEDULE PROBLEMS</span><br><br>"+problems.map(escapeHTML).join("<br><br>")}
-
-/* ============================================================
-   INITIALIZE
-   ============================================================ */
-
-function initializePage() {
-
-    setToday();
-
-    renderCalendar();
-
-    renderTracker();
-
-    renderSavedData();
-    setRewardToday();
-    renderAngeloPoints();
-    renderRewardHistory();
-    setupPointsMode();
-    setScheduleToolToday();
-    renderDashboard();
-    updateSettings();
-    renderChangeLog();
-    renderCountdowns();
-    startCountdownTimer();
-    runFairnessChecker();
-    renderChangeRequests();
-
-    /*
-       EDIT MODE opens Calendar
-       VIEW MODE opens Main Dashboard
-    */
-
-    if (editMode) {
-        showSection("calendar");
-    } else {
-        showSection("dashboard");
-    }
-}
-
-
-/* ============================================================
-   DATE
-   ============================================================ */
-
-function setToday() {
 
     const today =
         new Date();
 
-    const yyyy =
-        today.getFullYear();
-
-    const mm =
+    input.value =
+        today.getFullYear() +
+        "-" +
         String(
             today.getMonth() + 1
-        ).padStart(2, "0");
-
-    const dd =
+        ).padStart(2,"0") +
+        "-" +
         String(
             today.getDate()
-        ).padStart(2, "0");
+        ).padStart(2,"0");
 
-    document.getElementById("paperDate")
-        .value =
-        yyyy + "-" + mm + "-" + dd;
+    updateScheduleTool();
+}
+
+
+function updateScheduleTool() {
+
+    const input =
+        document.getElementById(
+            "scheduleToolDate"
+        );
+
+    const result =
+        document.getElementById(
+            "scheduleToolResult"
+        );
+
+    if (!input || !result) {
+        return;
+    }
+
+    const person =
+        getScheduledPerson(
+            input.value
+        );
+
+    result.innerHTML =
+        "DATE: <strong>" +
+        formatToolDate(input.value) +
+        "</strong><br><br>" +
+        "SCHEDULED PERSON: <strong>" +
+        person +
+        "</strong>";
+}
+
+
+function renderDashboard() {
+
+    const today =
+        new Date();
+
+    const todayValue =
+        today.getFullYear() +
+        "-" +
+        String(
+            today.getMonth() + 1
+        ).padStart(2,"0") +
+        "-" +
+        String(
+            today.getDate()
+        ).padStart(2,"0");
+
+
+    const todayPerson =
+        getScheduledPerson(
+            todayValue
+        );
+
+
+    const todayEl =
+        document.getElementById(
+            "dashboardToday"
+        );
+
+    const pointsEl =
+        document.getElementById(
+            "dashboardPoints"
+        );
+
+    const rewardsEl =
+        document.getElementById(
+            "dashboardRewards"
+        );
+
+    const papersEl =
+        document.getElementById(
+            "dashboardPapers"
+        );
+
+    const monthsEl =
+        document.getElementById(
+            "dashboardMonths"
+        );
+
+    const nextPersonEl =
+        document.getElementById(
+            "dashboardNextPerson"
+        );
+
+    const nextDateEl =
+        document.getElementById(
+            "dashboardNextDate"
+        );
+
+
+    if (todayEl) {
+        todayEl.textContent =
+            todayPerson;
+    }
+
+    if (pointsEl) {
+        pointsEl.textContent =
+            angeloPoints +
+            " POINTS";
+    }
+
+    if (rewardsEl) {
+        rewardsEl.textContent =
+            rewardHistory.length;
+    }
+
+    if (papersEl) {
+        papersEl.textContent =
+            savedPapers.length;
+    }
+
+    if (monthsEl) {
+        monthsEl.textContent =
+            savedMonths.length;
+    }
+
+
+    let foundPerson =
+        "NOT SET";
+
+    let foundDate =
+        "No future scheduled shower found.";
+
+
+    for (
+        let i = 0;
+        i <= 366;
+        i++
+    ) {
+
+        const d =
+            new Date(
+                today.getFullYear(),
+                today.getMonth(),
+                today.getDate() + i
+            );
+
+
+        const value =
+            d.getFullYear() +
+            "-" +
+            String(
+                d.getMonth() + 1
+            ).padStart(2,"0") +
+            "-" +
+            String(
+                d.getDate()
+            ).padStart(2,"0");
+
+
+        const person =
+            getScheduledPerson(
+                value
+            );
+
+
+        if (
+            person !== "NOT SET"
+        ) {
+
+            foundPerson =
+                person;
+
+            foundDate =
+                i === 0
+                    ? "Today — " +
+                      formatToolDate(value)
+                    : formatToolDate(value);
+
+            break;
+        }
+    }
+
+
+    if (nextPersonEl) {
+        nextPersonEl.textContent =
+            foundPerson;
+    }
+
+    if (nextDateEl) {
+        nextDateEl.textContent =
+            foundDate;
+    }
+}
+
+
+function updateSettings() {
+
+    const mode =
+        document.getElementById(
+            "settingsMode"
+        );
+
+    if (mode) {
+        mode.textContent =
+            editMode
+                ? "EDIT MODE"
+                : "VIEW ONLY";
+    }
 }
 
 
 /* ============================================================
-   CALENDAR KEY
+   CALENDAR
    ============================================================ */
 
 function calendarKey(
@@ -2114,24 +2600,21 @@ function calendarKey(
     day
 ) {
 
-    return year + "-" +
-        String(month + 1).padStart(2, "0") +
+    return (
+        year +
         "-" +
-        String(day).padStart(2, "0");
+        String(month + 1).padStart(2,"0") +
+        "-" +
+        String(day).padStart(2,"0")
+    );
 }
 
 
-/* ============================================================
-   CALENDAR
-   ============================================================ */
-
 function renderCalendar() {
 
-    const year =
-        Number(
-            document.getElementById(
-                "calendarYear"
-            ).value
+    const yearElement =
+        document.getElementById(
+            "calendarYear"
         );
 
     const container =
@@ -2139,7 +2622,17 @@ function renderCalendar() {
             "calendarContainer"
         );
 
+    if (!yearElement || !container) {
+        return;
+    }
+
+    const year =
+        Number(
+            yearElement.value
+        );
+
     container.innerHTML = "";
+
 
     const monthNames = [
         "January",
@@ -2157,6 +2650,17 @@ function renderCalendar() {
     ];
 
 
+    const weekdays = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+    ];
+
+
     for (
         let month = 0;
         month < 12;
@@ -2164,7 +2668,9 @@ function renderCalendar() {
     ) {
 
         const monthTitle =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         monthTitle.className =
             "month-title";
@@ -2180,32 +2686,25 @@ function renderCalendar() {
 
 
         const wrapper =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         wrapper.className =
             "calendar-wrapper";
 
 
         const grid =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         grid.className =
             "calendar-grid";
 
 
-        const weekdays = [
-            "Sunday",
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday"
-        ];
-
-
         weekdays.forEach(
-            function(day) {
+            function(dayName){
 
                 const header =
                     document.createElement(
@@ -2216,12 +2715,11 @@ function renderCalendar() {
                     "day-header";
 
                 header.textContent =
-                    day;
+                    dayName;
 
                 grid.appendChild(
                     header
                 );
-
             }
         );
 
@@ -2277,7 +2775,9 @@ function renderCalendar() {
                 "calendar-day";
 
 
-            if (day > daysInMonth) {
+            if (
+                day > daysInMonth
+            ) {
 
                 cell.classList.add(
                     "invalid"
@@ -2312,9 +2812,6 @@ function renderCalendar() {
                     "select"
                 );
 
-            select.className =
-                "calendar-person-select";
-
 
             select.innerHTML = `
                 <option value="">Choose</option>
@@ -2332,24 +2829,75 @@ function renderCalendar() {
 
 
             select.value =
-                calendarData[key] || "";
+                calendarData[key] ||
+                "";
 
 
             select.onchange =
-                function() {
+                function(){
 
                     if (!editMode) {
                         return;
                     }
 
-                    const previousValue = calendarData[key] || "NOT SET";
-                    const newValue = select.value || "NOT SET";
-                    const reason = prompt("Why are you changing the schedule for " + key + "?");
-                    if (reason === null || !reason.trim()) { select.value = calendarData[key] || ""; return; }
-                    calendarData[key] = select.value;
-                    localStorage.setItem("showerCalendarData", JSON.stringify(calendarData));
-    scheduleSharedAppSave();
-                    recordChange("Calendar", key + ": " + previousValue + " → " + newValue, reason.trim());
+
+                    const previousValue =
+                        calendarData[key] ||
+                        "NOT SET";
+
+
+                    const newValue =
+                        select.value ||
+                        "NOT SET";
+
+
+                    const reason =
+                        prompt(
+                            "Why are you changing the schedule for " +
+                            key +
+                            "?"
+                        );
+
+
+                    if (
+                        reason === null ||
+                        !reason.trim()
+                    ) {
+
+                        select.value =
+                            calendarData[key] ||
+                            "";
+
+                        return;
+                    }
+
+
+                    calendarData[key] =
+                        select.value;
+
+
+                    localStorage.setItem(
+                        "showerCalendarData",
+                        JSON.stringify(
+                            calendarData
+                        )
+                    );
+
+
+                    scheduleSharedAppSave();
+
+
+                    recordChange(
+                        "Calendar",
+                        key +
+                        ": " +
+                        previousValue +
+                        " → " +
+                        newValue,
+                        reason.trim()
+                    );
+
+
                     renderDashboard();
                     runFairnessChecker();
                 };
@@ -2372,7 +2920,9 @@ function renderCalendar() {
             totalCells % 7;
 
 
-        if (remainder !== 0) {
+        if (
+            remainder !== 0
+        ) {
 
             const extra =
                 7 - remainder;
@@ -2410,10 +2960,6 @@ function renderCalendar() {
 }
 
 
-/* ============================================================
-   SAVE MONTH
-   ============================================================ */
-
 function saveCurrentMonth() {
 
     if (!editMode) {
@@ -2427,22 +2973,6 @@ function saveCurrentMonth() {
                 "calendarYear"
             ).value
         );
-
-
-    const monthNames = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December"
-    ];
 
 
     const month =
@@ -2462,9 +2992,7 @@ function saveCurrentMonth() {
 
 
     if (
-        !Number.isInteger(
-            monthNumber
-        ) ||
+        !Number.isInteger(monthNumber) ||
         monthNumber < 0 ||
         monthNumber > 11
     ) {
@@ -2475,6 +3003,22 @@ function saveCurrentMonth() {
 
         return;
     }
+
+
+    const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    ];
 
 
     const daysInMonth =
@@ -2502,38 +3046,29 @@ function saveCurrentMonth() {
             );
 
         monthData[day] =
-            calendarData[key] || "";
+            calendarData[key] ||
+            "";
     }
 
 
-    const savedMonth = {
+    savedMonths.unshift({
 
-        id:
-            Date.now(),
+        id:Date.now(),
 
-        year:
-            year,
+        year:year,
 
-        month:
-            monthNumber,
+        month:monthNumber,
 
         monthName:
-            monthNames[
-                monthNumber
-            ],
+            monthNames[monthNumber],
 
         savedAt:
-            new Date()
-                .toLocaleString(),
+            new Date().toLocaleString(),
 
         days:
             monthData
-    };
 
-
-    savedMonths.unshift(
-        savedMonth
-    );
+    });
 
 
     localStorage.setItem(
@@ -2542,8 +3077,9 @@ function saveCurrentMonth() {
             savedMonths
         )
     );
-    scheduleSharedAppSave();
 
+
+    scheduleSharedAppSave();
 
     renderSavedData();
 
@@ -2556,10 +3092,6 @@ function saveCurrentMonth() {
     );
 }
 
-
-/* ============================================================
-   RESET
-   ============================================================ */
 
 function resetCalendar() {
 
@@ -2576,13 +3108,25 @@ function resetCalendar() {
         );
 
 
-    const answer =
-        confirm(
+    if (
+        !confirm(
             "Are you sure you want to clear the current year's calendar?"
+        )
+    ) {
+        return;
+    }
+
+
+    const reason =
+        prompt(
+            "Why are you resetting the calendar?"
         );
 
 
-    if (!answer) {
+    if (
+        reason === null ||
+        !reason.trim()
+    ) {
         return;
     }
 
@@ -2607,14 +3151,13 @@ function resetCalendar() {
             day++
         ) {
 
-            const key =
+            delete calendarData[
                 calendarKey(
                     year,
                     month,
                     day
-                );
-
-            delete calendarData[key];
+                )
+            ];
         }
     }
 
@@ -2625,10 +3168,21 @@ function resetCalendar() {
             calendarData
         )
     );
+
+
     scheduleSharedAppSave();
 
 
+    recordChange(
+        "Calendar",
+        "Reset calendar for " + year,
+        reason.trim()
+    );
+
+
     renderCalendar();
+    renderDashboard();
+    runFairnessChecker();
 }
 
 
@@ -2642,38 +3196,49 @@ function trackerKey(
     day
 ) {
 
-    return "tracker-" +
-        year + "-" +
-        String(month + 1)
-            .padStart(2, "0") +
+    return (
+        "tracker-" +
+        year +
         "-" +
-        String(day)
-            .padStart(2, "0");
+        String(month + 1).padStart(2,"0") +
+        "-" +
+        String(day).padStart(2,"0")
+    );
 }
 
 
 function renderTracker() {
 
-    const year =
-        Number(
-            document.getElementById(
-                "trackerYear"
-            ).value
+    const yearElement =
+        document.getElementById(
+            "trackerYear"
         );
 
-
-    const month =
-        Number(
-            document.getElementById(
-                "trackerMonth"
-            ).value
+    const monthElement =
+        document.getElementById(
+            "trackerMonth"
         );
-
 
     const container =
         document.getElementById(
             "trackerContainer"
         );
+
+
+    if (
+        !yearElement ||
+        !monthElement ||
+        !container
+    ) {
+        return;
+    }
+
+
+    const year =
+        Number(yearElement.value);
+
+    const month =
+        Number(monthElement.value);
 
 
     container.innerHTML = "";
@@ -2759,15 +3324,17 @@ function renderTracker() {
 
 
         const stored =
-            trackerData[key] || {};
+            trackerData[key] ||
+            {};
 
 
         personSelect.value =
-            stored.person || "";
+            stored.person ||
+            "";
 
 
         personSelect.onchange =
-            function() {
+            function(){
 
                 if (!editMode) {
                     return;
@@ -2816,11 +3383,12 @@ function renderTracker() {
 
 
         statusSelect.value =
-            stored.status || "";
+            stored.status ||
+            "";
 
 
         statusSelect.onchange =
-            function() {
+            function(){
 
                 if (!editMode) {
                     return;
@@ -2848,7 +3416,6 @@ function renderTracker() {
             statusCell
         );
 
-
         tbody.appendChild(
             tr
         );
@@ -2869,13 +3436,10 @@ function saveTracker() {
             trackerData
         )
     );
+
     scheduleSharedAppSave();
 }
 
-
-/* ============================================================
-   NEW: SAVE CURRENT SIGNING TRACKER
-   ============================================================ */
 
 function saveCurrentTracker() {
 
@@ -2934,48 +3498,41 @@ function saveCurrentTracker() {
 
 
         const stored =
-            trackerData[key] || {};
+            trackerData[key] ||
+            {};
 
 
         days[day] = {
 
             person:
-                stored.person || "",
+                stored.person ||
+                "",
 
             status:
-                stored.status || ""
+                stored.status ||
+                ""
 
         };
     }
 
 
-    const savedTracker = {
+    savedTrackers.unshift({
 
-        id:
-            Date.now(),
+        id:Date.now(),
 
-        year:
-            year,
+        year:year,
 
-        month:
-            month,
+        month:month,
 
         monthName:
             monthNames[month],
 
         savedAt:
-            new Date()
-                .toLocaleString(),
+            new Date().toLocaleString(),
 
-        days:
-            days
+        days:days
 
-    };
-
-
-    savedTrackers.unshift(
-        savedTracker
-    );
+    });
 
 
     localStorage.setItem(
@@ -2984,8 +3541,9 @@ function saveCurrentTracker() {
             savedTrackers
         )
     );
-    scheduleSharedAppSave();
 
+
+    scheduleSharedAppSave();
 
     renderSavedData();
 
@@ -2998,10 +3556,6 @@ function saveCurrentTracker() {
     );
 }
 
-
-/* ============================================================
-   NEW: SAVED SIGNING TRACKERS
-   ============================================================ */
 
 function renderSavedTrackers() {
 
@@ -3020,8 +3574,7 @@ function renderSavedTrackers() {
 
 
     if (
-        !Array.isArray(savedTrackers) ||
-        savedTrackers.length === 0
+        !savedTrackers.length
     ) {
 
         container.innerHTML =
@@ -3032,13 +3585,12 @@ function renderSavedTrackers() {
 
 
     savedTrackers.forEach(
-        function(savedTracker) {
+        function(savedTracker){
 
             const box =
                 document.createElement(
                     "div"
                 );
-
 
             box.className =
                 "saved-month";
@@ -3049,13 +3601,11 @@ function renderSavedTrackers() {
                     "h3"
                 );
 
-
             title.textContent =
                 savedTracker.monthName +
                 " " +
                 savedTracker.year +
                 " — Signing Tracker";
-
 
             box.appendChild(
                 title
@@ -3067,11 +3617,9 @@ function renderSavedTrackers() {
                     "p"
                 );
 
-
             savedTime.textContent =
                 "Saved: " +
                 savedTracker.savedAt;
-
 
             box.appendChild(
                 savedTime
@@ -3082,7 +3630,6 @@ function renderSavedTrackers() {
                 document.createElement(
                     "table"
                 );
-
 
             table.className =
                 "tracker-table";
@@ -3123,10 +3670,8 @@ function renderSavedTrackers() {
                         "td"
                     );
 
-
                 dayCell.textContent =
                     day;
-
 
                 tr.appendChild(
                     dayCell
@@ -3138,11 +3683,12 @@ function renderSavedTrackers() {
                         "td"
                     );
 
-
                 personCell.textContent =
-                    savedTracker.days[day]?.person ||
-                    "Not assigned";
-
+                    savedTracker.days &&
+                    savedTracker.days[day] &&
+                    savedTracker.days[day].person
+                        ? savedTracker.days[day].person
+                        : "Not assigned";
 
                 tr.appendChild(
                     personCell
@@ -3154,11 +3700,12 @@ function renderSavedTrackers() {
                         "td"
                     );
 
-
                 statusCell.textContent =
-                    savedTracker.days[day]?.status ||
-                    "Not selected";
-
+                    savedTracker.days &&
+                    savedTracker.days[day] &&
+                    savedTracker.days[day].status
+                        ? savedTracker.days[day].status
+                        : "Not selected";
 
                 tr.appendChild(
                     statusCell
@@ -3183,24 +3730,20 @@ function renderSavedTrackers() {
                         "button"
                     );
 
-
                 deleteButton.className =
                     "delete-button";
-
 
                 deleteButton.textContent =
                     "DELETE SAVED TRACKER";
 
-
                 deleteButton.onclick =
-                    function() {
+                    function(){
 
                         deleteSavedTracker(
                             savedTracker.id
                         );
 
                     };
-
 
                 box.appendChild(
                     deleteButton
@@ -3211,15 +3754,10 @@ function renderSavedTrackers() {
             container.appendChild(
                 box
             );
-
         }
     );
 }
 
-
-/* ============================================================
-   NEW: DELETE SAVED SIGNING TRACKER
-   ============================================================ */
 
 function deleteSavedTracker(id) {
 
@@ -3228,23 +3766,33 @@ function deleteSavedTracker(id) {
     }
 
 
-    const answer =
-        confirm(
+    if (
+        !confirm(
             "Delete this saved signing tracker?"
+        )
+    ) {
+        return;
+    }
+
+
+    const reason =
+        prompt(
+            "Why are you deleting this saved tracker?"
         );
 
 
-    if (!answer) {
+    if (
+        reason === null ||
+        !reason.trim()
+    ) {
         return;
     }
 
 
     savedTrackers =
         savedTrackers.filter(
-            function(item) {
-
+            function(item){
                 return item.id !== id;
-
             }
         );
 
@@ -3255,7 +3803,16 @@ function deleteSavedTracker(id) {
             savedTrackers
         )
     );
+
+
     scheduleSharedAppSave();
+
+
+    recordChange(
+        "Signing Tracker",
+        "Deleted saved signing tracker",
+        reason.trim()
+    );
 
 
     renderSavedTrackers();
@@ -3263,29 +3820,48 @@ function deleteSavedTracker(id) {
 
 
 /* ============================================================
-   ANGELO'S POINTS
+   ANGELO POINTS
    ============================================================ */
 
 function renderAngeloPoints() {
 
     const display =
-        document.getElementById("angeloPointsDisplay");
+        document.getElementById(
+            "angeloPointsDisplay"
+        );
 
     const progress =
-        document.getElementById("angeloPointsProgress");
+        document.getElementById(
+            "angeloPointsProgress"
+        );
+
 
     if (!display || !progress) {
         return;
     }
 
+
     display.textContent =
         angeloPoints +
-        (angeloPoints === 1 ? " POINT" : " POINTS");
+        (
+            angeloPoints === 1
+                ? " POINT"
+                : " POINTS"
+        );
+
 
     const percentage =
-        Math.max(0, Math.min((angeloPoints / 15) * 100, 100));
+        Math.max(
+            0,
+            Math.min(
+                (angeloPoints / 15) * 100,
+                100
+            )
+        );
 
-    progress.style.width = percentage + "%";
+
+    progress.style.width =
+        percentage + "%";
 }
 
 
@@ -3295,6 +3871,7 @@ function saveAngeloPoints() {
         "angeloPoints",
         String(angeloPoints)
     );
+
     scheduleSharedAppSave();
 }
 
@@ -3305,13 +3882,43 @@ function addAngeloPoint() {
         return;
     }
 
-    const reason = prompt("Why are you adding 1 point to Angelo?");
-    if (reason === null || !reason.trim()) return;
-    const oldPoints = angeloPoints;
+
+    const reason =
+        prompt(
+            "Why are you adding 1 point to Angelo?"
+        );
+
+
+    if (
+        reason === null ||
+        !reason.trim()
+    ) {
+        return;
+    }
+
+
+    const oldPoints =
+        angeloPoints;
+
+
     angeloPoints++;
+
+
     saveAngeloPoints();
+
     renderAngeloPoints();
-    recordChange("Angelo's points", "Changed from " + oldPoints + " to " + angeloPoints, reason.trim());
+
+
+    recordChange(
+        "Angelo's points",
+        "Changed from " +
+        oldPoints +
+        " to " +
+        angeloPoints,
+        reason.trim()
+    );
+
+
     renderDashboard();
 }
 
@@ -3322,33 +3929,162 @@ function removeAngeloPoint() {
         return;
     }
 
-    const reason = prompt("Why are you removing 1 point from Angelo?");
-    if (reason === null || !reason.trim()) return;
-    const oldPoints = angeloPoints;
+
+    const reason =
+        prompt(
+            "Why are you removing 1 point from Angelo?"
+        );
+
+
+    if (
+        reason === null ||
+        !reason.trim()
+    ) {
+        return;
+    }
+
+
+    const oldPoints =
+        angeloPoints;
+
+
     angeloPoints--;
+
+
     saveAngeloPoints();
+
     renderAngeloPoints();
-    recordChange("Angelo's points", "Changed from " + oldPoints + " to " + angeloPoints, reason.trim());
+
+
+    recordChange(
+        "Angelo's points",
+        "Changed from " +
+        oldPoints +
+        " to " +
+        angeloPoints,
+        reason.trim()
+    );
+
+
     renderDashboard();
 }
 
 
+function resetPoints() {
+
+    if (!editMode) {
+        return;
+    }
+
+
+    if (
+        !confirm(
+            "Reset Angelo's points to 0?"
+        )
+    ) {
+        return;
+    }
+
+
+    const reason =
+        prompt(
+            "Why are you resetting Angelo's points?"
+        );
+
+
+    if (
+        reason === null ||
+        !reason.trim()
+    ) {
+        return;
+    }
+
+
+    const oldPoints =
+        angeloPoints;
+
+
+    angeloPoints = 0;
+
+
+    saveAngeloPoints();
+
+    renderAngeloPoints();
+
+    renderDashboard();
+
+
+    recordChange(
+        "Angelo's points",
+        "Reset from " +
+        oldPoints +
+        " to 0",
+        reason.trim()
+    );
+}
+
+
+function setupPointsMode() {
+
+    const ids = [
+        "addPointButton",
+        "removePointButton",
+        "saveRewardButton",
+        "newRewardButton"
+    ];
+
+
+    ids.forEach(
+        function(id){
+
+            const button =
+                document.getElementById(
+                    id
+                );
+
+            if (button) {
+
+                button.style.display =
+                    editMode
+                        ? ""
+                        : "none";
+            }
+        }
+    );
+}
+
+
+/* ============================================================
+   REWARDS
+   ============================================================ */
+
 function setRewardToday() {
 
     const input =
-        document.getElementById("rewardDate");
+        document.getElementById(
+            "rewardDate"
+        );
+
 
     if (!input) {
         return;
     }
 
-    const today = new Date();
 
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, "0");
-    const dd = String(today.getDate()).padStart(2, "0");
+    const today =
+        new Date();
 
-    input.value = yyyy + "-" + mm + "-" + dd;
+
+    input.value =
+        today.getFullYear() +
+        "-" +
+        String(
+            today.getMonth() + 1
+        ).padStart(2,"0") +
+        "-" +
+        String(
+            today.getDate()
+        ).padStart(2,"0");
 }
 
 
@@ -3358,49 +4094,102 @@ function saveReward() {
         return;
     }
 
+
     const date =
-        document.getElementById("rewardDate").value;
+        document.getElementById(
+            "rewardDate"
+        ).value;
+
 
     const reward =
-        document.getElementById("rewardName").value.trim();
+        document.getElementById(
+            "rewardName"
+        ).value.trim();
+
 
     const notes =
-        document.getElementById("rewardNotes").value.trim();
+        document.getElementById(
+            "rewardNotes"
+        ).value.trim();
+
 
     if (!date) {
-        alert("Please choose a date.");
+
+        alert(
+            "Please choose a date."
+        );
+
         return;
     }
+
 
     if (!reward) {
-        alert("Please enter the reward.");
+
+        alert(
+            "Please enter the reward."
+        );
+
         return;
     }
 
-    const changeReason = prompt("Why are you adding this reward to the history?");
-    if (changeReason === null || !changeReason.trim()) return;
-    const entry = {
-        id: Date.now(),
-        date: date,
-        reward: reward,
-        notes: notes,
-        savedAt: new Date().toLocaleString()
-    };
 
-    rewardHistory.unshift(entry);
+    const reason =
+        prompt(
+            "Why are you adding this reward to the history?"
+        );
+
+
+    if (
+        reason === null ||
+        !reason.trim()
+    ) {
+        return;
+    }
+
+
+    rewardHistory.unshift({
+
+        id:Date.now(),
+
+        date:date,
+
+        reward:reward,
+
+        notes:notes,
+
+        savedAt:
+            new Date().toLocaleString()
+
+    });
+
 
     localStorage.setItem(
         "angeloRewardHistory",
-        JSON.stringify(rewardHistory)
+        JSON.stringify(
+            rewardHistory
+        )
     );
+
+
     scheduleSharedAppSave();
+
+
+    recordChange(
+        "Reward history",
+        "Added reward: " + reward,
+        reason.trim()
+    );
+
 
     renderRewardHistory();
     renderDashboard();
-    recordChange("Reward history", "Added reward: " + reward, changeReason.trim());
+
     newReward();
 
-    alert("Reward saved.");
+
+    alert(
+        "Reward saved."
+    );
 }
 
 
@@ -3410,74 +4199,128 @@ function newReward() {
         return;
     }
 
+
     setRewardToday();
 
-    document.getElementById("rewardName").value = "";
-    document.getElementById("rewardNotes").value = "";
+
+    document.getElementById(
+        "rewardName"
+    ).value = "";
+
+
+    document.getElementById(
+        "rewardNotes"
+    ).value = "";
 }
 
 
 function renderRewardHistory() {
 
     const container =
-        document.getElementById("rewardHistoryContainer");
+        document.getElementById(
+            "rewardHistoryContainer"
+        );
+
 
     if (!container) {
         return;
     }
 
+
     container.innerHTML = "";
 
-    if (rewardHistory.length === 0) {
-        container.innerHTML = "<p>No rewards recorded yet.</p>";
+
+    if (!rewardHistory.length) {
+
+        container.innerHTML =
+            "<p>No rewards recorded yet.</p>";
+
         return;
     }
 
-    rewardHistory.forEach(function(entry) {
 
-        const box =
-            document.createElement("div");
+    rewardHistory.forEach(
+        function(entry){
 
-        box.className = "reward-entry";
+            const box =
+                document.createElement(
+                    "div"
+                );
 
-        const title =
-            document.createElement("h3");
+            box.className =
+                "reward-entry";
 
-        title.textContent =
-            "Reward - " + entry.date;
 
-        box.appendChild(title);
+            const title =
+                document.createElement(
+                    "h3"
+                );
 
-        const details =
-            document.createElement("pre");
+            title.textContent =
+                "Reward - " +
+                entry.date;
 
-        details.textContent =
-            "Reward: " + entry.reward +
-            "\n\n" +
-            "Notes:\n" +
-            (entry.notes || "No notes") +
-            "\n\n" +
-            "Saved: " + entry.savedAt;
+            box.appendChild(
+                title
+            );
 
-        box.appendChild(details);
 
-        if (editMode) {
+            const details =
+                document.createElement(
+                    "pre"
+                );
 
-            const deleteButton =
-                document.createElement("button");
+            details.textContent =
+                "Reward: " +
+                entry.reward +
+                "\n\n" +
+                "Notes:\n" +
+                (
+                    entry.notes ||
+                    "No notes"
+                ) +
+                "\n\n" +
+                "Saved: " +
+                entry.savedAt;
 
-            deleteButton.className = "delete-button";
-            deleteButton.textContent = "DELETE REWARD";
+            box.appendChild(
+                details
+            );
 
-            deleteButton.onclick = function() {
-                deleteReward(entry.id);
-            };
 
-            box.appendChild(deleteButton);
+            if (editMode) {
+
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+                button.className =
+                    "delete-button";
+
+                button.textContent =
+                    "DELETE REWARD";
+
+                button.onclick =
+                    function(){
+
+                        deleteReward(
+                            entry.id
+                        );
+
+                    };
+
+                box.appendChild(
+                    button
+                );
+            }
+
+
+            container.appendChild(
+                box
+            );
         }
-
-        container.appendChild(box);
-    });
+    );
 }
 
 
@@ -3487,65 +4330,169 @@ function deleteReward(id) {
         return;
     }
 
-    const answer =
-        confirm("Delete this saved reward?");
 
-    if (!answer) {
+    if (
+        !confirm(
+            "Delete this saved reward?"
+        )
+    ) {
         return;
     }
 
-    const deletedReward = rewardHistory.find(function(item) { return item.id === id; });
-    const changeReason = prompt("Why are you deleting this reward?");
-    if (changeReason === null || !changeReason.trim()) return;
-    rewardHistory = rewardHistory.filter(function(item) {
-        return item.id !== id;
-    });
+
+    const deletedReward =
+        rewardHistory.find(
+            function(item){
+                return item.id === id;
+            }
+        );
+
+
+    const reason =
+        prompt(
+            "Why are you deleting this reward?"
+        );
+
+
+    if (
+        reason === null ||
+        !reason.trim()
+    ) {
+        return;
+    }
+
+
+    rewardHistory =
+        rewardHistory.filter(
+            function(item){
+                return item.id !== id;
+            }
+        );
+
 
     localStorage.setItem(
         "angeloRewardHistory",
-        JSON.stringify(rewardHistory)
+        JSON.stringify(
+            rewardHistory
+        )
     );
+
+
     scheduleSharedAppSave();
+
+
+    recordChange(
+        "Reward history",
+        "Deleted reward: " +
+        (
+            deletedReward
+                ? deletedReward.reward
+                : "Unknown reward"
+        ),
+        reason.trim()
+    );
+
 
     renderRewardHistory();
     renderDashboard();
-    recordChange("Reward history", "Deleted reward: " + (deletedReward ? deletedReward.reward : "Unknown reward"), changeReason.trim());
 }
 
 
-function setupPointsMode() {
-
-    const addButton =
-        document.getElementById("addPointButton");
-
-    const removeButton =
-        document.getElementById("removePointButton");
-
-    const saveButton =
-        document.getElementById("saveRewardButton");
-
-    const newButton =
-        document.getElementById("newRewardButton");
+function resetRewards() {
 
     if (!editMode) {
-
-        if (addButton) addButton.style.display = "none";
-        if (removeButton) removeButton.style.display = "none";
-        if (saveButton) saveButton.style.display = "none";
-        if (newButton) newButton.style.display = "none";
-    } else {
-
-        if (addButton) addButton.style.display = "";
-        if (removeButton) removeButton.style.display = "";
-        if (saveButton) saveButton.style.display = "";
-        if (newButton) newButton.style.display = "";
+        return;
     }
+
+
+    if (
+        !confirm(
+            "Clear all reward history?"
+        )
+    ) {
+        return;
+    }
+
+
+    const reason =
+        prompt(
+            "Why are you clearing the reward history?"
+        );
+
+
+    if (
+        reason === null ||
+        !reason.trim()
+    ) {
+        return;
+    }
+
+
+    const oldCount =
+        rewardHistory.length;
+
+
+    rewardHistory = [];
+
+
+    localStorage.setItem(
+        "angeloRewardHistory",
+        JSON.stringify(
+            rewardHistory
+        )
+    );
+
+
+    scheduleSharedAppSave();
+
+
+    recordChange(
+        "Reward history",
+        "Cleared " +
+        oldCount +
+        " reward(s)",
+        reason.trim()
+    );
+
+
+    renderRewardHistory();
+    renderDashboard();
 }
 
 
 /* ============================================================
    DAILY PAPER
    ============================================================ */
+
+function setToday() {
+
+    const input =
+        document.getElementById(
+            "paperDate"
+        );
+
+
+    if (!input) {
+        return;
+    }
+
+
+    const today =
+        new Date();
+
+
+    input.value =
+        today.getFullYear() +
+        "-" +
+        String(
+            today.getMonth() + 1
+        ).padStart(2,"0") +
+        "-" +
+        String(
+            today.getDate()
+        ).padStart(2,"0");
+}
+
 
 function saveDailyPaper() {
 
@@ -3598,37 +4545,23 @@ function saveDailyPaper() {
     }
 
 
-    const paper = {
+    savedPapers.unshift({
 
-        id:
-            Date.now(),
+        id:Date.now(),
 
-        date:
-            date,
+        date:date,
 
         firstShowerer:
             firstShowerer,
 
-        status:
-            status,
+        status:status,
 
-        notes:
-            notes,
+        notes:notes,
 
         savedAt:
-            new Date()
-                .toLocaleString()
-    };
+            new Date().toLocaleString()
 
-
-    if (!Array.isArray(savedPapers)) {
-        savedPapers = [];
-    }
-
-
-    savedPapers.unshift(
-        paper
-    );
+    });
 
 
     localStorage.setItem(
@@ -3637,10 +4570,13 @@ function saveDailyPaper() {
             savedPapers
         )
     );
+
+
     scheduleSharedAppSave();
 
-
     renderSavedData();
+
+    renderDashboard();
 
 
     alert(
@@ -3648,10 +4584,6 @@ function saveDailyPaper() {
     );
 }
 
-
-/* ============================================================
-   NEW DAILY PAPER
-   ============================================================ */
 
 function newDailyPaper() {
 
@@ -3687,20 +4619,11 @@ function renderSavedData() {
 
     renderSavedMonths();
 
-    /*
-       NEW
-       Saved Signing Trackers
-    */
-
     renderSavedTrackers();
 
     renderSavedPapers();
 }
 
-
-/* ============================================================
-   SAVED MONTHS
-   ============================================================ */
 
 function renderSavedMonths() {
 
@@ -3710,10 +4633,15 @@ function renderSavedMonths() {
         );
 
 
+    if (!container) {
+        return;
+    }
+
+
     container.innerHTML = "";
 
 
-    if (savedMonths.length === 0) {
+    if (!savedMonths.length) {
 
         container.innerHTML =
             "<p>No saved months yet.</p>";
@@ -3723,7 +4651,7 @@ function renderSavedMonths() {
 
 
     savedMonths.forEach(
-        function(savedMonth) {
+        function(savedMonth){
 
             const box =
                 document.createElement(
@@ -3744,7 +4672,6 @@ function renderSavedMonths() {
                 " " +
                 savedMonth.year;
 
-
             box.appendChild(
                 title
             );
@@ -3758,7 +4685,6 @@ function renderSavedMonths() {
             savedTime.textContent =
                 "Saved: " +
                 savedMonth.savedAt;
-
 
             box.appendChild(
                 savedTime
@@ -3797,7 +4723,6 @@ function renderSavedMonths() {
                 dayNumber.textContent =
                     "Day " + day;
 
-
                 dayBox.appendChild(
                     dayNumber
                 );
@@ -3808,11 +4733,12 @@ function renderSavedMonths() {
                         "div"
                     );
 
-
                 person.textContent =
-                    savedMonth.days[day] ||
+                    (
+                        savedMonth.days &&
+                        savedMonth.days[day]
+                    ) ||
                     "Not assigned";
-
 
                 dayBox.appendChild(
                     person
@@ -3832,22 +4758,19 @@ function renderSavedMonths() {
 
             if (editMode) {
 
-                const deleteButton =
+                const button =
                     document.createElement(
                         "button"
                     );
 
-
-                deleteButton.className =
+                button.className =
                     "delete-button";
 
-
-                deleteButton.textContent =
+                button.textContent =
                     "DELETE SAVED MONTH";
 
-
-                deleteButton.onclick =
-                    function() {
+                button.onclick =
+                    function(){
 
                         deleteSavedMonth(
                             savedMonth.id
@@ -3855,9 +4778,8 @@ function renderSavedMonths() {
 
                     };
 
-
                 box.appendChild(
-                    deleteButton
+                    button
                 );
             }
 
@@ -3865,15 +4787,10 @@ function renderSavedMonths() {
             container.appendChild(
                 box
             );
-
         }
     );
 }
 
-
-/* ============================================================
-   DELETE SAVED MONTH
-   ============================================================ */
 
 function deleteSavedMonth(id) {
 
@@ -3882,23 +4799,33 @@ function deleteSavedMonth(id) {
     }
 
 
-    const answer =
-        confirm(
+    if (
+        !confirm(
             "Delete this saved month?"
+        )
+    ) {
+        return;
+    }
+
+
+    const reason =
+        prompt(
+            "Why are you deleting this saved month?"
         );
 
 
-    if (!answer) {
+    if (
+        reason === null ||
+        !reason.trim()
+    ) {
         return;
     }
 
 
     savedMonths =
         savedMonths.filter(
-            function(item) {
-
+            function(item){
                 return item.id !== id;
-
             }
         );
 
@@ -3909,16 +4836,22 @@ function deleteSavedMonth(id) {
             savedMonths
         )
     );
+
+
     scheduleSharedAppSave();
 
 
+    recordChange(
+        "Saved Months",
+        "Deleted saved month",
+        reason.trim()
+    );
+
+
     renderSavedMonths();
+    renderDashboard();
 }
 
-
-/* ============================================================
-   SAVED PAPERS
-   ============================================================ */
 
 function renderSavedPapers() {
 
@@ -3928,13 +4861,15 @@ function renderSavedPapers() {
         );
 
 
+    if (!container) {
+        return;
+    }
+
+
     container.innerHTML = "";
 
 
-    if (
-        !Array.isArray(savedPapers) ||
-        savedPapers.length === 0
-    ) {
+    if (!savedPapers.length) {
 
         container.innerHTML =
             "<p>No saved daily papers yet.</p>";
@@ -3944,13 +4879,12 @@ function renderSavedPapers() {
 
 
     savedPapers.forEach(
-        function(paper) {
+        function(paper){
 
             const box =
                 document.createElement(
                     "div"
                 );
-
 
             box.className =
                 "saved-item";
@@ -3961,11 +4895,9 @@ function renderSavedPapers() {
                     "h3"
                 );
 
-
             title.textContent =
                 "Daily Paper - " +
                 paper.date;
-
 
             box.appendChild(
                 title
@@ -3977,29 +4909,24 @@ function renderSavedPapers() {
                     "pre"
                 );
 
-
             details.textContent =
                 "Who showered first: " +
                 paper.firstShowerer +
                 "\n\n" +
-
                 "Signing status: " +
                 (
                     paper.status ||
                     "Not selected"
                 ) +
                 "\n\n" +
-
                 "Notes:\n" +
                 (
                     paper.notes ||
                     "No notes"
                 ) +
                 "\n\n" +
-
                 "Saved: " +
                 paper.savedAt;
-
 
             box.appendChild(
                 details
@@ -4008,22 +4935,19 @@ function renderSavedPapers() {
 
             if (editMode) {
 
-                const deleteButton =
+                const button =
                     document.createElement(
                         "button"
                     );
 
-
-                deleteButton.className =
+                button.className =
                     "delete-button";
 
-
-                deleteButton.textContent =
+                button.textContent =
                     "DELETE PAPER";
 
-
-                deleteButton.onclick =
-                    function() {
+                button.onclick =
+                    function(){
 
                         deletePaper(
                             paper.id
@@ -4031,9 +4955,8 @@ function renderSavedPapers() {
 
                     };
 
-
                 box.appendChild(
-                    deleteButton
+                    button
                 );
             }
 
@@ -4041,15 +4964,10 @@ function renderSavedPapers() {
             container.appendChild(
                 box
             );
-
         }
     );
 }
 
-
-/* ============================================================
-   DELETE PAPER
-   ============================================================ */
 
 function deletePaper(id) {
 
@@ -4058,23 +4976,33 @@ function deletePaper(id) {
     }
 
 
-    const answer =
-        confirm(
+    if (
+        !confirm(
             "Delete this saved paper?"
+        )
+    ) {
+        return;
+    }
+
+
+    const reason =
+        prompt(
+            "Why are you deleting this saved paper?"
         );
 
 
-    if (!answer) {
+    if (
+        reason === null ||
+        !reason.trim()
+    ) {
         return;
     }
 
 
     savedPapers =
         savedPapers.filter(
-            function(item) {
-
+            function(item){
                 return item.id !== id;
-
             }
         );
 
@@ -4085,10 +5013,1872 @@ function deletePaper(id) {
             savedPapers
         )
     );
+
+
     scheduleSharedAppSave();
 
 
+    recordChange(
+        "Daily Paper",
+        "Deleted saved daily paper",
+        reason.trim()
+    );
+
+
     renderSavedPapers();
+    renderDashboard();
+}
+
+
+/* ============================================================
+   CHANGE LOG
+   ============================================================ */
+
+function recordChange(
+    type,
+    change,
+    reason
+) {
+
+    if (!editMode) {
+        return;
+    }
+
+
+    changeLog.unshift({
+
+        id:
+            Date.now() +
+            Math.random(),
+
+        date:
+            new Date().toLocaleString(),
+
+        type:type,
+
+        change:change,
+
+        reason:reason
+
+    });
+
+
+    localStorage.setItem(
+        "showerChangeLog",
+        JSON.stringify(
+            changeLog
+        )
+    );
+
+
+    scheduleSharedAppSave();
+
+    renderChangeLog();
+}
+
+
+function addManualChangeLog() {
+
+    if (!editMode) {
+        return;
+    }
+
+
+    const change =
+        prompt(
+            "What changed?"
+        );
+
+
+    if (
+        change === null ||
+        !change.trim()
+    ) {
+        return;
+    }
+
+
+    const reason =
+        prompt(
+            "Why did you make this change?"
+        );
+
+
+    if (
+        reason === null ||
+        !reason.trim()
+    ) {
+        return;
+    }
+
+
+    recordChange(
+        "Manual entry",
+        change.trim(),
+        reason.trim()
+    );
+}
+
+
+function renderChangeLog() {
+
+    const container =
+        document.getElementById(
+            "changeLogContainer"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    container.innerHTML = "";
+
+
+    if (!changeLog.length) {
+
+        container.innerHTML =
+            "<p>No changes recorded yet.</p>";
+
+        return;
+    }
+
+
+    changeLog.forEach(
+        function(entry){
+
+            const box =
+                document.createElement(
+                    "div"
+                );
+
+            box.className =
+                "change-log-entry";
+
+
+            const heading =
+                document.createElement(
+                    "h3"
+                );
+
+            heading.textContent =
+                entry.type;
+
+            box.appendChild(
+                heading
+            );
+
+
+            const details =
+                document.createElement(
+                    "pre"
+                );
+
+            details.textContent =
+                "Date: " +
+                entry.date +
+                "\n\n" +
+                "Change: " +
+                entry.change +
+                "\n\n" +
+                "Reason: " +
+                entry.reason;
+
+            box.appendChild(
+                details
+            );
+
+
+            if (editMode) {
+
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+                button.className =
+                    "delete-button";
+
+                button.textContent =
+                    "DELETE LOG";
+
+                button.onclick =
+                    function(){
+
+                        const reason =
+                            prompt(
+                                "Why are you deleting this log entry?"
+                            );
+
+                        if (
+                            reason === null ||
+                            !reason.trim()
+                        ) {
+                            return;
+                        }
+
+
+                        changeLog =
+                            changeLog.filter(
+                                function(item){
+                                    return item.id !== entry.id;
+                                }
+                            );
+
+
+                        localStorage.setItem(
+                            "showerChangeLog",
+                            JSON.stringify(
+                                changeLog
+                            )
+                        );
+
+
+                        scheduleSharedAppSave();
+
+
+                        renderChangeLog();
+                    };
+
+
+                box.appendChild(
+                    button
+                );
+            }
+
+
+            container.appendChild(
+                box
+            );
+        }
+    );
+}
+
+
+function clearChangeLog() {
+
+    if (!editMode || !changeLog.length) {
+        return;
+    }
+
+
+    if (
+        !confirm(
+            "Clear the entire change log?"
+        )
+    ) {
+        return;
+    }
+
+
+    const reason =
+        prompt(
+            "Why are you clearing the change log?"
+        );
+
+
+    if (
+        reason === null ||
+        !reason.trim()
+    ) {
+        return;
+    }
+
+
+    changeLog = [];
+
+
+    localStorage.setItem(
+        "showerChangeLog",
+        JSON.stringify(
+            changeLog
+        )
+    );
+
+
+    scheduleSharedAppSave();
+
+
+    renderChangeLog();
+}
+
+
+/* ============================================================
+   COUNTDOWNS
+   ============================================================ */
+
+function newCountdown() {
+
+    if (!editMode) {
+        return;
+    }
+
+
+    document.getElementById(
+        "countdownName"
+    ).value = "";
+
+
+    document.getElementById(
+        "countdownDate"
+    ).value = "";
+
+
+    document.getElementById(
+        "countdownTime"
+    ).value = "00:00";
+
+
+    updateCountdownLive();
+}
+
+
+function saveCountdown() {
+
+    if (!editMode) {
+        return;
+    }
+
+
+    const name =
+        document.getElementById(
+            "countdownName"
+        ).value.trim();
+
+
+    const date =
+        document.getElementById(
+            "countdownDate"
+        ).value;
+
+
+    const time =
+        document.getElementById(
+            "countdownTime"
+        ).value ||
+        "00:00";
+
+
+    if (!name || !date) {
+
+        alert(
+            "Please enter a name and date."
+        );
+
+        return;
+    }
+
+
+    const reason =
+        prompt(
+            "Why are you saving this countdown?"
+        );
+
+
+    if (
+        reason === null ||
+        !reason.trim()
+    ) {
+        return;
+    }
+
+
+    countdowns.unshift({
+
+        id:Date.now(),
+
+        name:name,
+
+        date:date,
+
+        time:time
+
+    });
+
+
+    localStorage.setItem(
+        "showerCountdowns",
+        JSON.stringify(
+            countdowns
+        )
+    );
+
+
+    scheduleSharedAppSave();
+
+
+    recordChange(
+        "Countdown",
+        "Saved countdown: " +
+        name +
+        " for " +
+        date +
+        " " +
+        time,
+        reason.trim()
+    );
+
+
+    renderCountdowns();
+    updateCountdownLive();
+}
+
+
+function countdownTarget(entry) {
+
+    return new Date(
+        entry.date +
+        "T" +
+        (
+            entry.time ||
+            "00:00"
+        ) +
+        ":00"
+    );
+}
+
+
+function getCountdownParts(target) {
+
+    let ms =
+        target.getTime() -
+        Date.now();
+
+
+    if (ms <= 0) {
+
+        return {
+            expired:true,
+            months:0,
+            days:0,
+            weeks:0,
+            hours:0,
+            minutes:0,
+            seconds:0,
+            totalDays:0,
+            totalHours:0,
+            totalMinutes:0,
+            totalSeconds:0
+        };
+    }
+
+
+    const totalSeconds =
+        Math.floor(
+            ms / 1000
+        );
+
+
+    const totalMinutes =
+        Math.floor(
+            ms / 60000
+        );
+
+
+    const totalHours =
+        Math.floor(
+            ms / 3600000
+        );
+
+
+    const totalDays =
+        Math.floor(
+            ms / 86400000
+        );
+
+
+    const weeks =
+        Math.floor(
+            totalDays / 7
+        );
+
+
+    let cursor =
+        new Date();
+
+
+    let months = 0;
+
+
+    while (true) {
+
+        const next =
+            new Date(
+                cursor
+            );
+
+
+        next.setMonth(
+            next.getMonth() + 1
+        );
+
+
+        if (
+            next <= target
+        ) {
+
+            months++;
+
+            cursor = next;
+
+        } else {
+
+            break;
+        }
+
+
+        if (
+            months > 120000
+        ) {
+            break;
+        }
+    }
+
+
+    const days =
+        Math.floor(
+            (
+                target -
+                cursor
+            ) / 86400000
+        );
+
+
+    const remainder =
+        target -
+        (
+            cursor.getTime() +
+            days * 86400000
+        );
+
+
+    const hours =
+        Math.floor(
+            remainder / 3600000
+        );
+
+
+    const minutes =
+        Math.floor(
+            (
+                remainder %
+                3600000
+            ) / 60000
+        );
+
+
+    const seconds =
+        Math.floor(
+            (
+                remainder %
+                60000
+            ) / 1000
+        );
+
+
+    return {
+        expired:false,
+        months:months,
+        days:days,
+        weeks:weeks,
+        hours:hours,
+        minutes:minutes,
+        seconds:seconds,
+        totalDays:totalDays,
+        totalHours:totalHours,
+        totalMinutes:totalMinutes,
+        totalSeconds:totalSeconds
+    };
+}
+
+
+function countdownHTML(entry) {
+
+    const parts =
+        getCountdownParts(
+            countdownTarget(entry)
+        );
+
+
+    if (parts.expired) {
+
+        return "<strong>TIME REACHED</strong>";
+    }
+
+
+    return `
+        <div class="countdown-grid">
+            <div class="countdown-number">
+                <strong>${parts.months}</strong>
+                MONTHS
+            </div>
+
+            <div class="countdown-number">
+                <strong>${parts.days}</strong>
+                DAYS
+            </div>
+
+            <div class="countdown-number">
+                <strong>${parts.weeks}</strong>
+                WEEKS
+            </div>
+
+            <div class="countdown-number">
+                <strong>${parts.hours}</strong>
+                HOURS
+            </div>
+
+            <div class="countdown-number">
+                <strong>${parts.minutes}</strong>
+                MINUTES
+            </div>
+
+            <div class="countdown-number">
+                <strong>${parts.seconds}</strong>
+                SECONDS
+            </div>
+        </div>
+
+        <p>
+            Total:
+            ${parts.totalDays} days /
+            ${parts.totalHours} hours /
+            ${parts.totalMinutes} minutes /
+            ${parts.totalSeconds} seconds
+        </p>
+    `;
+}
+
+
+function formatCountdownDate(entry) {
+
+    return countdownTarget(
+        entry
+    ).toLocaleString(
+        undefined,
+        {
+            year:"numeric",
+            month:"long",
+            day:"numeric",
+            hour:"numeric",
+            minute:"2-digit"
+        }
+    );
+}
+
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+
+function updateCountdownLive() {
+
+    const box =
+        document.getElementById(
+            "countdownLiveContent"
+        );
+
+
+    if (!box) {
+        return;
+    }
+
+
+    const date =
+        document.getElementById(
+            "countdownDate"
+        ).value;
+
+
+    if (!date) {
+
+        box.textContent =
+            "Choose a date and time.";
+
+        return;
+    }
+
+
+    const entry = {
+
+        name:
+            document.getElementById(
+                "countdownName"
+            ).value ||
+            "Selected countdown",
+
+        date:date,
+
+        time:
+            document.getElementById(
+                "countdownTime"
+            ).value ||
+            "00:00"
+    };
+
+
+    box.innerHTML =
+        "<h3>" +
+        escapeHTML(entry.name) +
+        "</h3>" +
+        "<p>Target: " +
+        escapeHTML(
+            formatCountdownDate(entry)
+        ) +
+        "</p>" +
+        countdownHTML(entry);
+}
+
+
+function startCountdownTimer() {
+
+    if (countdownTimer) {
+        clearInterval(
+            countdownTimer
+        );
+    }
+
+
+    countdownTimer =
+        setInterval(
+            function(){
+
+                updateCountdownLive();
+
+                renderCountdowns();
+
+            },
+            1000
+        );
+}
+
+
+function renderCountdowns() {
+
+    const container =
+        document.getElementById(
+            "savedCountdownsContainer"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    container.innerHTML = "";
+
+
+    if (!countdowns.length) {
+
+        container.innerHTML =
+            "<p>No countdowns saved yet.</p>";
+
+        return;
+    }
+
+
+    countdowns.forEach(
+        function(entry){
+
+            const box =
+                document.createElement(
+                    "div"
+                );
+
+            box.className =
+                "countdown-entry";
+
+
+            const heading =
+                document.createElement(
+                    "h3"
+                );
+
+            heading.textContent =
+                entry.name;
+
+            box.appendChild(
+                heading
+            );
+
+
+            const target =
+                document.createElement(
+                    "p"
+                );
+
+            target.textContent =
+                "Target: " +
+                formatCountdownDate(
+                    entry
+                );
+
+            box.appendChild(
+                target
+            );
+
+
+            const content =
+                document.createElement(
+                    "div"
+                );
+
+            content.innerHTML =
+                countdownHTML(
+                    entry
+                );
+
+            box.appendChild(
+                content
+            );
+
+
+            if (editMode) {
+
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+                button.className =
+                    "delete-button";
+
+                button.textContent =
+                    "DELETE COUNTDOWN";
+
+                button.onclick =
+                    function(){
+
+                        deleteCountdown(
+                            entry.id
+                        );
+
+                    };
+
+                box.appendChild(
+                    button
+                );
+            }
+
+
+            container.appendChild(
+                box
+            );
+        }
+    );
+}
+
+
+function deleteCountdown(id) {
+
+    if (!editMode) {
+        return;
+    }
+
+
+    const entry =
+        countdowns.find(
+            function(item){
+                return item.id === id;
+            }
+        );
+
+
+    const reason =
+        prompt(
+            "Why are you deleting this countdown?"
+        );
+
+
+    if (
+        reason === null ||
+        !reason.trim()
+    ) {
+        return;
+    }
+
+
+    countdowns =
+        countdowns.filter(
+            function(item){
+                return item.id !== id;
+            }
+        );
+
+
+    localStorage.setItem(
+        "showerCountdowns",
+        JSON.stringify(
+            countdowns
+        )
+    );
+
+
+    scheduleSharedAppSave();
+
+
+    recordChange(
+        "Countdown",
+        "Deleted countdown: " +
+        (
+            entry
+                ? entry.name
+                : "Unknown"
+        ),
+        reason.trim()
+    );
+
+
+    renderCountdowns();
+}
+
+
+/* ============================================================
+   FAIRNESS CHECKER
+   ============================================================ */
+
+function runFairnessChecker() {
+
+    const result =
+        document.getElementById(
+            "fairnessResult"
+        );
+
+
+    if (!result) {
+        return;
+    }
+
+
+    const keys =
+        Object.keys(
+            calendarData
+        )
+        .filter(
+            function(key){
+
+                return (
+                    calendarData[key] === "Angelo" ||
+                    calendarData[key] === "Matthew"
+                );
+
+            }
+        )
+        .sort();
+
+
+    if (!keys.length) {
+
+        result.innerHTML =
+            "<strong>NOT ENOUGH DATA</strong><br><br>" +
+            "No saved calendar assignments were found.";
+
+        return;
+    }
+
+
+    const problems = [];
+
+
+    for (
+        let i = 1;
+        i < keys.length;
+        i++
+    ) {
+
+        const previous =
+            calendarData[
+                keys[i - 1]
+            ];
+
+        const current =
+            calendarData[
+                keys[i]
+            ];
+
+
+        if (
+            previous === current
+        ) {
+
+            problems.push(
+                keys[i] +
+                ": " +
+                current +
+                " is scheduled after " +
+                current +
+                "."
+            );
+        }
+
+
+        const a =
+            new Date(
+                keys[i - 1] +
+                "T00:00:00"
+            );
+
+
+        const b =
+            new Date(
+                keys[i] +
+                "T00:00:00"
+            );
+
+
+        const gap =
+            Math.round(
+                (b - a) /
+                86400000
+            );
+
+
+        if (gap > 1) {
+
+            problems.push(
+                keys[i - 1] +
+                " to " +
+                keys[i] +
+                ": there are " +
+                (gap - 1) +
+                " unscheduled day(s) between saved assignments."
+            );
+        }
+    }
+
+
+    if (!problems.length) {
+
+        result.innerHTML =
+            '<span class="fairness-ok">' +
+            "SCHEDULE LOOKS FAIR" +
+            "</span><br><br>" +
+            "Saved assignments alternate correctly " +
+            "and there are no missing days between them.";
+
+    } else {
+
+        result.innerHTML =
+            '<span class="fairness-warning">' +
+            "POSSIBLE SCHEDULE PROBLEMS" +
+            "</span><br><br>" +
+            problems
+                .map(escapeHTML)
+                .join("<br><br>");
+    }
+}
+
+
+/* ============================================================
+   CHANGE REQUESTS
+   ============================================================ */
+
+async function loadSharedRequests() {
+
+    try {
+
+        const response =
+            await fetch(
+                sharedDatabaseUrl(
+                    SHARED_REQUESTS_PATH
+                ),
+                {
+                    cache:"no-store"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Database request failed: " +
+                response.status
+            );
+        }
+
+
+        const data =
+            await response.json();
+
+
+        sharedRequests =
+            data
+                ? Object.keys(data)
+                    .map(
+                        function(key){
+
+                            return Object.assign(
+                                {
+                                    id:key
+                                },
+                                data[key]
+                            );
+
+                        }
+                    )
+                : [];
+
+
+        sharedRequests.sort(
+            function(a,b){
+
+                return (
+                    Number(
+                        b.createdAt || 0
+                    ) -
+                    Number(
+                        a.createdAt || 0
+                    )
+                );
+
+            }
+        );
+
+
+        const status =
+            document.getElementById(
+                "changeRequestConnection"
+            );
+
+
+        if (status) {
+
+            status.textContent =
+                "SHARED REQUEST DATABASE: CONNECTED";
+        }
+
+
+        renderChangeRequests();
+
+        return true;
+
+    } catch(error) {
+
+        console.error(
+            "Change request database error:",
+            error
+        );
+
+
+        const status =
+            document.getElementById(
+                "changeRequestConnection"
+            );
+
+
+        if (status) {
+
+            status.textContent =
+                "SHARED REQUEST DATABASE: NOT CONNECTED — CHECK THE FIREBASE DATABASE URL AND RULES.";
+        }
+
+
+        renderChangeRequests();
+
+        return false;
+    }
+}
+
+
+async function writeSharedRequest(request) {
+
+    const response =
+        await fetch(
+            sharedDatabaseUrl(
+                SHARED_REQUESTS_PATH +
+                "/" +
+                encodeURIComponent(
+                    request.id
+                )
+            ),
+            {
+                method:"PUT",
+
+                headers:{
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body:
+                    JSON.stringify(
+                        request
+                    )
+            }
+        );
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            "Database write failed: " +
+            response.status
+        );
+    }
+}
+
+
+function openChangeRequestForm() {
+
+    const modal =
+        document.getElementById(
+            "changeRequestModal"
+        );
+
+
+    if (!modal) {
+        return;
+    }
+
+
+    document.getElementById(
+        "requestName"
+    ).value = "";
+
+
+    document.getElementById(
+        "requestChange"
+    ).value = "";
+
+
+    document.getElementById(
+        "requestReason"
+    ).value = "";
+
+
+    document.getElementById(
+        "requestFormMessage"
+    ).textContent = "";
+
+
+    modal.style.display =
+        "block";
+}
+
+
+function closeChangeRequestForm() {
+
+    const modal =
+        document.getElementById(
+            "changeRequestModal"
+        );
+
+
+    if (modal) {
+        modal.style.display =
+            "none";
+    }
+}
+
+
+async function submitChangeRequest() {
+
+    if (editMode) {
+        return;
+    }
+
+
+    const name =
+        document.getElementById(
+            "requestName"
+        ).value.trim();
+
+
+    const change =
+        document.getElementById(
+            "requestChange"
+        ).value.trim();
+
+
+    const reason =
+        document.getElementById(
+            "requestReason"
+        ).value.trim();
+
+
+    const message =
+        document.getElementById(
+            "requestFormMessage"
+        );
+
+
+    if (
+        !name ||
+        !change ||
+        !reason
+    ) {
+
+        message.textContent =
+            "Please fill in your name, requested change, and reason.";
+
+        return;
+    }
+
+
+    const request = {
+
+        id:
+            String(Date.now()) +
+            "-" +
+            Math.random()
+                .toString(36)
+                .slice(2,8),
+
+        requestedBy:name,
+
+        change:change,
+
+        reason:reason,
+
+        status:"PENDING",
+
+        createdAt:Date.now(),
+
+        createdDate:
+            new Date().toLocaleString()
+    };
+
+
+    try {
+
+        message.textContent =
+            "Sending request...";
+
+
+        await writeSharedRequest(
+            request
+        );
+
+
+        await loadSharedRequests();
+
+
+        message.textContent =
+            "REQUEST SENT. It will appear in Edit Mode.";
+
+
+        setTimeout(
+            closeChangeRequestForm,
+            800
+        );
+
+
+    } catch(error) {
+
+        console.error(
+            error
+        );
+
+
+        message.textContent =
+            "The request could not be sent. Make sure the shared database is connected.";
+    }
+}
+
+
+async function decideChangeRequest(
+    id,
+    decision
+) {
+
+    if (!editMode) {
+        return;
+    }
+
+
+    const request =
+        sharedRequests.find(
+            function(item){
+                return item.id === id;
+            }
+        );
+
+
+    if (!request) {
+        return;
+    }
+
+
+    const reason =
+        prompt(
+            "Why are you " +
+            decision.toLowerCase() +
+            "ing this request?"
+        );
+
+
+    if (
+        reason === null ||
+        !reason.trim()
+    ) {
+        return;
+    }
+
+
+    const oldStatus =
+        request.status;
+
+
+    request.status =
+        decision;
+
+
+    request.decidedAt =
+        Date.now();
+
+
+    request.decidedDate =
+        new Date().toLocaleString();
+
+
+    request.decisionReason =
+        reason.trim();
+
+
+    request.decidedBy =
+        "Matt";
+
+
+    try {
+
+        await writeSharedRequest(
+            request
+        );
+
+
+        renderChangeRequests();
+
+
+        recordChange(
+            "Change Request",
+            decision +
+            " request from " +
+            request.requestedBy +
+            ": " +
+            request.change,
+            reason.trim()
+        );
+
+    } catch(error) {
+
+        request.status =
+            oldStatus;
+
+        alert(
+            "The decision could not be saved to the shared database."
+        );
+    }
+}
+
+
+async function deleteChangeRequest(id) {
+
+    if (!editMode) {
+        return;
+    }
+
+
+    const request =
+        sharedRequests.find(
+            function(item){
+                return item.id === id;
+            }
+        );
+
+
+    if (!request) {
+        return;
+    }
+
+
+    const reason =
+        prompt(
+            "Why are you deleting this change request?"
+        );
+
+
+    if (
+        reason === null ||
+        !reason.trim()
+    ) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                sharedDatabaseUrl(
+                    SHARED_REQUESTS_PATH +
+                    "/" +
+                    encodeURIComponent(id)
+                ),
+                {
+                    method:"DELETE"
+                }
+            );
+
+
+        if (!response.ok) {
+            throw new Error(
+                "Delete failed"
+            );
+        }
+
+
+        sharedRequests =
+            sharedRequests.filter(
+                function(item){
+                    return item.id !== id;
+                }
+            );
+
+
+        renderChangeRequests();
+
+
+        recordChange(
+            "Change Request",
+            "Deleted request from " +
+            request.requestedBy,
+            reason.trim()
+        );
+
+    } catch(error) {
+
+        alert(
+            "The request could not be deleted from the shared database."
+        );
+    }
+}
+
+
+function renderChangeRequests() {
+
+    const container =
+        document.getElementById(
+            "changeRequestsContainer"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    container.innerHTML = "";
+
+
+    if (!sharedRequests.length) {
+
+        container.innerHTML =
+            "<p>No change requests yet.</p>";
+
+        const statusBox =
+            document.getElementById(
+                "myRequestStatus"
+            );
+
+        if (statusBox) {
+            statusBox.textContent =
+                "No requests yet.";
+        }
+
+        return;
+    }
+
+
+    sharedRequests.forEach(
+        function(request){
+
+            const status =
+                String(
+                    request.status ||
+                    "PENDING"
+                ).toLowerCase();
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "request-card request-" +
+                status;
+
+
+            const heading =
+                document.createElement(
+                    "h3"
+                );
+
+
+            heading.textContent =
+                "REQUEST — " +
+                (
+                    request.status ||
+                    "PENDING"
+                );
+
+
+            card.appendChild(
+                heading
+            );
+
+
+            const details =
+                document.createElement(
+                    "pre"
+                );
+
+
+            details.textContent =
+                "Requested by: " +
+                (
+                    request.requestedBy ||
+                    "Unknown"
+                ) +
+                "\n" +
+                "Date: " +
+                (
+                    request.createdDate ||
+                    "Unknown"
+                ) +
+                "\n\n" +
+                "Requested change:\n" +
+                (
+                    request.change ||
+                    ""
+                ) +
+                "\n\n" +
+                "Reason:\n" +
+                (
+                    request.reason ||
+                    ""
+                );
+
+
+            if (
+                request.decidedDate
+            ) {
+
+                details.textContent +=
+                    "\n\nDecision date: " +
+                    request.decidedDate +
+                    "\nDecision by: " +
+                    (
+                        request.decidedBy ||
+                        "Matt"
+                    ) +
+                    "\nDecision reason:\n" +
+                    (
+                        request.decisionReason ||
+                        ""
+                    );
+            }
+
+
+            card.appendChild(
+                details
+            );
+
+
+            if (
+                editMode &&
+                request.status === "PENDING"
+            ) {
+
+                const approve =
+                    document.createElement(
+                        "button"
+                    );
+
+                approve.className =
+                    "action-button blue-button";
+
+                approve.textContent =
+                    "APPROVE";
+
+                approve.onclick =
+                    function(){
+
+                        decideChangeRequest(
+                            request.id,
+                            "APPROVED"
+                        );
+
+                    };
+
+                card.appendChild(
+                    approve
+                );
+
+
+                const deny =
+                    document.createElement(
+                        "button"
+                    );
+
+                deny.className =
+                    "action-button";
+
+                deny.textContent =
+                    "DENY";
+
+                deny.onclick =
+                    function(){
+
+                        decideChangeRequest(
+                            request.id,
+                            "DENIED"
+                        );
+
+                    };
+
+                card.appendChild(
+                    deny
+                );
+            }
+
+
+            if (editMode) {
+
+                const deleteButton =
+                    document.createElement(
+                        "button"
+                    );
+
+                deleteButton.className =
+                    "delete-button";
+
+                deleteButton.textContent =
+                    "DELETE REQUEST";
+
+                deleteButton.onclick =
+                    function(){
+
+                        deleteChangeRequest(
+                            request.id
+                        );
+
+                    };
+
+                card.appendChild(
+                    deleteButton
+                );
+            }
+
+
+            container.appendChild(
+                card
+            );
+        }
+    );
+
+
+    const statusBox =
+        document.getElementById(
+            "myRequestStatus"
+        );
+
+
+    if (statusBox) {
+
+        statusBox.innerHTML =
+            sharedRequests
+                .slice(0,5)
+                .map(
+                    function(request){
+
+                        return (
+                            "<div class=\"request-status\">" +
+                            "<strong>" +
+                            escapeHTML(
+                                request.status ||
+                                "PENDING"
+                            ) +
+                            "</strong> — " +
+                            escapeHTML(
+                                request.requestedBy ||
+                                "Unknown"
+                            ) +
+                            " — " +
+                            escapeHTML(
+                                request.change ||
+                                ""
+                            ) +
+                            "</div>"
+                        );
+                    }
+                )
+                .join("<br>");
+    }
+}
+
+
+function startSharedRequestSync() {
+
+    if (requestSyncTimer) {
+
+        clearInterval(
+            requestSyncTimer
+        );
+    }
+
+
+    loadSharedRequests();
+
+
+    requestSyncTimer =
+        setInterval(
+            loadSharedRequests,
+            3000
+        );
+}
+
+
+/* ============================================================
+   INITIALIZE
+   ============================================================ */
+
+function initializePage() {
+
+    setToday();
+
+    setRewardToday();
+
+    setupPointsMode();
+
+    setScheduleToolToday();
+
+    renderAllData();
+
+    startCountdownTimer();
+
+
+    if (editMode) {
+
+        showSection(
+            "calendar"
+        );
+
+    } else {
+
+        showSection(
+            "dashboard"
+        );
+    }
 }
 
 
@@ -4100,12 +6890,12 @@ document.getElementById(
     "passwordInput"
 ).addEventListener(
     "keydown",
-    function(event) {
+    function(event){
 
-        if (event.key === "Enter") {
-
+        if (
+            event.key === "Enter"
+        ) {
             login();
-
         }
 
     }
