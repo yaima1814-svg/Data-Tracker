@@ -970,6 +970,19 @@ select{
         </div>
 
         <div class="paper-row">
+            <label for="violationRule">RULE BROKEN</label>
+            <select id="violationRule">
+                <option value="">Choose a rule</option>
+                <option value="Rule I">Rule I — Showering earlier or later does not change the schedule</option>
+                <option value="Rule II">Rule II — Showering early does not give the next shower day</option>
+                <option value="Rule III">Rule III — The next person follows the schedule exactly</option>
+                <option value="Rule IV">Rule IV — Changes require both Matt and Angelo to agree</option>
+                <option value="Rule V">Rule V — Whoever showers first must sign the paper</option>
+                <option value="Other">Other / not listed</option>
+            </select>
+        </div>
+
+        <div class="paper-row">
             <label for="violationNotes">NOTES</label>
             <textarea id="violationNotes" rows="5" placeholder="Describe what happened."></textarea>
         </div>
@@ -1514,6 +1527,33 @@ Date: __________________
             <option>2029</option>
             <option>2030</option>
         </select>
+
+        <label for="calendarMonthInput">Month:</label>
+
+        <input
+            type="text"
+            id="calendarMonthInput"
+            list="calendarMonthSuggestions"
+            placeholder="Type 1-12 or January-December"
+            autocomplete="off"
+            oninput="renderCalendar()"
+            style="min-width:300px;min-height:52px;padding:8px 12px;font-size:18px;font-weight:bold;border:2px solid black;border-radius:6px;"
+        >
+
+        <datalist id="calendarMonthSuggestions">
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </datalist>
 
         <button
             class="action-button blue-button"
@@ -2877,12 +2917,40 @@ function renderCalendar() {
         "Saturday"
     ];
 
+    const monthInput =
+        document.getElementById("calendarMonthInput");
+
+    const typedMonth =
+        monthInput ? monthInput.value.trim() : "";
+
+    let selectedMonth = null;
+
+    if (typedMonth) {
+        const lowerMonth = typedMonth.toLowerCase();
+        const numericMonth = Number(typedMonth);
+
+        if (Number.isInteger(numericMonth) && numericMonth >= 1 && numericMonth <= 12) {
+            selectedMonth = numericMonth - 1;
+        } else {
+            const exactMonth = monthNames.findIndex(function(name) {
+                return name.toLowerCase() === lowerMonth;
+            });
+
+            if (exactMonth !== -1) {
+                selectedMonth = exactMonth;
+            }
+        }
+    }
 
     for (
         let month = 0;
         month < 12;
         month++
     ) {
+
+        if (selectedMonth !== null && month !== selectedMonth) {
+            continue;
+        }
 
         const monthTitle =
             document.createElement(
@@ -3068,26 +3136,24 @@ function renderCalendar() {
                         "NOT SET";
 
 
-                    const reason =
-                        prompt(
+                    let reason = "";
+
+                    // If the box was empty, choosing Angelo/Matthew is the initial entry.
+                    // Only ask for a reason when an existing named entry is being changed.
+                    if (calendarData[key]) {
+                        reason = prompt(
                             "Why are you changing the schedule for " +
                             key +
                             "?"
                         );
 
+                        if (reason === null || !reason.trim()) {
+                            select.value = calendarData[key] || "";
+                            return;
+                        }
 
-                    if (
-                        reason === null ||
-                        !reason.trim()
-                    ) {
-
-                        select.value =
-                            calendarData[key] ||
-                            "";
-
-                        return;
+                        reason = reason.trim();
                     }
-
 
                     calendarData[key] =
                         select.value;
@@ -3104,15 +3170,17 @@ function renderCalendar() {
                     scheduleSharedAppSave();
 
 
-                    recordChange(
-                        "Calendar",
-                        key +
-                        ": " +
-                        previousValue +
-                        " → " +
-                        newValue,
-                        reason.trim()
-                    );
+                    if (reason) {
+                        recordChange(
+                            "Calendar",
+                            key +
+                            ": " +
+                            previousValue +
+                            " → " +
+                            newValue,
+                            reason
+                        );
+                    }
 
 
                     renderDashboard();
@@ -3191,36 +3259,18 @@ function saveCurrentMonth() {
             ).value
         );
 
+    const monthInput =
+        document.getElementById("calendarMonthInput");
 
-    const month =
-        prompt(
-            "Which month do you want to save?\n\n" +
-            "Type 1 for January, 2 for February, 3 for March, etc."
-        );
+    const monthText =
+        monthInput ? monthInput.value.trim() : "";
 
-
-    if (month === null) {
-        return;
-    }
-
-
-    const monthNumber =
-        Number(month) - 1;
-
-
-    if (
-        !Number.isInteger(monthNumber) ||
-        monthNumber < 0 ||
-        monthNumber > 11
-    ) {
-
+    if (!monthText) {
         alert(
-            "Please enter a number from 1 to 12."
+            "Type a month number (1-12) or a month name first."
         );
-
         return;
     }
-
 
     const monthNames = [
         "January",
@@ -3236,6 +3286,28 @@ function saveCurrentMonth() {
         "November",
         "December"
     ];
+
+    const numericMonth = Number(monthText);
+    let monthNumber = null;
+
+    if (Number.isInteger(numericMonth) && numericMonth >= 1 && numericMonth <= 12) {
+        monthNumber = numericMonth - 1;
+    } else {
+        const exactMonth = monthNames.findIndex(function(name) {
+            return name.toLowerCase() === monthText.toLowerCase();
+        });
+
+        if (exactMonth !== -1) {
+            monthNumber = exactMonth;
+        }
+    }
+
+    if (monthNumber === null) {
+        alert(
+            "Please type a month number from 1 to 12 or a full month name."
+        );
+        return;
+    }
 
 
     const daysInMonth =
@@ -7383,11 +7455,13 @@ function setViolationToday() {
 function newViolation() {
     const date = document.getElementById("violationDate");
     const type = document.getElementById("violationType");
+    const rule = document.getElementById("violationRule");
     const notes = document.getElementById("violationNotes");
     const message = document.getElementById("violationMessage");
 
     setViolationToday();
     if (type) type.value = "";
+    if (rule) rule.value = "";
     if (notes) notes.value = "";
     if (message) message.textContent = "";
 }
@@ -7397,6 +7471,7 @@ function saveViolation() {
 
     const date = document.getElementById("violationDate").value;
     const type = document.getElementById("violationType").value;
+    const rule = document.getElementById("violationRule").value;
     const notes = document.getElementById("violationNotes").value.trim();
     const message = document.getElementById("violationMessage");
 
@@ -7410,16 +7485,31 @@ function saveViolation() {
         return;
     }
 
+    if (!rule) {
+        message.textContent = "Choose the rule that was broken.";
+        return;
+    }
+
     if (!notes) {
         message.textContent = "Add notes describing what happened.";
         return;
     }
 
+    const previousSameRule = violations.filter(function(item) {
+        return String(item.rule || "").toLowerCase() === rule.toLowerCase();
+    });
+
+    const repeatNumber = previousSameRule.length + 1;
+    const isRepeat = previousSameRule.length > 0;
+
     violations.unshift({
         id: "violation-" + Date.now(),
         date: date,
         type: type,
+        rule: rule,
         notes: notes,
+        isRepeat: isRepeat,
+        repeatNumber: repeatNumber,
         createdAt: new Date().toISOString()
     });
 
@@ -7460,8 +7550,14 @@ function renderViolations() {
     });
 
     container.innerHTML = sorted.map(function(item) {
+        const repeatLabel = item.isRepeat
+            ? '<p><strong>REPEAT VIOLATION #' + escapeHTML(String(item.repeatNumber || 2)) + '</strong></p>'
+            : '<p><strong>FIRST OCCURRENCE</strong></p>';
+
         return '<div class="saved-item">' +
             '<h3>' + escapeHTML(item.type || "Violation") + '</h3>' +
+            repeatLabel +
+            '<p><strong>RULE BROKEN:</strong> ' + escapeHTML(item.rule || "Not recorded") + '</p>' +
             '<p><strong>DATE:</strong> ' + escapeHTML(formatToolDate(item.date)) + '</p>' +
             '<p><strong>NOTES:</strong> ' + escapeHTML(item.notes || "") + '</p>' +
             '<button class="delete-button" onclick="deleteViolation(\'' + item.id + '\')">DELETE</button>' +
