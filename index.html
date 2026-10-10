@@ -1,574 +1,1027 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shower Schedule | Portal</title>
-
+<title>Matt and Angelo | Private Tracker</title>
 <style>
-*{box-sizing:border-box}
-
-:root{
-    --bg:#f4f7fb;
+:root {
+    --blue:#0057b8;
+    --blue-dark:#003e83;
+    --black:#111827;
+    --muted:#64748b;
+    --line:#d8dee8;
     --panel:#ffffff;
-    --ink:#17243a;
-    --muted:#68758a;
-    --line:#dce4ef;
-    --accent:#2864e8;
-    --accent-light:#eaf0ff;
-    --sidebar:#111c31;
-    --sidebar-text:#eaf0fa;
-    --shadow:0 8px 24px rgba(25,45,80,.07);
-}
-
-body{
-    margin:0;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:Arial,Helvetica,sans-serif;
-}
-
-header{
-    background:var(--sidebar);
-    color:white;
-    text-align:center;
-    padding:20px;
-}
-
-header h1{
-    margin:0;
-    font-size:30px;
-}
-
-header p{
-    margin:8px 0 0;
-    font-size:16px;
-}
-
-nav{
-    background:var(--panel);
-    border-bottom:1px solid var(--line);
-    padding:12px;
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:10px;
-}
-
-nav button{
-    background:var(--panel);
-    border:1px solid var(--line);
-    color:var(--ink);
-    font-weight:bold;
-    font-size:15px;
-    padding:12px 16px;
-    border-radius:10px;
-    cursor:pointer;
-    transition:background .15s ease,transform .15s ease;
-}
-
-nav button:hover{
-    background:var(--accent-light);
-    color:var(--accent);
-    transform:translateY(-1px);
-}
-
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible{
-    outline:3px solid var(--accent);
-    outline-offset:3px;
-}
-
-.section{
-    display:none;
-    padding:24px;
-    max-width:1500px;
-    margin:auto;
-}
-
-.section.active{
-    display:block;
-}
-
-.section-title{
-    color:var(--ink);
-    font-weight:800;
-    font-size:27px;
-    border-bottom:2px solid var(--line);
-    padding-bottom:12px;
-    margin-bottom:22px;
-}
-
-.controls{
-    display:flex;
-    flex-wrap:wrap;
-    align-items:center;
-    gap:15px;
-    margin-bottom:20px;
-}
-
-label{
-    font-weight:bold;
-    font-size:16px;
-}
-
-select,input,textarea{
-    font-family:Arial,Helvetica,sans-serif;
-}
-
-select{
-    min-width:150px;
-    min-height:48px;
-    padding:10px 12px;
-    font-size:16px;
-    font-weight:bold;
-    border:1px solid var(--line);
-    border-radius:9px;
-    background:var(--panel);
-    color:var(--ink);
-    cursor:pointer;
-}
-
-input,textarea{
-    border:1px solid var(--line);
-    border-radius:9px;
-    background:var(--panel);
-    color:var(--ink);
-    padding:12px;
-    font-size:16px;
-}
-
-.action-button{
-    min-height:46px;
-    padding:10px 18px;
-    font-size:15px;
-    font-weight:bold;
-    border:1px solid var(--line);
-    background:var(--panel);
-    color:var(--ink);
-    border-radius:9px;
-    cursor:pointer;
-    transition:background .15s ease,transform .15s ease;
-}
-
-.action-button:hover{
-    background:var(--accent-light);
-    transform:translateY(-1px);
-}
-
-.blue-button{
-    border-color:var(--accent);
-    background:var(--accent);
-    color:white;
-}
-
-.blue-button:hover{
-    background:#174fc8;
-    color:white;
-}
-
-.calendar-wrapper{
-    width:100%;
-    overflow-x:auto;
-}
-
-.calendar-grid{
-    display:grid;
-    grid-template-columns:repeat(7,minmax(135px,1fr));
-    gap:8px;
-    min-width:1000px;
-}
-
-.day-header{
-    background:var(--sidebar);
-    color:white;
-    text-align:center;
-    font-weight:bold;
-    padding:14px 8px;
-    font-size:14px;
-    border-radius:8px;
-}
-
-.calendar-day{
-    border:1px solid var(--line);
-    border-radius:10px;
-    min-height:140px;
-    padding:10px;
-    background:var(--panel);
-}
-
-.calendar-day.invalid{
-    background:var(--bg);
-    border-color:transparent;
-}
-
-.day-number{
-    font-size:19px;
-    font-weight:bold;
-    margin-bottom:10px;
-}
-
-.calendar-day select{
-    width:100%;
-    min-width:0;
-    min-height:48px;
-    font-size:14px;
-}
-
-.month-title{
-    font-size:22px;
-    font-weight:bold;
-    text-align:center;
-    margin:28px 0 14px;
-    padding:14px;
-    border:1px solid var(--line);
-    border-radius:12px;
-    background:var(--panel);
-}
-
-.tracker-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:15px;
-    background:var(--panel);
-    border-radius:10px;
-    overflow:hidden;
-}
-
-.tracker-table th,
-.tracker-table td{
-    border:1px solid var(--line);
-    padding:12px;
-    text-align:center;
-}
-
-.tracker-table th{
-    background:var(--sidebar);
-    color:white;
-    font-size:15px;
-}
-
-.tracker-table td{
-    font-size:15px;
-}
-
-.tracker-table select{
-    width:100%;
-    min-width:160px;
-}
-
-.contract{
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:25px;
-    line-height:1.7;
-    font-size:16px;
-    background:var(--panel);
-    box-shadow:var(--shadow);
-}
-
-.contract h2{
-    text-align:center;
-    margin-top:0;
-}
-
-.contract h3{
-    margin-bottom:5px;
-}
-
-.agreed-rule{
-    border:1px solid #b8ccff;
-    border-left:5px solid var(--accent);
-    border-radius:8px;
-    padding:16px;
-    font-weight:bold;
-    font-size:17px;
-    margin:16px 0;
-    background:var(--accent-light);
-}
-
-.paper{
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:25px;
-    min-height:600px;
-    background:var(--panel);
-    box-shadow:var(--shadow);
-}
-
-.paper h2{
-    text-align:center;
-    margin-top:0;
-}
-
-.paper-row{
-    margin:18px 0;
-}
-
-.paper-row label{
-    display:block;
-    margin-bottom:8px;
-}
-
-.paper-row input,
-.paper-row select{
-    width:100%;
-    max-width:600px;
-}
-
-.paper-row textarea{
-    width:100%;
-    min-height:160px;
-    resize:vertical;
-}
-
-.saved-item{
-    border:1px solid var(--line);
-    border-radius:12px;
-    padding:18px;
-    margin-bottom:15px;
-    background:var(--panel);
-    box-shadow:var(--shadow);
-}
-
-.saved-item h3{
-    margin-top:0;
-}
-
-.saved-item pre{
-    white-space:pre-wrap;
-    font-family:Arial,Helvetica,sans-serif;
-    font-size:15px;
-}
-
-.login-screen{
-    position:fixed;
-    inset:0;
-    background:
-        radial-gradient(ellipse at top left,#3159a9 0%,transparent 45%),
-        radial-gradient(ellipse at bottom right,#523c96 0%,transparent 45%),
-        #101a2e;
-    z-index:9999;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-}
-
-.login-box{
-    width:100%;
-    max-width:440px;
-    border:1px solid rgba(255,255,255,.2);
-    border-radius:22px;
-    padding:34px;
-    text-align:center;
-    background:rgba(255,255,255,.97);
-    box-shadow:0 25px 80px rgba(0,0,0,.3);
-}
-
-.login-box h1{
-    margin-top:0;
-    font-size:30px;
-    letter-spacing:-1px;
-}
-
-.login-box p{
-    color:var(--muted);
-    line-height:1.5;
-}
-
-.login-label{
-    display:block;
-    text-align:left;
-    margin-top:24px;
-    font-size:12px;
-    letter-spacing:1px;
-}
-
-.login-box input{
-    width:100%;
-    height:54px;
-    font-size:18px;
-    margin:10px 0 14px;
-    text-align:center;
-    letter-spacing:2px;
-}
-
-.login-box button{
-    width:100%;
-    min-height:52px;
-    font-size:16px;
-    font-weight:bold;
-    border:0;
-    border-radius:10px;
-    background:var(--accent);
-    color:white;
-    cursor:pointer;
-}
-
-.login-box button:hover{
-    background:#174fc8;
-}
-
-#loginMessage{
-    color:#b42318;
-    font-weight:bold;
-    min-height:25px;
-    margin-top:12px;
-}
-
-.view-notice{
-    border:1px solid var(--line);
-    border-left:4px solid var(--accent);
-    border-radius:9px;
-    padding:14px;
-    margin-bottom:20px;
-    font-weight:bold;
-    background:var(--panel);
-}
-
-.saved-month{
-    border:1px solid var(--line);
-    border-radius:12px;
-    padding:18px;
-    margin-bottom:20px;
-    background:var(--panel);
-}
-
-.saved-month h3{
-    margin-top:0;
-    color:var(--accent);
-}
-
-.saved-month-grid{
-    display:grid;
-    grid-template-columns:repeat(7,minmax(120px,1fr));
-    gap:6px;
-    overflow-x:auto;
-}
-
-.saved-month-day{
-    border:1px solid var(--line);
-    border-radius:7px;
-    min-height:100px;
-    padding:8px;
-    background:var(--panel);
-}
-
-.saved-month-day strong{
-    display:block;
-    margin-bottom:8px;
-}
-
-.delete-button{
-    margin-top:10px;
-    min-height:42px;
-    padding:8px 14px;
-    font-size:14px;
-    font-weight:bold;
-    border:1px solid var(--line);
-    border-radius:8px;
-    background:var(--panel);
-    color:var(--ink);
-    cursor:pointer;
-}
-
-.delete-button:hover{
-    background:#fff0f0;
-    color:#b42318;
-}
-
-.points-box{
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:25px;
-    margin-bottom:25px;
-    text-align:center;
-    background:var(--panel);
-    box-shadow:var(--shadow);
-}
-
-.points-number{
-    font-size:42px;
-    font-weight:bold;
-    margin-bottom:8px;
-}
-
-.points-goal{
-    font-size:18px;
-    font-weight:bold;
-    margin-bottom:15px;
-}
-
-.points-progress{
-    width:100%;
-    max-width:700px;
-    height:20px;
-    border:1px solid var(--line);
-    border-radius:20px;
-    overflow:hidden;
-    margin:0 auto 20px;
-    background:var(--bg);
-}
-
-.points-progress-fill{
-    height:100%;
-    width:0;
-    background:var(--accent);
-    transition:width .2s ease;
-}
-
-.dashboard-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
-    gap:16px;
-    margin-bottom:20px;
-}
-
-.dashboard-card{
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:14px;
-    box-shadow:var(--shadow);
-    padding:20px;
-    margin-bottom:16px;
-}
-
-.dashboard-card h3{
-    font-size:12px;
-    letter-spacing:1px;
-    color:var(--muted);
-    margin:0 0 10px;
-}
-
-.dashboard-value{
-    font-size:clamp(25px,3vw,34px);
-    font-weight:900;
-    letter-spacing:-1px;
-    color:var(--ink);
-}
-
-@media(max-width:760px){
-    .section{padding:16px 12px}
-    .section-title{font-size:23px}
-    .dashboard-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-    .dashboard-card{padding:14px}
-    .calendar-grid{min-width:950px}
-    .controls{align-items:stretch}
-    .controls>*{max-width:100%}
-}
-
-@media(max-width:430px){
-    .dashboard-grid{grid-template-columns:1fr}
-}
-
-@media(prefers-reduced-motion:reduce){
-    *,*::before,*::after{
-        scroll-behavior:auto!important;
-        animation-duration:.01ms!important;
-        transition-duration:.01ms!important;
-    }
+    --bg:#f3f6fb;
+    --red:#b42318;
+    --green:#18794e;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--black)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #80b7ff;outline-offset:2px}
+.hidden{display:none!important}
+.muted{color:var(--muted)}
+.small{font-size:12px}
+hr{border:0;border-top:1px solid var(--line);margin:18px 0}
+h1,h2,h3,p{overflow-wrap:anywhere}
+button:disabled{opacity:.5;cursor:not-allowed}
+#lockScreen{min-height:100vh;display:grid;place-items:center;padding:22px;background:linear-gradient(135deg,#071b38,#0057b8)}
+.lock-card{background:white;width:min(440px,100%);padding:34px;border-radius:18px;box-shadow:0 24px 70px #001a3b66}
+.lock-mark{height:48px;width:48px;border-radius:12px;background:var(--blue);color:white;display:grid;place-items:center;font-size:21px;font-weight:bold;margin-bottom:22px}
+.lock-card h1{font-size:25px;margin:0 0 8px}
+.lock-card p{line-height:1.5}
+.lock-card input{width:100%;margin:8px 0 14px}
+.lock-note{font-size:12px;color:var(--muted);line-height:1.5}
+#app{min-height:100vh}
+.topbar{background:#fff;border-bottom:1px solid var(--line);padding:15px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-mark{background:var(--blue);color:white;font-weight:bold;border-radius:9px;padding:11px 13px}
+.brand h1{font-size:18px;margin:0}
+.brand p{font-size:12px;color:var(--muted);margin:4px 0 0}
+.top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mode-pill{font-size:12px;border:1px solid var(--line);border-radius:20px;padding:8px 11px;font-weight:bold}
+.layout{display:grid;grid-template-columns:235px minmax(0,1fr);max-width:1600px;margin:auto;min-height:calc(100vh - 78px)}
+.sidebar{background:#fff;border-right:1px solid var(--line);padding:20px 13px}
+.nav-label{font-size:10px;font-weight:bold;letter-spacing:1.4px;color:#8792a5;padding:14px 11px 8px}
+.nav-btn{width:100%;text-align:left;padding:12px;border:0;border-radius:8px;background:transparent;color:#334155;font-size:13px;font-weight:bold;margin:2px 0}
+.nav-btn:hover,.nav-btn.active{background:#e8f1ff;color:var(--blue)}
+.main{padding:26px;min-width:0}
+.page{display:none}
+.page.active{display:block}
+.page-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.page-heading h2{font-size:26px;margin:0 0 7px}
+.page-heading p{margin:0;color:var(--muted);font-size:14px;line-height:1.5}
+.eyebrow{font-size:11px;color:var(--blue);font-weight:bold;letter-spacing:1.4px;margin-bottom:8px}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.card{grid-column:span 12;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px;min-width:0;box-shadow:0 2px 5px #14213d05}
+.span-3{grid-column:span 3}.span-4{grid-column:span 4}.span-5{grid-column:span 5}.span-6{grid-column:span 6}.span-7{grid-column:span 7}.span-8{grid-column:span 8}.span-9{grid-column:span 9}
+.card h3{font-size:15px;margin:0 0 13px}
+.stat-label{font-size:12px;color:var(--muted);font-weight:bold}
+.stat-number{font-size:30px;font-weight:bold;margin:12px 0 6px}
+.stat-foot{font-size:12px;color:var(--muted)}
+.tomorrow-card{background:linear-gradient(125deg,#073b79,#0065d3);color:white;border:0}
+.tomorrow-card .eyebrow,.tomorrow-card .stat-label,.tomorrow-card .stat-foot{color:#dceaff}
+.tomorrow-name{font-size:34px;font-weight:bold;margin:12px 0}
+.tomorrow-date{font-size:13px;color:#e0ecff}
+.btn{border:1px solid #cbd5e1;border-radius:7px;padding:9px 13px;background:#fff;color:#1e293b;font-size:12px;font-weight:bold}
+.btn:hover{background:#f1f5f9}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:white}
+.btn.primary:hover{background:var(--blue-dark)}
+.btn.dark{background:#111827;border-color:#111827;color:white}
+.btn.danger{color:var(--red);border-color:#efb6b2;background:white}
+.btn.success{color:var(--green);border-color:#b7dfc9}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0;margin-bottom:12px}
+.field label{font-size:12px;font-weight:bold;color:#334155}
+input,select,textarea{width:100%;border:1px solid #cbd5e1;border-radius:7px;padding:10px 11px;background:white;color:#111827;min-width:0}
+textarea{min-height:88px;resize:vertical}
+.inline-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.table-wrap{width:100%;overflow:auto}
+table{border-collapse:collapse;width:100%;font-size:12px}
+th,td{border-bottom:1px solid var(--line);padding:10px 8px;text-align:left;vertical-align:middle}
+th{background:#f7f9fc;color:#475569;font-size:11px;white-space:nowrap}
+td select{min-width:100px;padding:7px;font-size:12px}
+.calendar-controls{display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin-bottom:18px}
+.calendar-controls .field{margin:0;min-width:145px}
+.calendar-title{font-size:19px;font-weight:bold;margin:20px 0 12px}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.weekday{font-size:10px;text-align:center;font-weight:bold;color:#64748b;padding:7px 0}
+.day-cell{min-height:104px;border:1px solid var(--line);border-radius:7px;background:white;padding:7px;min-width:0}
+.day-cell.empty-day{background:#eef1f6;border-color:#e6eaf0}
+.day-number{font-size:12px;font-weight:bold;margin-bottom:8px}
+.day-cell select{font-size:10px;padding:6px 2px}
+.day-cell.today{border:2px solid var(--blue)}
+.tag{display:inline-block;font-size:10px;font-weight:bold;padding:4px 6px;border-radius:5px;background:#e8f1ff;color:#0057b8;margin:3px 0}
+.tag.angelo{background:#fff1d6;color:#885700}
+.tag.matthew{background:#e8f1ff;color:#0057b8}
+.tag.signed{background:#dff7e9;color:#17663c}
+.tag.missing{background:#ffebe9;color:#a1261d}
+.item{border:1px solid var(--line);border-radius:9px;padding:15px;margin:10px 0;background:white}
+.item h3{margin:0 0 10px}
+.item p{font-size:13px;line-height:1.5}
+.item-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.paper{border:1px solid #b7c0cd;background:white;padding:26px;max-width:900px;margin:15px auto;border-radius:4px}
+.paper h2{text-align:center;margin-top:0;font-size:22px}
+.paper h3{font-size:14px;border-bottom:1px solid #cbd5e1;padding-bottom:6px;margin-top:24px}
+.paper p,.paper li{font-size:13px;line-height:1.7}
+.paper ol{line-height:1.7}
+.signature-pad{border:1px dashed #9aa7b8;border-radius:8px;display:block;width:100%;height:150px;touch-action:none;background:white}
+.empty{border:1px dashed #cbd5e1;border-radius:8px;padding:25px;text-align:center;color:var(--muted);font-size:13px}
+.progress{height:9px;background:#e7edf5;border-radius:20px;overflow:hidden;margin:14px 0}
+.progress span{display:block;height:100%;background:var(--blue);width:0}
+.notice{border:1px solid #cbdcf4;background:#f0f6ff;color:#174b86;border-radius:8px;padding:12px;font-size:12px;line-height:1.6;margin-bottom:14px}
+.warning{border-color:#f2d29d;background:#fff8e8;color:#7b4b00}
+.points-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.footer-note{font-size:11px;color:var(--muted);line-height:1.6;margin-top:16px}
+@media(max-width:1000px){
+.layout{grid-template-columns:1fr}
+.sidebar{border-right:0;border-bottom:1px solid var(--line);display:flex;gap:4px;overflow:auto;padding:9px}
+.nav-label{display:none}
+.nav-btn{white-space:nowrap;width:auto;flex-shrink:0}
+.main{padding:18px}
+.span-3,.span-4{grid-column:span 6}
+}
+@media(max-width:650px){
+.main{padding:12px}
+.topbar{padding:13px}
+.span-3,.span-4,.span-5,.span-6,.span-7,.span-8,.span-9{grid-column:span 12}
+.inline-fields,.points-controls{grid-template-columns:1fr}
+.day-cell{min-height:82px;padding:4px}
+.day-cell select{font-size:9px}
+.weekday{font-size:9px}
+.paper{padding:16px}
+.stat-number{font-size:25px}
+}
+@media print{
+.topbar,.sidebar,.no-print,.page-heading .btn-row{display:none!important}
+.layout{display:block}
+.main{padding:0}
+.page{display:none!important}
+#page-paper{display:block!important}
+.card,.paper{box-shadow:none;border:1px solid #aaa}
+body{background:white}
 }
 </style>
+</head>
+<body>
+
+<section id="lockScreen">
+    <div class="lock-card">
+        <div class="lock-mark">MT</div>
+        <h1 id="lockTitle">Private Tracker</h1>
+        <p id="lockDescription">Enter your passcode to open the shower schedule dashboard.</p>
+        <form id="lockForm">
+            <div class="field">
+                <label for="pinInput" id="pinLabel">Passcode</label>
+                <input id="pinInput" type="password" inputmode="numeric" autocomplete="current-password" required maxlength="40" placeholder="Enter passcode">
+            </div>
+            <div id="confirmPinWrap" class="field hidden">
+                <label for="confirmPin">Confirm passcode</label>
+                <input id="confirmPin" type="password" inputmode="numeric" maxlength="40" placeholder="Enter it again">
+            </div>
+            <button class="btn primary" style="width:100%;padding:12px" id="unlockButton">Unlock tracker</button>
+        </form>
+        <p id="lockError" class="small" style="color:#b42318" aria-live="polite"></p>
+        <p class="lock-note">This passcode screen is a convenience lock stored in this browser, not strong security. Do not use a passcode you use for important accounts.</p>
+    </div>
+</section>
+
+<div id="app" class="hidden">
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-mark">MT</div>
+            <div>
+                <h1>Matt &amp; Angelo</h1>
+                <p>Private Shower Schedule Portal</p>
+            </div>
+        </div>
+        <div class="top-actions">
+            <span class="mode-pill" id="modeBadge">EDIT MODE</span>
+            <button class="btn" id="modeButton" onclick="toggleMode()">Switch to view-only</button>
+            <button class="btn" onclick="lockApp()">Lock</button>
+        </div>
+    </header>
+
+    <div class="layout">
+        <aside class="sidebar no-print">
+            <div class="nav-label">WORKSPACE</div>
+            <button class="nav-btn active" data-page="dashboard" onclick="showPage('dashboard',this)">Dashboard</button>
+            <button class="nav-btn edit-only" data-page="calendar" onclick="showPage('calendar',this)">Calendar</button>
+            <button class="nav-btn edit-only" data-page="signing" onclick="showPage('signing',this)">Signing tracker</button>
+            <button class="nav-btn" data-page="contract" onclick="showPage('contract',this)">Rules &amp; regulation</button>
+            <button class="nav-btn edit-only" data-page="paper" onclick="showPage('paper',this)">Daily paper</button>
+            <button class="nav-btn" data-page="saved" onclick="showPage('saved',this)">Saved data</button>
+            <div class="nav-label">POINTS &amp; RECORDS</div>
+            <button class="nav-btn" data-page="points" onclick="showPage('points',this)">Angelo's points</button>
+            <button class="nav-btn" data-page="rewards" onclick="showPage('rewards',this)">Reward history</button>
+            <button class="nav-btn" data-page="requests" onclick="showPage('requests',this)">Change requests</button>
+            <button class="nav-btn" data-page="submissions" onclick="showPage('submissions',this)">Submissions</button>
+            <button class="nav-btn" data-page="violations" onclick="showPage('violations',this)">System violations</button>
+            <div class="nav-label">SETTINGS</div>
+            <button class="nav-btn" data-page="settings" onclick="showPage('settings',this)">Settings &amp; sync</button>
+        </aside>
+
+        <main class="main">
+            <section class="page active" id="page-dashboard">
+                <div class="page-heading">
+                    <div>
+                        <div class="eyebrow">PRIVATE WORKSPACE</div>
+                        <h2>Dashboard</h2>
+                        <p>Your schedule, signing status, points, and recent activity in one place.</p>
+                    </div>
+                    <div class="btn-row no-print">
+                        <button class="btn primary edit-only" onclick="showPage('calendar')">Open calendar</button>
+                        <button class="btn" onclick="showPage('saved')">View saved data</button>
+                    </div>
+                </div>
+                <div class="grid">
+                    <div class="card span-6 tomorrow-card">
+                        <div class="eyebrow">UP NEXT</div>
+                        <div class="stat-label">TOMORROW</div>
+                        <div class="tomorrow-name" id="tomorrowPerson">Not assigned</div>
+                        <div class="tomorrow-date" id="tomorrowDate">Set a person in the calendar.</div>
+                    </div>
+                    <div class="card span-3">
+                        <div class="stat-label">ANGELO'S POINTS</div>
+                        <div class="stat-number" id="dashboardPoints">0</div>
+                        <div class="stat-foot">Goal: 15 points</div>
+                    </div>
+                    <div class="card span-3">
+                        <div class="stat-label">SAVED DAILY PAPERS</div>
+                        <div class="stat-number" id="dashboardPapers">0</div>
+                        <div class="stat-foot">Stored records</div>
+                    </div>
+                    <div class="card span-7">
+                        <h3>Schedule overview</h3>
+                        <div id="upcomingList"></div>
+                    </div>
+                    <div class="card span-5">
+                        <h3>Points progress</h3>
+                        <div class="stat-number" id="dashboardProgressText">0 / 15</div>
+                        <div class="progress"><span id="dashboardProgress"></span></div>
+                        <p class="small muted">Points can go below zero. Progress stops visually at zero and reaches the goal at 15.</p>
+                        <div class="btn-row no-print">
+                            <button class="btn primary" onclick="showPage('points')">Manage points</button>
+                            <button class="btn" onclick="showPage('rewards')">Reward history</button>
+                        </div>
+                    </div>
+                    <div class="card span-12">
+                        <div class="item-head">
+                            <div><h3>Recent activity</h3><p class="small muted">Latest saved papers, rewards, requests, and submissions.</p></div>
+                            <button class="btn no-print" onclick="showPage('saved')">All saved data</button>
+                        </div>
+                        <div id="recentActivity"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="page" id="page-calendar">
+                <div class="page-heading">
+                    <div><div class="eyebrow">SCHEDULE MANAGEMENT</div><h2>Calendar</h2><p>Choose Angelo or Matthew for each date. Assignments are saved by date.</p></div>
+                    <div class="btn-row no-print"><button class="btn primary" onclick="saveCurrentMonth()">Save month snapshot</button></div>
+                </div>
+                <div class="card">
+                    <div class="calendar-controls no-print">
+                        <div class="field"><label for="yearSelect">Year</label><select id="yearSelect" onchange="renderCalendar()"></select></div>
+                        <div class="field"><label for="monthSelect">Month</label><select id="monthSelect" onchange="renderCalendar()"></select></div>
+                        <button class="btn" onclick="clearCurrentMonth()">Clear this month's assignments</button>
+                    </div>
+                    <div class="calendar-title" id="calendarTitle"></div>
+                    <div class="calendar-grid" id="calendarGrid"></div>
+                    <p class="footer-note">The TOMORROW card uses the actual assigned person for tomorrow. If tomorrow has no assignment, it will show the next future date that has one.</p>
+                </div>
+            </section>
+
+            <section class="page" id="page-signing">
+                <div class="page-heading"><div><div class="eyebrow">DAILY RECORDS</div><h2>Signing tracker</h2><p>Record who showered first and whether the paper was signed.</p></div></div>
+                <div class="card">
+                    <div class="calendar-controls">
+                        <div class="field"><label for="trackerYear">Year</label><select id="trackerYear" onchange="renderSigningTracker()"></select></div>
+                        <div class="field"><label for="trackerMonth">Month</label><select id="trackerMonth" onchange="renderSigningTracker()"></select></div>
+                    </div>
+                    <div class="table-wrap">
+                        <table><thead><tr><th>Date</th><th>Scheduled person</th><th>Who showered first</th><th>Signing status</th></tr></thead><tbody id="trackerBody"></tbody></table>
+                    </div>
+                    <p class="footer-note">Signing records save automatically in this browser and sync to Firebase if you configure it in Settings.</p>
+                </div>
+            </section>
+
+            <section class="page" id="page-contract">
+                <div class="page-heading"><div><div class="eyebrow">AGREEMENT</div><h2>Rules &amp; regulation</h2><p>The shower schedule agreement between Matt and Angelo.</p></div><button class="btn no-print" onclick="window.print()">Print contract</button></div>
+                <div class="paper">
+                    <h2>SHOWER SCHEDULE AGREEMENT</h2>
+                    <p><strong>Between: Matt and Angelo</strong></p>
+                    <h3>PURPOSE</h3>
+                    <p>This agreement is made to keep the shower schedule clear, fair, and consistent.</p>
+                    <h3>AGREED RULE</h3>
+                    <p><strong>NO MATTER WHAT DAY IT IS, WHAT TIME SOMEONE SHOWERS, OR WHO SHOWERS FIRST, THE SHOWER SCHEDULE WILL STILL BE FOLLOWED.</strong></p>
+                    <h3>RULES</h3>
+                    <ol type="I">
+                        <li>Showering earlier or later does NOT change the schedule.</li>
+                        <li>If someone showers before their scheduled day, it does NOT automatically give them the next shower day.</li>
+                        <li>The next person follows the schedule exactly as written.</li>
+                        <li>The schedule can only be changed if BOTH Matt and Angelo agree to the change.</li>
+                        <li>Whoever showers first any day has to sign the paper given at the end of each shower.</li>
+                    </ol>
+                    <div class="signature-area"><p>Matt's signature: ______________________________</p><p>Angelo's signature: ____________________________</p><p>Date: __________________</p></div>
+                </div>
+            </section>
+
+            <section class="page" id="page-paper">
+                <div class="page-heading"><div><div class="eyebrow">DAILY RECORD</div><h2>Daily paper</h2><p>Complete the record and save a copy for later.</p></div><button class="btn no-print" onclick="window.print()">Print paper</button></div>
+                <div class="card">
+                    <div class="inline-fields">
+                        <div class="field"><label for="paperDate">Date</label><input id="paperDate" type="date" onchange="updatePaperPreview()"></div>
+                        <div class="field"><label for="paperPerson">Who showered first?</label><select id="paperPerson" onchange="updatePaperPreview()"><option value="">Select</option><option>Angelo</option><option>Matthew</option></select></div>
+                        <div class="field"><label for="paperStatus">Signing status</label><select id="paperStatus" onchange="updatePaperPreview()"><option value="">Select</option><option>SIGNED</option><option>MISSING</option></select></div>
+                        <div class="field"><label for="paperNotes">Notes (optional)</label><input id="paperNotes" placeholder="Add a note" oninput="updatePaperPreview()"></div>
+                    </div>
+                    <div class="paper" id="paperPreview">
+                        <h2>DAILY SHOWER RECORD</h2>
+                        <p><strong>Between: Matt and Angelo</strong></p>
+                        <h3>RECORD DETAILS</h3>
+                        <p><strong>Date:</strong> <span id="previewDate">Not selected</span></p>
+                        <p><strong>Who showered first:</strong> <span id="previewPerson">Not selected</span></p>
+                        <p><strong>Signing status:</strong> <span id="previewStatus">Not selected</span></p>
+                        <p><strong>Notes:</strong> <span id="previewNotes">None</span></p>
+                        <h3>AGREED RULE</h3>
+                        <p>No matter what day it is, what time someone showers, or who showers first, the shower schedule will still be followed.</p>
+                        <div class="signature-area"><p>Person who showered first: ______________________________</p><p>Signature: ____________________________________________</p></div>
+                    </div>
+                    <div class="btn-row no-print">
+                        <button class="btn primary" onclick="saveDailyPaper()">Save daily paper</button>
+                        <button class="btn" onclick="newDailyCopy()">New blank copy</button>
+                        <button class="btn" onclick="showPage('saved')">View saved papers</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="page" id="page-saved">
+                <div class="page-heading"><div><div class="eyebrow">RECORD ARCHIVE</div><h2>Saved data</h2><p>Saved daily papers, month snapshots, and other records.</p></div><button class="btn danger no-print" onclick="clearSavedPapers()">Clear saved papers</button></div>
+                <div class="card"><h3>Saved daily papers</h3><div id="savedPapers"></div></div>
+                <div class="card"><h3>Saved calendar months</h3><div id="savedMonths"></div></div>
+            </section>
+
+            <section class="page" id="page-points">
+                <div class="page-heading"><div><div class="eyebrow">POINTS TRACKING</div><h2>Angelo's points</h2><p>Track Angelo's points toward the 15-point goal. Matthew does not have a points total here.</p></div></div>
+                <div class="grid">
+                    <div class="card span-4"><div class="stat-label">CURRENT TOTAL</div><div class="stat-number" id="pointsTotal">0</div><div class="stat-foot">Negative totals are allowed.</div></div>
+                    <div class="card span-8">
+                        <h3>Adjust points</h3>
+                        <div class="points-controls">
+                            <div class="field"><label for="pointAmount">Number of points</label><input id="pointAmount" type="number" value="1" step="1"></div>
+                            <div class="field"><label for="pointReason">Reason</label><input id="pointReason" placeholder="Why are points changing?"></div>
+                        </div>
+                        <div class="btn-row"><button class="btn primary" onclick="changePoints(1)">Add points</button><button class="btn danger" onclick="changePoints(-1)">Remove points</button></div>
+                    </div>
+                    <div class="card span-12"><h3>Points history</h3><div id="pointsHistory"></div></div>
+                </div>
+            </section>
+
+            <section class="page" id="page-rewards">
+                <div class="page-heading"><div><div class="eyebrow">REWARD RECORDS</div><h2>Reward history</h2><p>Record each reward with the date and details.</p></div></div>
+                <div class="card">
+                    <div class="inline-fields">
+                        <div class="field"><label for="rewardDate">Reward date</label><input type="date" id="rewardDate"></div>
+                        <div class="field"><label for="rewardName">Reward</label><select id="rewardName"><option value="">Choose a reward</option><option>TV taken away for 5 days</option><option>Roblox for 3 days</option><option>3 extra no-shower-first days</option><option>Other</option></select></div>
+                    </div>
+                    <div class="field"><label for="rewardDetails">Details (optional)</label><textarea id="rewardDetails" placeholder="Explain the reward or add notes"></textarea></div>
+                    <div class="btn-row"><button class="btn primary" onclick="saveReward()">Save reward</button></div>
+                </div>
+                <div class="card"><h3>Recorded rewards</h3><div id="rewardHistory"></div></div>
+            </section>
+
+            <section class="page" id="page-requests">
+                <div class="page-heading"><div><div class="eyebrow">SCHEDULE CHANGES</div><h2>Change requests</h2><p>Record proposed changes and mark them approved or declined.</p></div></div>
+                <div class="card">
+                    <h3>New request</h3>
+                    <div class="inline-fields">
+                        <div class="field"><label for="requestPerson">Requested by</label><select id="requestPerson"><option>Matt</option><option>Angelo</option></select></div>
+                        <div class="field"><label for="requestDate">Date affected</label><input id="requestDate" type="date"></div>
+                    </div>
+                    <div class="field"><label for="requestText">Requested change</label><textarea id="requestText" placeholder="Describe the proposed change"></textarea></div>
+                    <div class="btn-row"><button class="btn primary" onclick="addRequest()">Submit request</button></div>
+                </div>
+                <div class="card"><h3>Request list</h3><div id="requestList"></div></div>
+            </section>
+
+            <section class="page" id="page-submissions">
+                <div class="page-heading"><div><div class="eyebrow">PAPER SUBMISSIONS</div><h2>Submissions</h2><p>Save a record of the paper and, optionally, a drawn signature.</p></div></div>
+                <div class="card">
+                    <div class="inline-fields">
+                        <div class="field"><label for="submissionDate">Date</label><input type="date" id="submissionDate"></div>
+                        <div class="field"><label for="submissionPerson">Person</label><select id="submissionPerson"><option value="">Select</option><option>Angelo</option><option>Matthew</option></select></div>
+                    </div>
+                    <div class="field"><label for="submissionNotes">Notes</label><textarea id="submissionNotes" placeholder="Optional notes"></textarea></div>
+                    <label for="signatureCanvas" class="field">Signature pad <span class="small muted">Draw with a mouse, stylus, or finger.</span></label>
+                    <canvas id="signatureCanvas" class="signature-pad" width="900" height="220"></canvas>
+                    <div class="btn-row" style="margin-top:12px"><button class="btn" onclick="clearSignature()">Clear signature</button><button class="btn primary" onclick="saveSubmission()">Save submission</button></div>
+                </div>
+                <div class="card"><h3>Saved submissions</h3><div id="submissionList"></div></div>
+            </section>
+
+            <section class="page" id="page-violations">
+                <div class="page-heading"><div><div class="eyebrow">SYSTEM RECORDS</div><h2>System violations</h2><p>Keep a record of schedule issues or tracker-related incidents.</p></div></div>
+                <div class="card">
+                    <div class="inline-fields">
+                        <div class="field"><label for="violationDate">Date</label><input type="date" id="violationDate"></div>
+                        <div class="field"><label for="violationPerson">Person</label><select id="violationPerson"><option>Angelo</option><option>Matthew</option><option>Other</option></select></div>
+                    </div>
+                    <div class="field"><label for="violationDescription">Description</label><textarea id="violationDescription" placeholder="Describe what happened"></textarea></div>
+                    <div class="btn-row"><button class="btn primary" onclick="addViolation()">Save violation record</button></div>
+                </div>
+                <div class="card"><h3>Violation records</h3><div id="violationList"></div></div>
+            </section>
+
+            <section class="page" id="page-settings">
+                <div class="page-heading"><div><div class="eyebrow">PREFERENCES</div><h2>Settings &amp; sync</h2><p>Manage the passcode and optional cross-device synchronization.</p></div></div>
+                <div class="card">
+                    <h3>Passcode</h3>
+                    <p class="small muted">Change the passcode used on this browser.</p>
+                    <div class="inline-fields">
+                        <div class="field"><label for="newPin">New passcode</label><input type="password" id="newPin" maxlength="40" autocomplete="new-password"></div>
+                        <div class="field"><label for="newPinConfirm">Confirm passcode</label><input type="password" id="newPinConfirm" maxlength="40" autocomplete="new-password"></div>
+                    </div>
+                    <button class="btn primary" onclick="changePin()">Update passcode</button>
+                </div>
+                <div class="card">
+                    <h3>Optional Firebase sync</h3>
+                    <div class="notice warning">Firebase sync requires your own Firebase Realtime Database URL and appropriate database rules. Do not put private credentials or secret keys in this page. Public read/write database rules can let strangers access or change your data. Use this only with rules and access controls you understand.</div>
+                    <div class="field"><label for="firebaseUrl">Realtime Database URL</label><input id="firebaseUrl" type="url" placeholder="https://your-project-default-rtdb.firebaseio.com"></div>
+                    <div class="field"><label for="firebasePath">Database path</label><input id="firebasePath" value="mattAngeloTracker/data" placeholder="mattAngeloTracker/data"></div>
+                    <div class="btn-row"><button class="btn primary" onclick="saveFirebaseSettings()">Save sync settings</button><button class="btn" onclick="syncNow()">Sync now</button><button class="btn danger" onclick="disableFirebase()">Disable cloud sync</button></div>
+                    <p id="syncStatus" class="small muted" aria-live="polite">Cloud sync is not configured.</p>
+                    <p class="footer-note">Without Firebase sync, records remain in this browser's local storage. Local browser data does not automatically appear on another device. This page uses the REST API; your Firebase database must be configured to permit the intended access.</p>
+                </div>
+                <div class="card">
+                    <h3>Data backup</h3>
+                    <p class="small muted">Export a JSON backup or import a backup you previously exported.</p>
+                    <div class="btn-row"><button class="btn" onclick="exportBackup()">Export backup</button><label class="btn" for="backupFile">Import backup</label><input id="backupFile" class="hidden" type="file" accept=".json,application/json" onchange="importBackup(event)"></div>
+                    <hr>
+                    <button class="btn danger" onclick="resetAllData()">Reset all tracker data</button>
+                    <p class="footer-note">Export a backup before resetting. Resetting removes local tracker records from this browser.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+<script>
+"use strict";
+
+/* ---------- STORAGE AND DEFAULTS ---------- */
+const DATA_KEY = "mattAngeloPortal_v3";
+const PIN_KEY = "mattAngeloPortalPin";
+const FIREBASE_KEY = "mattAngeloFirebaseSettings";
+const GOAL = 15;
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const $ = id => document.getElementById(id);
+const todayISO = () => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+};
+const dateISO = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const makeId = () => Date.now().toString(36) + Math.random().toString(36).slice(2,8);
+const escapeHTML = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+const formatDate = value => {
+    if(!value) return "Not selected";
+    const parts = String(value).split("-").map(Number);
+    if(parts.length !== 3 || parts.some(Number.isNaN)) return escapeHTML(value);
+    return new Date(parts[0],parts[1]-1,parts[2]).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});
+};
+const emptyData = () => ({
+    calendar:{},
+    tracker:{},
+    papers:[],
+    monthSnapshots:[],
+    points:0,
+    pointsHistory:[],
+    rewards:[],
+    requests:[],
+    submissions:[],
+    violations:[],
+    mode:"edit"
+});
+let data = emptyData();
+let currentPage = "dashboard";
+let isViewOnly = false;
+let firebaseSettings = {url:"",path:"mattAngeloTracker/data"};
+let syncTimer = null;
+let syncBusy = false;
+let syncAgain = false;
+
+function loadLocal(){
+    try{
+        const parsed = JSON.parse(localStorage.getItem(DATA_KEY) || "null");
+        if(parsed && typeof parsed === "object"){
+            data = Object.assign(emptyData(),parsed);
+            data.calendar ||= {};
+            data.tracker ||= {};
+            data.papers ||= [];
+            data.monthSnapshots ||= [];
+            data.points = Number(data.points) || 0;
+            data.pointsHistory ||= [];
+            data.rewards ||= [];
+            data.requests ||= [];
+            data.submissions ||= [];
+            data.violations ||= [];
+        }
+    }catch(e){ console.warn("Could not read local tracker data.",e); data = emptyData(); }
+    try{
+        const saved = JSON.parse(localStorage.getItem(FIREBASE_KEY) || "null");
+        if(saved && typeof saved === "object") firebaseSettings = {...firebaseSettings,...saved};
+    }catch(e){}
+}
+function saveLocal(){
+    localStorage.setItem(DATA_KEY,JSON.stringify(data));
+    scheduleCloudSave();
+}
+function firebaseUrl(){
+    const base = String(firebaseSettings.url || "").trim().replace(/\/+$/,"");
+    const path = String(firebaseSettings.path || "").trim().replace(/^\/+|\/+$/g,"");
+    if(!base) return "";
+    if(!/^https:\/\/[a-z0-9.-]+(?::\d+)?$/i.test(base)) throw new Error("Enter a valid HTTPS Firebase Realtime Database URL.");
+    if(path.split("/").some(part => !part || part === "." || part === "..")) throw new Error("Check the database path.");
+    return base + (path ? "/" + path : "") + ".json";
+}
+function setSyncStatus(message,isError=false){
+    const el = $("syncStatus");
+    if(el){el.textContent = message;el.style.color = isError ? "#b42318" : "";}
+}
+function scheduleCloudSave(){
+    if(!firebaseSettings.url) return;
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(() => syncNow(true),1000);
+}
+async function syncNow(silent=false){
+    let url;
+    try{url = firebaseUrl();}catch(e){setSyncStatus(e.message,true);return;}
+    if(!url){setSyncStatus("Cloud sync is not configured.");return;}
+    if(syncBusy){syncAgain=true;return;}
+    syncBusy=true;
+    setSyncStatus("Connecting to Firebase…");
+    try{
+        const response = await fetch(url,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});
+        if(!response.ok) throw new Error("Firebase returned HTTP " + response.status + ". Check database rules and URL.");
+        setSyncStatus("Sync successful at " + new Date().toLocaleTimeString() + ".");
+    }catch(e){
+        setSyncStatus("Sync failed: " + e.message + " Your local changes are still saved in this browser.",true);
+    }finally{
+        syncBusy=false;
+        if(syncAgain){syncAgain=false;scheduleCloudSave();}
+    }
+}
+async function loadCloudData(){
+    let url;
+    try{url = firebaseUrl();}catch(e){setSyncStatus(e.message,true);return;}
+    if(!url){setSyncStatus("Cloud sync is not configured. Local browser storage is active.");return;}
+    setSyncStatus("Checking Firebase…");
+    try{
+        const response = await fetch(url,{method:"GET"});
+        if(!response.ok) throw new Error("Firebase returned HTTP " + response.status + ".");
+        const remote = await response.json();
+        if(remote && typeof remote === "object"){
+            const localHasData = Object.keys(data.calendar).length || data.papers.length || data.pointsHistory.length || data.rewards.length;
+            const remoteHasData = Object.keys(remote.calendar || {}).length || (remote.papers || []).length || (remote.pointsHistory || []).length || (remote.rewards || []).length;
+            if(remoteHasData){
+                data = Object.assign(emptyData(),remote);
+                data.calendar ||= {};data.tracker ||= {};data.papers ||= [];data.monthSnapshots ||= [];
+                data.points = Number(data.points)||0;data.pointsHistory ||= [];data.rewards ||= [];
+                data.requests ||= [];data.submissions ||= [];data.violations ||= [];
+                localStorage.setItem(DATA_KEY,JSON.stringify(data));
+            }else if(localHasData){
+                await syncNow(true);
+            }
+        }else if(Object.keys(data.calendar).length || data.papers.length){
+            await syncNow(true);
+        }
+        setSyncStatus("Firebase connection checked at " + new Date().toLocaleTimeString() + ".");
+    }catch(e){setSyncStatus("Could not load Firebase data: " + e.message + " Local records are still available.",true);}
+    renderAll();
+}
+function saveFirebaseSettings(){
+    firebaseSettings.url = $("firebaseUrl").value.trim().replace(/\/+$/,"");
+    firebaseSettings.path = $("firebasePath").value.trim() || "mattAngeloTracker/data";
+    try{firebaseUrl();}catch(e){setSyncStatus(e.message,true);return;}
+    localStorage.setItem(FIREBASE_KEY,JSON.stringify(firebaseSettings));
+    setSyncStatus(firebaseSettings.url ? "Sync settings saved. Press Sync now to connect." : "Sync URL cleared. Local storage is active.");
+    if(firebaseSettings.url) syncNow();
+}
+function disableFirebase(){
+    if(!confirm("Disable Firebase sync on this browser? Your local data will remain.")) return;
+    firebaseSettings = {url:"",path:"mattAngeloTracker/data"};
+    localStorage.setItem(FIREBASE_KEY,JSON.stringify(firebaseSettings));
+    $("firebaseUrl").value = "";
+    $("firebasePath").value = firebaseSettings.path;
+    setSyncStatus("Cloud sync disabled. Local storage remains active.");
+}
+
+/* ---------- PASSCODE ---------- */
+function showLockSetup(){
+    const exists = !!localStorage.getItem(PIN_KEY);
+    $("lockTitle").textContent = exists ? "Private Tracker" : "Set up your tracker";
+    $("lockDescription").textContent = exists ? "Enter your passcode to open the shower schedule dashboard." : "Create a passcode for this browser before opening your private tracker.";
+    $("pinLabel").textContent = exists ? "Passcode" : "Create passcode";
+    $("confirmPinWrap").classList.toggle("hidden",exists);
+    $("unlockButton").textContent = exists ? "Unlock tracker" : "Create passcode";
+    $("pinInput").value = "";
+    $("confirmPin").value = "";
+    $("lockError").textContent = "";
+}
+$("lockForm").addEventListener("submit",async event=>{
+    event.preventDefault();
+    const pin = $("pinInput").value;
+    if(!pin){$("lockError").textContent="Enter a passcode.";return;}
+    const existing = localStorage.getItem(PIN_KEY);
+    if(!existing){
+        if(pin.length < 4){$("lockError").textContent="Choose a passcode with at least 4 characters.";return;}
+        if(pin !== $("confirmPin").value){$("lockError").textContent="The passcodes do not match.";return;}
+        localStorage.setItem(PIN_KEY,pin);
+    }else if(pin !== existing){
+        $("lockError").textContent="Incorrect passcode. Try again.";return;
+    }
+    $("lockScreen").classList.add("hidden");
+    $("app").classList.remove("hidden");
+    loadLocal();
+    applyMode();
+    renderAll();
+    if(firebaseSettings.url) await loadCloudData();
+    showPage("dashboard");
+});
+function lockApp(){
+    $("app").classList.add("hidden");
+    $("lockScreen").classList.remove("hidden");
+    showLockSetup();
+}
+function changePin(){
+    const one=$("newPin").value, two=$("newPinConfirm").value;
+    if(one.length<4){alert("Use at least 4 characters.");return;}
+    if(one!==two){alert("The new passcodes do not match.");return;}
+    localStorage.setItem(PIN_KEY,one);
+    $("newPin").value="";$("newPinConfirm").value="";
+    alert("Passcode updated for this browser.");
+}
+
+/* ---------- NAVIGATION AND MODE ---------- */
+function showPage(name,button){
+    const page = $("page-"+name);
+    if(!page) return;
+    if(isViewOnly && ["calendar","signing","paper"].includes(name)){
+        name="dashboard";
+    }
+    currentPage=name;
+    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+    $("page-"+name).classList.add("active");
+    document.querySelectorAll(".nav-btn").forEach(b=>b.classList.toggle("active",b.dataset.page===name));
+    renderPage(name);
+    window.scrollTo({top:0,behavior:"smooth"});
+}
+function toggleMode(){
+    isViewOnly=!isViewOnly;
+    data.mode=isViewOnly?"view":"edit";
+    saveLocal();
+    applyMode();
+    if(isViewOnly && ["calendar","signing","paper"].includes(currentPage)) showPage("dashboard");
+}
+function applyMode(){
+    isViewOnly = data.mode === "view";
+    $("modeBadge").textContent = isViewOnly ? "VIEW-ONLY MODE" : "EDIT MODE";
+    $("modeButton").textContent = isViewOnly ? "Switch to edit mode" : "Switch to view-only";
+    document.querySelectorAll(".edit-only").forEach(el=>el.classList.toggle("hidden",isViewOnly));
+    if(isViewOnly){
+        ["calendar","signing","paper"].forEach(name=>{
+            const btn=document.querySelector(`.nav-btn[data-page="${name}"]`);
+            if(btn) btn.classList.add("hidden");
+        });
+    }else{
+        document.querySelectorAll(".edit-only").forEach(el=>el.classList.remove("hidden"));
+    }
+}
+function renderPage(name){
+    const fn={
+        dashboard:renderDashboard,calendar:renderCalendar,signing:renderSigningTracker,
+        paper:updatePaperPreview,saved:renderSavedData,points:renderPoints,
+        rewards:renderRewards,requests:renderRequests,submissions:renderSubmissions,
+        violations:renderViolations,settings:fillSettings
+    }[name];
+    if(fn) fn();
+}
+
+/* ---------- DATE SELECTORS ---------- */
+function fillDateSelectors(){
+    const yearOptions = Array.from({length:5},(_,i)=>2026+i).map(y=>`<option value="${y}">${y}</option>`).join("");
+    const monthOptions = MONTHS.map((m,i)=>`<option value="${i}">${m}</option>`).join("");
+    ["yearSelect","trackerYear"].forEach(id=>{$(id).innerHTML=yearOptions;});
+    ["monthSelect","trackerMonth"].forEach(id=>{$(id).innerHTML=monthOptions;});
+    const now=new Date();
+    ["yearSelect","trackerYear"].forEach(id=>$(id).value=String(Math.min(2030,Math.max(2026,now.getFullYear()))));
+    ["monthSelect","trackerMonth"].forEach(id=>$(id).value=String(now.getMonth()));
+    $("paperDate").value=todayISO();
+    $("rewardDate").value=todayISO();
+    $("requestDate").value=todayISO();
+    $("submissionDate").value=todayISO();
+    $("violationDate").value=todayISO();
+}
+
+/* ---------- CALENDAR ---------- */
+function calendarKey(year,month,day){return `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;}
+function renderCalendar(){
+    const year=Number($("yearSelect").value), month=Number($("monthSelect").value);
+    $("calendarTitle").textContent=MONTHS[month]+" "+year;
+    const first=new Date(year,month,1).getDay(), total=new Date(year,month+1,0).getDate();
+    let html= ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d=>`<div class="weekday">${d}</div>`).join("");
+    for(let i=0;i<first;i++) html+='<div class="day-cell empty-day"></div>';
+    for(let day=1;day<=total;day++){
+        const key=calendarKey(year,month,day), value=data.calendar[key]||"";
+        const isToday=key===todayISO();
+        const options=`<option value="">Unassigned</option><option value="Angelo" ${value==="Angelo"?"selected":""}>Angelo</option><option value="Matthew" ${value==="Matthew"?"selected":""}>Matthew</option>`;
+        html+=`<div class="day-cell ${isToday?"today":""}"><div class="day-number">${day}${isToday?' <span class="tag">TODAY</span>':""}</div><select aria-label="${key} assignment" onchange="setAssignment('${key}',this.value)">${options}</select></div>`;
+    }
+    const remainder=(first+total)%7;
+    if(remainder) for(let i=remainder;i<7;i++) html+='<div class="day-cell empty-day"></div>';
+    $("calendarGrid").innerHTML=html;
+}
+function setAssignment(key,person){
+    if(person) data.calendar[key]=person; else delete data.calendar[key];
+    saveLocal();renderDashboard();
+}
+function clearCurrentMonth(){
+    if(!confirm("Clear all assignments for this month?")) return;
+    const year=Number($("yearSelect").value), month=Number($("monthSelect").value);
+    const prefix=`${year}-${String(month+1).padStart(2,"0")}-`;
+    Object.keys(data.calendar).forEach(k=>{if(k.startsWith(prefix)) delete data.calendar[k];});
+    saveLocal();renderCalendar();renderDashboard();
+}
+function saveCurrentMonth(){
+    const year=Number($("yearSelect").value), month=Number($("monthSelect").value);
+    const prefix=`${year}-${String(month+1).padStart(2,"0")}-`;
+    const assignments={};
+    Object.entries(data.calendar).forEach(([k,v])=>{if(k.startsWith(prefix)) assignments[k]=v;});
+    data.monthSnapshots.push({id:makeId(),year,month,assignments,savedAt:new Date().toISOString()});
+    saveLocal();renderSavedData();alert("Month snapshot saved.");
+}
+function getNextAssigned(afterDate){
+    const start=new Date(afterDate+"T12:00:00");
+    for(let offset=1;offset<=1827;offset++){
+        const d=new Date(start);d.setDate(start.getDate()+offset);
+        const key=dateISO(d);
+        if(data.calendar[key]) return {date:key,person:data.calendar[key]};
+    }
+    return null;
+}
+
+/* ---------- SIGNING TRACKER ---------- */
+function renderSigningTracker(){
+    const year=Number($("trackerYear").value),month=Number($("trackerMonth").value);
+    const total=new Date(year,month+1,0).getDate();
+    let html="";
+    for(let day=1;day<=total;day++){
+        const key=calendarKey(year,month,day), record=data.tracker[key]||{};
+        const scheduled=data.calendar[key]||"Unassigned";
+        html+=`<tr><td>${formatDate(key)}</td><td>${escapeHTML(scheduled)}</td><td><select aria-label="Who showered first ${key}" onchange="updateTracker('${key}','person',this.value)"><option value="">Select</option><option ${record.person==="Angelo"?"selected":""}>Angelo</option><option ${record.person==="Matthew"?"selected":""}>Matthew</option></select></td><td><select aria-label="Signing status ${key}" onchange="updateTracker('${key}','status',this.value)"><option value="">Select</option><option ${record.status==="SIGNED"?"selected":""}>SIGNED</option><option ${record.status==="MISSING"?"selected":""}>MISSING</option></select></td></tr>`;
+    }
+    $("trackerBody").innerHTML=html;
+}
+function updateTracker(key,field,value){
+    data.tracker[key] ||= {};
+    if(value) data.tracker[key][field]=value; else delete data.tracker[key][field];
+    saveLocal();
+}
+
+/* ---------- DAILY PAPERS ---------- */
+function updatePaperPreview(){
+    $("previewDate").textContent=formatDate($("paperDate").value);
+    $("previewPerson").textContent=$("paperPerson").value||"Not selected";
+    $("previewStatus").textContent=$("paperStatus").value||"Not selected";
+    $("previewNotes").textContent=$("paperNotes").value.trim()||"None";
+}
+function newDailyCopy(){
+    $("paperDate").value=todayISO();
+    $("paperPerson").value="";
+    $("paperStatus").value="";
+    $("paperNotes").value="";
+    updatePaperPreview();
+    showPage("paper");
+}
+function saveDailyPaper(){
+    const date=$("paperDate").value, person=$("paperPerson").value, status=$("paperStatus").value;
+    if(!date||!person||!status){alert("Please select the date, person, and signing status.");return;}
+    const item={id:makeId(),date,person,status,notes:$("paperNotes").value.trim(),savedAt:new Date().toISOString()};
+    data.papers.push(item);
+    data.tracker[date]={...(data.tracker[date]||{}),person,status};
+    saveLocal();renderSavedData();renderDashboard();renderSigningTracker();
+    alert("Daily paper saved.");
+}
+
+/* ---------- SAVED DATA ---------- */
+function renderSavedData(){
+    const papers=[...data.papers].reverse();
+    $("savedPapers").innerHTML=papers.length?papers.map(item=>`
+        <div class="item"><div class="item-head"><h3>Daily paper · ${formatDate(item.date)}</h3><span class="tag ${item.status==="SIGNED"?"signed":"missing"}">${escapeHTML(item.status)}</span></div>
+        <p><strong>Who showered first:</strong> ${escapeHTML(item.person)}</p><p><strong>Notes:</strong> ${escapeHTML(item.notes||"None")}</p>
+        <p class="small muted">Saved: ${escapeHTML(new Date(item.savedAt).toLocaleString())}</p>
+        <div class="btn-row no-print"><button class="btn" onclick="loadPaper('${item.id}')">Open copy</button><button class="btn danger" onclick="deletePaper('${item.id}')">Delete copy</button></div></div>`).join(""):'<div class="empty">No saved daily papers yet.</div>';
+    const snapshots=[...data.monthSnapshots].reverse();
+    $("savedMonths").innerHTML=snapshots.length?snapshots.map(item=>`
+        <div class="item"><div class="item-head"><h3>${MONTHS[item.month]} ${item.year}</h3><span class="tag">${Object.keys(item.assignments||{}).length} assignments</span></div>
+        <p class="small muted">Saved: ${escapeHTML(new Date(item.savedAt).toLocaleString())}</p>
+        <div class="btn-row no-print"><button class="btn primary" onclick="restoreMonth('${item.id}')">Restore month</button><button class="btn danger" onclick="deleteMonthSnapshot('${item.id}')">Delete snapshot</button></div></div>`).join(""):'<div class="empty">No month snapshots saved yet.</div>';
+}
+function loadPaper(id){
+    const item=data.papers.find(p=>p.id===id);if(!item)return;
+    $("paperDate").value=item.date;$("paperPerson").value=item.person;$("paperStatus").value=item.status;$("paperNotes").value=item.notes||"";
+    updatePaperPreview();showPage("paper");
+}
+function deletePaper(id){
+    if(!confirm("Delete this saved daily paper?"))return;
+    data.papers=data.papers.filter(p=>p.id!==id);saveLocal();renderSavedData();renderDashboard();
+}
+function clearSavedPapers(){
+    if(!confirm("Delete all saved daily papers? This does not clear calendar assignments."))return;
+    data.papers=[];saveLocal();renderSavedData();renderDashboard();
+}
+function deleteMonthSnapshot(id){
+    data.monthSnapshots=data.monthSnapshots.filter(m=>m.id!==id);saveLocal();renderSavedData();
+}
+function restoreMonth(id){
+    const item=data.monthSnapshots.find(m=>m.id===id);if(!item)return;
+    if(!confirm(`Restore the saved assignments for ${MONTHS[item.month]} ${item.year}? Existing assignments in that month will be replaced.`))return;
+    const prefix=`${item.year}-${String(item.month+1).padStart(2,"0")}-`;
+    Object.keys(data.calendar).forEach(k=>{if(k.startsWith(prefix))delete data.calendar[k];});
+    Object.entries(item.assignments||{}).forEach(([k,v])=>data.calendar[k]=v);
+    $("yearSelect").value=String(item.year);$("monthSelect").value=String(item.month);
+    saveLocal();renderCalendar();renderDashboard();showPage("calendar");
+}
+
+/* ---------- POINTS ---------- */
+function changePoints(direction){
+    const amount=Math.floor(Number($("pointAmount").value));
+    if(!Number.isFinite(amount)||amount<=0){alert("Enter a positive whole number of points.");return;}
+    const reason=$("pointReason").value.trim()|| (direction>0?"Points added":"Points removed");
+    data.points += direction*amount;
+    data.pointsHistory.push({id:makeId(),change:direction*amount,total:data.points,reason,at:new Date().toISOString()});
+    saveLocal();$("pointReason").value="";renderPoints();renderDashboard();
+}
+function renderPoints(){
+    $("pointsTotal").textContent=data.points;
+    const history=[...data.pointsHistory].reverse();
+    $("pointsHistory").innerHTML=history.length?history.map(item=>`
+        <div class="item"><div class="item-head"><h3>${item.change>0?"+":""}${item.change} points</h3><span class="tag">Total: ${item.total}</span></div><p>${escapeHTML(item.reason)}</p><p class="small muted">${escapeHTML(new Date(item.at).toLocaleString())}</p></div>`).join(""):'<div class="empty">No points changes recorded.</div>';
+}
+
+/* ---------- REWARDS ---------- */
+function saveReward(){
+    const date=$("rewardDate").value,name=$("rewardName").value;
+    if(!date||!name){alert("Select a reward and date.");return;}
+    data.rewards.push({id:makeId(),date,name,details:$("rewardDetails").value.trim(),at:new Date().toISOString()});
+    saveLocal();$("rewardDetails").value="";renderRewards();renderDashboard();alert("Reward recorded.");
+}
+function renderRewards(){
+    const list=[...data.rewards].reverse();
+    $("rewardHistory").innerHTML=list.length?list.map(r=>`
+        <div class="item"><div class="item-head"><h3>${escapeHTML(r.name)}</h3><span class="tag">${formatDate(r.date)}</span></div><p>${escapeHTML(r.details||"No extra details.")}</p><p class="small muted">Recorded: ${escapeHTML(new Date(r.at).toLocaleString())}</p><button class="btn danger no-print" onclick="deleteReward('${r.id}')">Delete record</button></div>`).join(""):'<div class="empty">No rewards recorded yet.</div>';
+}
+function deleteReward(id){
+    if(!confirm("Delete this reward record?"))return;
+    data.rewards=data.rewards.filter(r=>r.id!==id);saveLocal();renderRewards();renderDashboard();
+}
+
+/* ---------- CHANGE REQUESTS ---------- */
+function addRequest(){
+    const person=$("requestPerson").value,date=$("requestDate").value,textValue=$("requestText").value.trim();
+    if(!date||!textValue){alert("Enter a date and describe the requested change.");return;}
+    data.requests.push({id:makeId(),person,date,text:textValue,status:"PENDING",createdAt:new Date().toISOString(),decisionNote:""});
+    saveLocal();$("requestText").value="";renderRequests();renderDashboard();
+}
+function decideRequest(id,status){
+    const item=data.requests.find(r=>r.id===id);if(!item)return;
+    if(status==="APPROVED"){
+        if(!confirm("Approve this request? Make sure both Matt and Angelo have agreed before changing the schedule."))return;
+        const person=prompt("If this request changes a date's assigned person, enter Angelo, Matthew, or leave blank to keep the calendar unchanged.","");
+        if(person!==null && person.trim()){
+            const p=person.trim();
+            if(!["Angelo","Matthew"].includes(p)){alert("Use Angelo or Matthew.");return;}
+            data.calendar[item.date]=p;
+        }
+    }
+    item.status=status;item.decidedAt=new Date().toISOString();saveLocal();renderRequests();renderDashboard();renderCalendar();
+}
+function deleteRequest(id){
+    if(!confirm("Delete this change request?"))return;
+    data.requests=data.requests.filter(r=>r.id!==id);saveLocal();renderRequests();
+}
+function renderRequests(){
+    const list=[...data.requests].reverse();
+    $("requestList").innerHTML=list.length?list.map(r=>`
+        <div class="item"><div class="item-head"><h3>${escapeHTML(r.person)} · ${formatDate(r.date)}</h3><span class="tag ${r.status==="APPROVED"?"signed":r.status==="DECLINED"?"missing":""}">${escapeHTML(r.status)}</span></div><p>${escapeHTML(r.text)}</p><p class="small muted">Created: ${escapeHTML(new Date(r.createdAt).toLocaleString())}</p>
+        ${r.status==="PENDING"?`<div class="btn-row no-print"><button class="btn success" onclick="decideRequest('${r.id}','APPROVED')">Approve</button><button class="btn danger" onclick="decideRequest('${r.id}','DECLINED')">Decline</button></div>`:""}
+        <button class="btn danger no-print" onclick="deleteRequest('${r.id}')">Delete request</button></div>`).join(""):'<div class="empty">No change requests yet.</div>';
+}
+
+/* ---------- SIGNATURE SUBMISSIONS ---------- */
+let canvas,ctx,drawing=false,signatureHasInk=false;
+function setupSignature(){
+    canvas=$("signatureCanvas");ctx=canvas.getContext("2d");
+    ctx.lineWidth=3;ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle="#111827";
+    const point=e=>{
+        const rect=canvas.getBoundingClientRect();
+        return {x:(e.clientX-rect.left)*canvas.width/rect.width,y:(e.clientY-rect.top)*canvas.height/rect.height};
+    };
+    canvas.addEventListener("pointerdown",e=>{drawing=true;signatureHasInk=true;canvas.setPointerCapture(e.pointerId);const p=point(e);ctx.beginPath();ctx.moveTo(p.x,p.y);});
+    canvas.addEventListener("pointermove",e=>{if(!drawing)return;const p=point(e);ctx.lineTo(p.x,p.y);ctx.stroke();});
+    ["pointerup","pointercancel","lostpointercapture"].forEach(type=>canvas.addEventListener(type,()=>drawing=false));
+}
+function clearSignature(){if(!ctx)return;ctx.clearRect(0,0,canvas.width,canvas.height);signatureHasInk=false;}
+function saveSubmission(){
+    const date=$("submissionDate").value,person=$("submissionPerson").value;
+    if(!date||!person){alert("Select the date and person.");return;}
+    const signature=signatureHasInk?canvas.toDataURL("image/png"):"";
+    data.submissions.push({id:makeId(),date,person,notes:$("submissionNotes").value.trim(),signature,at:new Date().toISOString()});
+    if(signatureHasInk){data.tracker[date] ||= {};data.tracker[date].person=person;data.tracker[date].status="SIGNED";}
+    saveLocal();$("submissionNotes").value="";clearSignature();renderSubmissions();renderDashboard();alert("Submission saved.");
+}
+function renderSubmissions(){
+    const list=[...data.submissions].reverse();
+    $("submissionList").innerHTML=list.length?list.map(s=>`
+        <div class="item"><div class="item-head"><h3>${escapeHTML(s.person)} · ${formatDate(s.date)}</h3><span class="tag">${s.signature?"Signature saved":"No signature"}</span></div><p>${escapeHTML(s.notes||"No notes.")}</p>${s.signature?`<img alt="Saved signature" style="max-width:100%;max-height:100px;border:1px solid #ddd;background:white" src="${s.signature}">`:""}<p class="small muted">${escapeHTML(new Date(s.at).toLocaleString())}</p><button class="btn danger no-print" onclick="deleteSubmission('${s.id}')">Delete submission</button></div>`).join(""):'<div class="empty">No submissions saved yet.</div>';
+}
+function deleteSubmission(id){
+    if(!confirm("Delete this submission?"))return;
+    data.submissions=data.submissions.filter(s=>s.id!==id);saveLocal();renderSubmissions();
+}
+
+/* ---------- SYSTEM VIOLATIONS ---------- */
+function addViolation(){
+    const date=$("violationDate").value,person=$("violationPerson").value,description=$("violationDescription").value.trim();
+    if(!date||!description){alert("Enter the date and a description.");return;}
+    data.violations.push({id:makeId(),date,person,description,at:new Date().toISOString()});
+    saveLocal();$("violationDescription").value="";renderViolations();
+}
+function renderViolations(){
+    const list=[...data.violations].reverse();
+    $("violationList").innerHTML=list.length?list.map(v=>`
+        <div class="item"><div class="item-head"><h3>${escapeHTML(v.person)} · ${formatDate(v.date)}</h3><span class="tag">Record</span></div><p>${escapeHTML(v.description)}</p><p class="small muted">${escapeHTML(new Date(v.at).toLocaleString())}</p><button class="btn danger no-print" onclick="deleteViolation('${v.id}')">Delete record</button></div>`).join(""):'<div class="empty">No violation records.</div>';
+}
+function deleteViolation(id){
+    if(!confirm("Delete this record?"))return;
+    data.violations=data.violations.filter(v=>v.id!==id);saveLocal();renderViolations();
+}
+
+/* ---------- DASHBOARD ---------- */
+function renderDashboard(){
+    const next=getNextAssigned(todayISO());
+    $("tomorrowPerson").textContent=next?next.person:"Not assigned";
+    $("tomorrowDate").textContent=next?formatDate(next.date)+(next.date===dateISO(new Date(Date.now()+86400000))?" · Tomorrow":" · Next assigned date"):"Add assignments to your calendar.";
+    $("dashboardPoints").textContent=data.points;
+    $("dashboardPapers").textContent=data.papers.length;
+    $("dashboardProgressText").textContent=data.points+" / "+GOAL;
+    $("dashboardProgress").style.width=Math.min(100,Math.max(0,data.points/GOAL*100))+"%";
+    const future=[];
+    for(let i=0;i<14;i++){
+        const d=new Date();d.setDate(d.getDate()+i);
+        const key=dateISO(d);
+        if(data.calendar[key])future.push({date:key,person:data.calendar[key]});
+    }
+    $("upcomingList").innerHTML=future.length?future.slice(0,7).map(item=>`<div class="item-head" style="padding:10px 0;border-bottom:1px solid var(--line)"><div><strong>${formatDate(item.date)}</strong><div class="small muted">${item.date===todayISO()?"Today":""}</div></div><span class="tag ${item.person==="Angelo"?"angelo":"matthew"}">${escapeHTML(item.person)}</span></div>`).join(""):'<div class="empty">No assignments in the next 14 days. Open Calendar to set the schedule.</div>';
+    const activity=[];
+    data.papers.forEach(x=>activity.push({at:x.savedAt,title:"Daily paper saved",detail:formatDate(x.date)}));
+    data.rewards.forEach(x=>activity.push({at:x.at,title:"Reward recorded",detail:x.name}));
+    data.requests.forEach(x=>activity.push({at:x.createdAt,title:"Change request",detail:x.status+" · "+formatDate(x.date)}));
+    data.submissions.forEach(x=>activity.push({at:x.at,title:"Submission saved",detail:x.person+" · "+formatDate(x.date)}));
+    activity.sort((a,b)=>new Date(b.at)-new Date(a.at));
+    $("recentActivity").innerHTML=activity.length?activity.slice(0,6).map(a=>`<div class="item-head" style="padding:9px 0;border-bottom:1px solid var(--line)"><div><strong>${escapeHTML(a.title)}</strong><div class="small muted">${escapeHTML(a.detail)}</div></div><span class="small muted">${escapeHTML(new Date(a.at).toLocaleDateString())}</span></div>`).join(""):'<div class="empty">No recent activity yet.</div>';
+}
+function renderAll(){
+    renderDashboard();renderCalendar();renderSigningTracker();updatePaperPreview();renderSavedData();
+    renderPoints();renderRewards();renderRequests();renderSubmissions();renderViolations();fillSettings();
+}
+function fillSettings(){
+    $("firebaseUrl").value=firebaseSettings.url||"";
+    $("firebasePath").value=firebaseSettings.path||"mattAngeloTracker/data";
+}
+
+/* ---------- BACKUP / RESET ---------- */
+function exportBackup(){
+    const blob=new Blob([JSON.stringify({version:3,exportedAt:new Date().toISOString(),data},null,2)],{type:"application/json"});
+    const url=URL.createObjectURL(blob),a=document.createElement("a");
+    a.href=url;a.download="matt-angelo-tracker-backup.json";a.click();URL.revokeObjectURL(url);
+}
+function importBackup(event){
+    const file=event.target.files && event.target.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=()=>{
+        try{
+            const parsed=JSON.parse(reader.result);
+            const incoming=parsed.data||parsed;
+            if(!incoming||typeof incoming!=="object"||!incoming.calendar||!Array.isArray(incoming.papers))throw new Error("That file does not look like a tracker backup.");
+            if(!confirm("Import this backup and replace the current local tracker records? Export your current data first if you want to keep it."))return;
+            data=Object.assign(emptyData(),incoming);
+            data.calendar ||= {};data.tracker ||= {};data.papers ||= [];data.monthSnapshots ||= [];data.points=Number(data.points)||0;data.pointsHistory ||= [];data.rewards ||= [];data.requests ||= [];data.submissions ||= [];data.violations ||= [];
+            saveLocal();renderAll();alert("Backup imported.");
+        }catch(e){alert("Could not import backup: "+e.message);}
+        finally{$("backupFile").value="";}
+    };
+    reader.readAsText(file);
+}
+function resetAllData(){
+    if(!confirm("This deletes all local calendar assignments, papers, points, rewards, requests, submissions, and violations. Export a backup first if needed. Continue?"))return;
+    if(!confirm("Final confirmation: permanently reset all tracker records in this browser?"))return;
+    data=emptyData();saveLocal();renderAll();showPage("dashboard");
+}
+
+/* ---------- STARTUP ---------- */
+function initialize(){
+    loadLocal();
+    fillDateSelectors();
+    setupSignature();
+    fillSettings();
+    showLockSetup();
+    if(!localStorage.getItem(PIN_KEY)) $("pinInput").focus();
+}
+initialize();
+</script>
+</body>
+</html>
